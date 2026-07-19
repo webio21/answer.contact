@@ -92,16 +92,16 @@ Choose your address
 [ Contunue ]
 - - - - - - - - - - - - - - - -
 ○ @livemail.me
+
 [     john     ] @livemail.me
 - - - - - - - - - - - - - - - -
 ○ @yourdomain.com
+
 [ Select Domain ▼ ]
   [+ Add Domain ]
+
+*When users create a domain-based email account for the first time, the interface should not display the [Select Domain ▼] or [+ Add Domain] options. Instead, users should directly enter the email username and domain address.
 - - - - - - - - - - - - - - - -
-Add Domain
-
-Use your own domain for your business email.
-
 Domain
 [    info ]@[ john.com    ]
 
