@@ -1,0 +1,195 @@
+# Contact Project Overview
+
+Unified Business Communication Platform
+
+The ultimate goal of Contact is to make communication and collaboration with anyone simple and unified.
+
+As an AI-native contact platform, Contact will gradually automate most repetitive communication and business workflows:
+
+• AI answers customer questions
+• AI understands customer needs
+• AI suggests solutions
+• AI generates offers
+• AI assists negotiations
+• AI guides the payment process
+
+Ultimately, users only need to review the final outcome: Deals.
+
+
+## Dash Workspace
+dash.contact
+
+Inbox  Contacts  Meetings  Answer  Deals  Card
+───────────────────────────────────────────────
+Default Route
+After a user signs in and opens dash.contact, the workspace should default to the Inbox page.
+Default URL:
+dash.contact/inbox
+
+Inbox
+Communication
+How I communicate
+dash.contact/inbox
+
+Contacts
+Relationships
+Who I know
+dash.contact/contacts
+
+Meetings
+Scheduling
+How I connect
+dash.contact/meetings
+meet.contact/{meet_id}
+
+Answer
+AI Collaboration
+Solve together with people and AI.
+dash.contact/answer
+answer.contact/{username}
+answer.contact/{room_id}
+
+Deals
+Business
+How I create value
+dash.contact/deals
+deal.contact/{order_id}
+
+Card
+Digital Identity
+Who I am
+dash.contact/card
+card.contact/{username}
+card.contact/{username}/offers
+
+Live Mail
+Living Communication
+Messages that stay current
+livemail.contact/{mailID}
+username@livemail.me
+
+
+## Contact Domain Architecture
+
+The Contact ecosystem uses the following domains for different product experiences:
+
+dash.contact       - Workspace
+card.contact       - Contact Card
+verified.contact   - Verified Identity
+talk.contact       - Messaging
+meet.contact       - Meetings
+answer.contact     - AI Collaboration
+livechat.contact   - Live Chat
+Livemail.contact   - Live Mail
+deal.contact       - Transactions
+
+
+# Contact Product Architecture
+│
+├── Workspace Layer
+│ → dash.contact
+│   Personal Contact Dashboard
+│   Inbox / Contacts / Meetings / Answer / Deals / Card
+│
+├── Identity Layer
+│ → card.contact
+│   Contact Card
+│   Digital Identity & Profile
+│
+│ → verified.contact
+│   Contact Verified Identity
+│   Identity Verification & Trust
+│
+├── Communication Layer
+│ → talk.contact
+│   Personal Communication Workspace
+│   Inbox / Messages / Email / Conversations
+│
+│ → livemail.contact
+│   Professional Email Service
+│   Custom Domains & Live Mail(Reseller api)
+│
+│ → livechat.contact
+│   Customer Live Chat
+│   Website Visitor Communication
+│
+│ → answer.contact
+│   AI Collaboration
+│   Multi-user AI Rooms
+│
+├── Scheduling Layer
+│ → meet.contact
+│   Meeting & Appointment Scheduling
+│
+└── Transaction Layer
+  → deal.contact
+    Orders / Payments / Completed Collaborations
+
+
+## Multilingual Support
+
+- Implement i18n with runtime language switching.
+- Detect the preferred language from the browser, user settings, or cookies, then load the corresponding translation bundle while keeping the same URL.
+- The application should support multiple languages without requiring separate domains or URL structures.
+────────────────────────────────
+Same Domain
+      │
+      ▼
+dash.contact
+      │
+      ▼
+Detect User Language
+(browser / account / cookie)
+      │
+      ├── us-EN English
+      ├── es-ES Español
+      ├── ja-JP 日本語
+      └── zh—TW 中文
+      │
+      ▼
+Load Corresponding Translation Bundle
+      │
+      ▼
+    React
+Instantly Switches Language
+────────────────────────────────
+Use the appropriate logo based on the current language and theme (Light or Dark).
+- us-EN English: `contact_en.png` / `contact_en_dark.png`
+- es-ES Español: `contact_es.png` / `contact_es_dark.png`
+- ja-JP 日本語: `contact_ja.png` / `contact_ja_dark.png`
+- zh-TW 中文: `contact_zh.png` / `contact_zh_dark.png`
+
+
+
+## Authentication
+
+- Use a single authentication page for both Login and Sign Up.
+- Do not create separate Login and Sign Up pages.
+- Users enter their email or continue with an identity provider.
+- The system automatically determines whether to log in an existing user or create a new account.
+- Authentication is provided by the centralized Starman Account system.
+- All Starman products share the same Starman Account.
+- Authentication requests are handled by account.starman.io
+- After successful authentication, users are redirected back to the requesting product.
+- Authentication UI should remain product-branded while using the shared Starman Account system.
+
+## Authentication UI
+────────────────────────────────
+Log in or sign up
+
+Every reply trains your AI.
+Start with Contact™
+
+Continue with Google
+Continue with Microsoft
+
+──────── OR ────────
+
+Enter your email
+[________________]
+
+Continue
+
+Use your Starman Account(Footer text)
+────────────────────────────────
+
