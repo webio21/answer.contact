@@ -277,18 +277,6 @@ Nederlands
 
 
 
-## Incoming Email (⋮) menu
-Reply
-──────────
-Forward
-Translate
-──────────
-Mark Unread / Mark Read
-Starred / Not Starred
-──────────
-Delete
-
-
 # Incoming Email UI
 ╭─────────────────────────────────────────────────────────────╮
 │ ╭─╮James Wilson user@talk.contact          [↩ Reply ] ☆ (⋮) │
@@ -307,6 +295,18 @@ Delete
 │ ╰────────╯  ╰──────────╯                                    │
 ╰─────────────────────────────────────────────────────────────╯
 * Clicking a sender’s or recipient’s name/avatar opens their contact card. If no contact card exists, no contact information or additional details will be displayed.
+
+
+## Incoming Email (⋮) menu
+Reply
+──────────
+Forward
+Translate
+──────────
+Mark Unread / Mark Read
+Starred / Not Starred
+──────────
+Delete
 
 
 
