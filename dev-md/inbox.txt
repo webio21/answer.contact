@@ -158,7 +158,7 @@ If this email has never had an AI draft generated (manually or automatically), t
 ├─────────────────────────────────────────────────────────────┤
 │ Regular Mail                                                │
 ├─────────────────────────────────────────────────────────────┤
-│ ↶ ↷ | A | A↕ | B  I  U̲  S̶ | A̲ | ☰ | 1. | • | ⇤ ⇥ | Tx  A⇄文 │
+│ ↶ ↷ | A | A↕ | B  I  U̲  S̶ | A̲ | ☰ | 1. | • | ⇤ ⇥ | Tx A⇄文▾ │
 │                                                             │
 │ Hi John,                                                    │
 │                                                             │
@@ -237,6 +237,46 @@ The Advanced Response Controls settings selected by the user should be saved per
 * Clicking a version title opens the full content of that historical draft. Historical drafts can be edited directly and include Undo, Redo, and Copy actions.
 
 
+## A⇄文 AI Translation Menu
+English
+Español
+Français
+Deutsch
+Italiano
+Português
+Nederlands
+日本語
+한국어
+繁體中文
+简体中文
+العربية
+* AI Translate the email body into the selected language.
+  If the user selects a language from the translation dropdown menu (▾), translate the email content into that selected language.
+  If the user directly clicks the A⇄文 translation icon without selecting a language from the dropdown menu, use the user's previously selected translation language.
+  The translated result will be saved in the draft together with the original content.
+
+* After translation is triggered, the translated content should automatically create an editable translation result section at the bottom of the draft.
+  When the user sends the email:
+  - Only the content inside the translated result section should be sent.
+  - The original draft content should not be included in the sent email.
+  The UI behavior is shown below:
+
+# AI Translation UI
+├─────────────────────────────────────────────────────────────┤
+│ Dear John                                                   │
+│ I have received your email. Thank you very much for your    │ 
+│ timely response and support.                                │
+│ Regards,                                                    │
+│ Tom Jackson                                                 │
+├ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ┤
+│ John 您好                                                    │
+│ 我已收到您的郵件，非常感謝您及時的回覆與協助。                      │
+│ 順頌時祺，                                                    │
+│ Tom Jackson                                                 │
+├─────────────────────────────────────────────────────────────┤
+
+
+
 ## Incoming Email (⋮) menu
 Reply
 ──────────
@@ -254,7 +294,9 @@ Delete
 │ ╭─╮James Wilson user@talk.contact          [↩ Reply ] ☆ (⋮) │
 │ ╰─╯to YouName youname@livemail.me          Jul 7  11:30 PM  │
 ├─────────────────────────────────────────────────────────────┤
-│ Dear John                                              A⇄文 │
+│ Subject                                               A⇄文▾ │
+├─ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -┤
+│ Dear John                                                   │
 │ I have received your email. Thank you very much for your    │ 
 │ timely response and support.                                │
 │ Regards,                                                    │
@@ -265,6 +307,7 @@ Delete
 │ ╰────────╯  ╰──────────╯                                    │
 ╰─────────────────────────────────────────────────────────────╯
 * Clicking a sender’s or recipient’s name/avatar opens their contact card. If no contact card exists, no contact information or additional details will be displayed.
+
 
 
 ## Signature Menu
