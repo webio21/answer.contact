@@ -79,7 +79,7 @@ dash.contact/settings/livemail
 ────────────────────────────────
 You don't have a mailbox yet.
 
-Add your business email now!
+Add your professional email now!
 
 [+ Add Mailbox ]
 ────────────────────────────────
