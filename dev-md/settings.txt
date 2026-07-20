@@ -3,8 +3,8 @@ dash.contact/settings
 
 General  AI Assistant  Live Mail  Live Chat  Integrations  Billing  Account
 ───────────────────────────────────────────────────────────────────────────
-
-
+Live Mail
+Integrations
 # General UI
 dash.contact/settings/general
 ────────────────────────────────
@@ -326,7 +326,7 @@ UI:
 
 Choose your plan
 
-Monthly / Yearly ⭐ Best Value
+Monthly / Yearly
 
 ---
 ## Personal
