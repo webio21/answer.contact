@@ -1,6 +1,28 @@
+## Dash > Contacts UI
+dash.contact/contacts
+────────────────────────────────
+ [Search...]               [ + ]
+╭───────────────────────────────╮
+│╭───╮John Smith             (⋮)│
+││JS │Founder at John Capital   │
+│╰───╯John Capital              │
+│✓ Verified Contact             │
+│🏅27 Honors Received           │
+╰───────────────────────────────╯
+╭───────────────────────────────╮
+│╭───╮Emily Johnson          (⋮)│
+││Em │COO at Bright Ventures    │
+│╰───╯Bright Ventures           │
+│✓ Verified Contact             │
+│🏅19 Honors Received           │
+╰───────────────────────────────╯
+* 4 cards per row on desktop, 1 horizontal card per row on mobile.
+* Contacts with unread messages are highlighted.
+* Click the [+] button to add a new contact by username, email address, or QR code.
 
-Contact Menu：
+Contact (⋮) Menu：
 Card
+──────────
 Message
 Book a conversation
 Award Honor
