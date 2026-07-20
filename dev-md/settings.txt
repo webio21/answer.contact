@@ -488,10 +488,10 @@ dash.contact/settings/livechat
 ✗ talk.contact    [Verify] [Remove]
 [Add domain]
 
--Embed code- (NanoID/Base62)
+-Embed code- (NanoID/Base62/Length:12)
 * The code must be generated strictly according to the format requirements below.
 ────────────────────────────────────────────────────────────────
-<script async data-site-id="a8f3k2p9x" src="https://livechat.contact/js"></script> [Copy]
+<script async data-site-id="a8F3k2P9xL7m" src="https://livechat.contact/js"></script> [Copy]
 ────────────────────────────────────────────────────────────────
 Add this script to your website to enable live chat.
 We recommend placing it in the <head> for best performance.
