@@ -1,0 +1,1715 @@
+# LiveMail Business Decisions & Architecture Specification
+
+## Overview
+
+LiveMail adopts a **Subscription → Mailbox Seat → Mailbox Configuration → Provisioned Mailbox** architecture.
+
+Billing, mailbox capacity, mailbox configuration, and actual mailbox resources are intentionally separated.
+
+This architecture:
+
+- Prevents billing logic from being coupled with mailbox resources.
+- Prevents unpaid mailbox provisioning.
+- Supports reseller providers such as Openprovider or OpenSRS.
+- Allows future migration to another email provider without changing business logic.
+- Supports future Team / Organization expansion.
+
+---
+
+# Core Architecture
+
+---
+Organization / User
+        │
+        ▼
+ Subscription
+        │
+        ▼
+ Mailbox Seats
+        │
+        ▼
+ Mailbox Configuration
+        │
+        ▼
+ Provisioned Mailbox
+        │
+        ▼
+ Email Addresses (Aliases)
+---
+
+Each layer has a single responsibility.
+
+---
+
+# Core Objects
+
+## Subscription
+
+A Subscription represents a LiveMail plan.
+
+A Subscription owns:
+
+- Plan (Personal / Pro / Business)
+- Billing Cycle (Monthly / Yearly)
+- Mailbox Seat Quantity
+- Storage Limits
+- Domain Quota
+- Alias Quota
+- Forwarding Rule Quota
+
+A Subscription never directly owns mailboxes.
+
+Instead, it owns Mailbox Seats.
+
+---
+
+## Mailbox Seat
+
+A Mailbox Seat represents one mailbox license.
+
+A Seat:
+
+- is billable
+- may be empty
+- may later become a mailbox
+- may be reused indefinitely
+
+A Seat is NOT an actual mailbox.
+
+Example:
+
+---
+Subscription
+
+5 Seats
+
+Seat 1
+Seat 2
+Seat 3
+Seat 4
+Seat 5
+---
+
+---
+
+## Mailbox Configuration
+
+Represents mailbox settings before provisioning.
+
+Contains:
+
+- username
+- domain
+- password hash
+- verification status
+
+Creating a Mailbox Configuration does NOT create a mailbox on the reseller platform.
+
+---
+
+## Provisioned Mailbox
+
+Represents the actual mailbox created through the reseller email API.
+
+Only Provisioned Mailboxes:
+
+- receive email
+- send email
+- consume storage
+- can login to webmail
+
+---
+
+## Alias
+
+Each mailbox owns:
+
+- one Primary Address
+- zero or more Alias Addresses
+
+Aliases do not consume additional Mailbox Seats.
+
+---
+
+# Lifecycle
+
+## Subscription Lifecycle
+
+---
+Draft
+    │
+    ▼
+Active
+    │
+    ▼
+Past Due
+    │
+    ▼
+Cancelled
+    │
+    ▼
+Grace Period
+    │
+    ▼
+Terminated
+---
+
+---
+
+## Mailbox Seat Lifecycle
+
+---
+Empty
+    │
+    ▼
+Configured
+    │
+    ▼
+Pending Activation
+    │
+    ▼
+Provisioning
+    │
+    ▼
+Active
+    │
+    ▼
+Suspended
+    │
+    ▼
+Deleting
+    │
+    ▼
+Empty
+---
+
+An Empty Seat may be reused indefinitely.
+
+---
+
+## Domain Lifecycle
+
+---
+Pending Verification
+        │
+        ▼
+Verified
+        │
+        ▼
+Disabled
+        │
+        ▼
+Removing
+---
+
+If verification fails:
+
+---
+Pending Verification
+        │
+        ▼
+Verification Failed
+---
+
+---
+
+# Business Decisions
+
+## C-01 Subscription and Mailbox Relationship
+
+### Decision
+
+A Subscription purchases Mailbox Seats.
+
+It does NOT purchase actual mailboxes.
+
+Purchasing 10 Mailbox Seats does not automatically create 10 mailboxes.
+
+Instead:
+
+---
+Subscription
+
+10 Seats
+
+↓
+
+Seat 1
+Seat 2
+Seat 3
+...
+Seat10
+---
+
+Mailboxes are created only when the administrator configures a Seat.
+
+Reason:
+
+Mailbox name, domain and password are unknown during purchase.
+
+This follows mainstream SaaS licensing models.
+
+---
+
+## C-02 Remaining Mailbox Configuration
+
+### Decision
+
+Unused Mailbox Seats remain Empty.
+
+The administrator may configure them at any time.
+
+Configuration includes:
+
+- username
+- domain
+- password
+
+Once configured:
+
+---
+Empty Seat
+
+↓
+
+Mailbox Configuration
+
+↓
+
+Provisioning
+
+↓
+
+Active Mailbox
+---
+
+Unused Seats may remain empty indefinitely.
+
+---
+
+## C-03 Increasing Mailbox Quantity
+
+### Decision
+
+Increasing Mailbox Seats takes effect immediately.
+
+Rules:
+
+- Apply prorated billing immediately.
+- Immediately increase available Mailbox Seats.
+- New Seats can immediately be configured.
+- New mailboxes can immediately be activated.
+
+Example:
+
+---
+Current
+
+5 Seats
+
+↓
+
+Increase
+
+8 Seats
+
+↓
+
+Seat6
+Seat7
+Seat8
+
+Immediately Available
+---
+
+No waiting until the next billing cycle.
+
+---
+
+## C-04 Decreasing Mailbox Quantity
+
+### Decision
+
+Unused Mailbox Seats may be removed immediately.
+
+Occupied Seats cannot be removed.
+
+Administrator must first delete the mailbox.
+
+Seat reduction affects billing only at the next renewal.
+
+Rules:
+
+- No refund.
+- Current billing remains unchanged.
+- Renewal uses the reduced Seat quantity.
+
+Example:
+
+---
+Today
+
+10 Seats
+
+↓
+
+Reduce to 5
+
+↓
+
+Current Billing
+
+10 Seats
+
+↓
+
+Next Renewal
+
+5 Seats
+---
+
+---
+
+## C-05 Deleting a Mailbox
+
+### Decision
+
+Deleting a mailbox never changes the subscription quantity.
+
+Instead:
+
+---
+Mailbox
+
+↓
+
+Empty Seat
+---
+
+Rules:
+
+- Seat remains.
+- Seat may be reused.
+- Subscription quantity remains unchanged.
+- Billing remains unchanged.
+
+---
+
+## C-06 Deleting the Last Mailbox
+
+### Decision
+
+Deleting the last mailbox does NOT cancel the Subscription.
+
+Example:
+
+---
+Subscription
+
+5 Seats
+
+Mailbox Count
+
+0
+---
+
+The Subscription remains active.
+
+Only cancelling the Subscription terminates LiveMail.
+
+---
+
+## C-07 SKU Upgrade
+
+### Decision
+
+SKU upgrades apply immediately.
+
+Immediately update:
+
+- Storage
+- Domain Quota
+- Alias Quota
+- Forwarding Quota
+- Feature Availability
+
+Charge prorated price difference immediately.
+
+Mailbox data is preserved.
+
+No mailbox recreation is required.
+
+---
+
+## C-08 SKU Downgrade
+
+### Decision
+
+Downgrades take effect at the next renewal.
+
+Before downgrade:
+
+Validate:
+
+- Storage Usage
+- Mailbox Count
+- Domain Count
+- Alias Count
+- Forwarding Rules
+
+If usage exceeds new limits:
+
+---
+Downgrade Pending
+
+Current usage exceeds your new plan.
+
+Please reduce usage before renewal.
+---
+
+Rules:
+
+- Current plan remains active.
+- Existing quotas remain available.
+- Downgrade applies only after all requirements are satisfied.
+- No automatic mailbox deletion.
+- No automatic email deletion.
+- No automatic domain removal.
+
+
+------md
+---
+
+## C-09 Multiple LiveMail Subscriptions
+
+### Decision
+
+Not supported.
+
+Each Organization (or individual account) may own only one active LiveMail Subscription.
+
+Reason:
+
+- Simplifies quota management.
+- Avoids conflicting plans.
+- Prevents mailbox fragmentation.
+- Keeps billing predictable.
+
+Example:
+
+---
+Organization
+
+↓
+
+LiveMail Subscription
+
+↓
+
+Business Plan
+
+↓
+
+50 Mailbox Seats
+---
+
+NOT:
+
+---
+Organization
+
+↓
+
+Personal Subscription
+
++
+
+Business Subscription
+
++
+
+Pro Subscription
+---
+
+---
+
+## C-10 Mailbox Quantity Limit
+
+### Decision
+
+Mailbox quantity is calculated per Subscription.
+
+Mailbox limits are NOT calculated:
+
+- per mailbox
+- per user
+- per account
+
+Example:
+
+---
+Business Plan
+
+50 Mailbox Seats
+---
+
+All seats belong to the same Subscription.
+
+---
+
+## C-11 Custom Domain Quota
+
+### Decision
+
+Custom Domain quota belongs to the Subscription.
+
+Domains are shared by all mailboxes under the Subscription.
+
+Example:
+
+---
+Subscription
+
+↓
+
+Domains
+
+john.com
+
+company.com
+
+support.com
+---
+
+All mailboxes may use any verified domain within the Subscription.
+
+Domains are NOT allocated per mailbox.
+
+---
+
+## C-12 Removing Custom Domains
+
+### Decision
+
+A domain currently used by any mailbox cannot be removed.
+
+Before removing a domain, the administrator must either:
+
+- Move all affected mailboxes to another verified domain.
+
+or
+
+- Delete those mailboxes.
+
+Automatic mailbox suspension is never performed.
+
+Automatic mailbox deletion is never performed.
+
+Example:
+
+---
+john.com
+
+↓
+
+info@john.com
+sales@john.com
+
+↓
+
+Cannot Remove Domain
+---
+
+---
+
+## C-13 Partial Mailbox Provisioning Failure
+
+### Decision
+
+Each mailbox is provisioned independently.
+
+Provisioning is never treated as an all-or-nothing batch operation.
+
+Example:
+
+---
+Mailbox 1
+
+Success
+
+Mailbox 2
+
+Failed
+
+Mailbox 3
+
+Success
+---
+
+Rules:
+
+- Successful mailboxes remain active.
+- Failed mailboxes are retried automatically.
+- Manual retry is available.
+- Support escalation occurs only after repeated failures.
+- Successfully provisioned mailboxes are never rolled back.
+
+---
+
+## C-14 Subscription Cancellation
+
+### Decision
+
+Subscription cancellation does not immediately delete mailboxes.
+
+Cancellation flow:
+
+---
+Cancel Subscription
+
+↓
+
+Read-only Mode
+
+↓
+
+30-Day Grace Period
+
+↓
+
+Permanent Deletion
+---
+
+During Read-only Mode:
+
+Allowed:
+
+- Login
+- Read email
+- Download email
+- Export mailbox
+- Renew subscription
+
+Not Allowed:
+
+- Send email
+- Receive new email
+- Create mailbox
+- Delete mailbox
+- Add domains
+- Change subscription
+- Modify mailbox settings
+
+If the subscription is renewed during the Grace Period:
+
+---
+Grace Period
+
+↓
+
+Renew
+
+↓
+
+Fully Active
+---
+
+No data is lost.
+
+---
+
+## C-15 Mail Retention
+
+### Decision
+
+After cancellation:
+
+Mailbox data is retained for 30 days.
+
+During retention:
+
+Allowed:
+
+- Export mail
+- Recover subscription
+
+Not Allowed:
+
+- Send mail
+- Receive mail
+
+After 30 days:
+
+The following are permanently deleted:
+
+- Mailboxes
+- Emails
+- Aliases
+- Domain bindings
+- Mailbox configuration
+
+Deletion is irreversible.
+
+---
+
+# Mailbox Provisioning Flow
+
+Mailbox provisioning follows a Setup First → Activate & Pay workflow.
+
+The reseller API is never called before payment succeeds.
+
+Flow:
+
+---
+Choose Address
+
+↓
+
+Choose Domain
+
+↓
+
+Verify Domain
+
+↓
+
+Create Mailbox Configuration
+
+↓
+
+Pending Activation
+
+↓
+
+Choose Plan
+
+↓
+
+Choose Billing Cycle
+
+↓
+
+Payment
+
+↓
+
+Payment Confirmed
+
+↓
+
+Provision Mailbox
+
+↓
+
+Assign Storage Quota
+
+↓
+
+Activate Mailbox
+
+↓
+
+Ready
+---
+
+Mailbox resources are created only after successful payment.
+
+---
+
+# Payment Failure
+
+If payment fails:
+
+---
+Payment Failed
+
+↓
+
+Keep Mailbox Configuration
+
+↓
+
+Pending Activation
+---
+
+Rules:
+
+- Mailbox configuration is preserved.
+- Domain verification remains valid.
+- Password hash remains stored.
+- No reseller mailbox is created.
+- No storage quota is allocated.
+- User may retry activation at any time.
+
+---
+
+# Provisioning Failure
+
+If payment succeeds but mailbox provisioning fails:
+
+---
+Payment Confirmed
+
+↓
+
+Provisioning Failed
+
+↓
+
+Automatic Retry
+
+↓
+
+Manual Retry
+
+↓
+
+Support Escalation
+
+↓
+
+Mailbox Active
+---
+
+Rules:
+
+- Never charge the customer twice.
+- Payment remains valid.
+- Retry only provisioning.
+- Do not ask the customer to purchase again.
+
+Mailbox status during retry:
+
+---
+Activating Mailbox...
+---
+
+---
+
+# Seat Reuse
+
+Mailbox Seats are reusable indefinitely.
+
+Example:
+
+---
+Seat 1
+
+↓
+
+john@john.com
+
+↓
+
+Delete Mailbox
+
+↓
+
+Seat 1
+
+↓
+
+Empty
+
+↓
+
+Create
+
+↓
+
+support@john.com
+---
+
+The Seat remains the same.
+
+Only the mailbox changes.
+
+---
+
+# Ownership Model
+
+---
+Organization / User
+        │
+        ▼
+Subscription
+        │
+        ▼
+Mailbox Seats
+        │
+        ▼
+Mailbox Configuration
+        │
+        ▼
+Provisioned Mailbox
+        │
+        ▼
+Aliases
+---
+
+Rules:
+
+- One Subscription owns many Seats.
+- One Seat owns at most one Mailbox.
+- One Mailbox belongs to exactly one Seat.
+- One Mailbox owns many Aliases.
+- One Alias belongs to exactly one Mailbox.
+
+---
+
+# Domain Relationship
+
+---
+Subscription
+        │
+        ▼
+Domains
+        │
+        ▼
+Mailboxes
+        │
+        ▼
+Aliases
+---
+
+Rules:
+
+- One Subscription owns many Domains.
+- One Domain belongs to one Subscription.
+- Multiple Mailboxes may use the same Domain.
+- One Mailbox belongs to exactly one Domain.
+- Aliases inherit the Mailbox Domain.
+
+---
+
+# Engineering Principles
+
+## Billing Layer
+
+Responsible only for:
+
+- Subscription
+- Plan
+- Billing Cycle
+- Seat Quantity
+- Orders
+- Payments
+- Invoices
+
+Billing never directly creates or deletes mailboxes.
+
+---
+
+## Mailbox Layer
+
+Responsible only for:
+
+- Mailbox configuration
+- Password management
+- Aliases
+- Forwarding rules
+- Mailbox lifecycle
+- Mailbox status
+
+Mailbox management never performs billing operations.
+
+---
+
+## Domain Layer
+
+Responsible only for:
+
+- Domain management
+- DNS verification
+- Domain ownership
+- Domain lifecycle
+
+Domain management never provisions mailboxes automatically.
+
+---
+
+## Provisioning Layer
+
+Responsible only for communication with the reseller email provider.
+
+Responsibilities:
+
+- Create mailbox
+- Delete mailbox
+- Suspend mailbox
+- Activate mailbox
+- Assign storage quota
+- Update mailbox status
+
+Provisioning never performs billing decisions.
+
+---
+
+# Architectural Principles
+
+The application must never tightly couple its business logic to any reseller provider.
+
+The reseller API is treated as a provisioning adapter only.
+
+Business logic must remain provider-independent.
+
+This architecture provides:
+
+- Clear separation of responsibilities
+- Easier maintenance
+- Easier testing
+- Future provider migration
+- Scalable Team / Organization support
+- Lower long-term engineering cost
+- Reduced vendor lock-in
+
+---
+
+# Summary
+
+The complete LiveMail architecture separates the system into four independent layers:
+
+---
+Subscription
+(Billing)
+
+↓
+
+Mailbox Seat
+(Licensing)
+
+↓
+
+Mailbox Configuration
+(User Configuration)
+
+↓
+
+Provisioned Mailbox
+(Reseller Infrastructure)
+---
+
+This separation ensures that billing, licensing, mailbox management, and infrastructure provisioning remain independent, enabling predictable subscription behavior, reusable mailbox seats, clean provider abstraction, and future scalability.
+------
+
+
+# LiveMail.me Pricing Specification v1
+
+## Overview
+
+LiveMail.me is a professional email hosting service with AI-powered communication features.
+
+The pricing model is based on:
+
+- Subscription Plan
+- Billing Cycle
+- Mailbox Seats
+- Storage Quota
+- Custom Domain Quota
+- Alias Quota
+- Email Forwarding Rules
+- AI Communication Features
+
+
+# Pricing Plans
+
+| Plan | Monthly Price | Yearly First Year | Renewal Price | Positioning |
+|---|---:|---:|---:|---|
+| Personal | $1.98/month | $11.88/year | $19.80/year | Personal Professional Email |
+| Pro | $5.98/month | $35.88/year | $59.88/year | Professional Email |
+| Business | $9.98/month | $59.88/year | $99.96/year | Business Email |
+
+## Yearly Billing Discount
+
+All yearly plans:
+
+Save 40%
+
+
+# Personal Plan
+
+## Pricing
+
+| Billing Cycle | Price |
+|---|---:|
+| Monthly | $1.98/month |
+| Yearly First Year | $11.88/year |
+| Renewal | $19.80/year |
+
+## Resources
+
+| Feature | Limit |
+|---|---:|
+| Mailbox Seats | 1 |
+| Email Storage | 20 GB |
+| Storage Per Mailbox | 20 GB |
+| Custom Email Domains | 2 |
+| Email Addresses / Aliases | 100 |
+| Email Forwarding Rules | 100 |
+| AI Drafts | 50/month |
+
+
+# Pro Plan
+
+## Pricing
+
+| Billing Cycle | Price |
+|---|---:|
+| Monthly | $5.98/month |
+| Yearly First Year | $35.88/year |
+| Renewal | $59.88/year |
+
+## Resources
+
+| Feature | Limit |
+|---|---:|
+| Mailbox Seats | 1 |
+| Email Storage | 50 GB |
+| Storage Per Mailbox | 50 GB |
+| Custom Email Domains | 5 |
+| Email Addresses / Aliases | 250 |
+| Email Forwarding Rules | 250 |
+| AI Drafts | 50/month |
+
+
+# Business Plan
+
+## Pricing
+
+| Billing Cycle | Price |
+|---|---:|
+| Monthly | $9.98/month |
+| Yearly First Year | $59.88/year |
+| Renewal | $99.96/year |
+
+## Resources
+
+| Feature | Limit |
+|---|---:|
+| Mailbox Seats | 1 |
+| Email Storage | 100 GB |
+| Storage Per Mailbox | 100 GB |
+| Custom Email Domains | 10 |
+| Email Addresses / Aliases | 500 |
+| Email Forwarding Rules | 500 |
+| AI Drafts | 50/month |
+
+
+# Feature Comparison
+
+| Feature | Personal | Pro | Business |
+|---|---|---|---|
+| Review before sending | ✓ | ✓ | ✓ |
+| Live Mail Mode (Edit After Sending) | ✓ | ✓ | ✓ |
+| AI Email Translation | ✓ | ✓ | ✓ |
+| Webmail & Mobile Apps | ✓ | ✓ | ✓ |
+| IMAP / POP3 / SMTP | ✓ | ✓ | ✓ |
+| GDPR & NIS2 Compliance | ✓ | ✓ | ✓ |
+| 99.9% Uptime Guarantee | ✓ | ✓ | ✓ |
+| Security & Privacy Protection | ✓ | ✓ | ✓ |
+| Two-Factor Authentication | ✓ | ✓ | ✓ |
+| 24/7 Expert Support | ✓ | ✓ | ✓ |
+| Verified Contact | ✓ | ✓ | ✓ |
+| Contact™ Card | ✓ | ✓ | ✓ |
+| Contact™ Meet | ✓ | ✓ | ✓ |
+| Contacts and Calendar | ✓ | ✓ | ✓ |
+
+
+# Mailbox Seat Architecture
+
+LiveMail separates subscription billing from actual mailbox resources.
+
+Architecture:
+
+Subscription
+
+↓
+
+Mailbox Seats
+
+↓
+
+Mailbox Configuration
+
+↓
+
+Provisioned Mailbox
+
+↓
+
+Email Addresses / Aliases
+
+
+## Mailbox Seat Definition
+
+Mailbox Seat:
+
+- Represents one mailbox license.
+- Is billable.
+- Can exist without an active mailbox.
+- Can be reused after mailbox deletion.
+- Does not directly store emails.
+
+
+# Subscription and Mailbox Relationship
+
+A subscription purchases Mailbox Seats.
+
+Example:
+
+Business Plan:
+
+5 Mailbox Seats
+
+↓
+
+Seat 1
+
+Seat 2
+
+Seat 3
+
+Seat 4
+
+Seat 5
+
+
+Mailbox creation happens only after:
+
+1. User configures mailbox.
+2. User completes payment.
+3. System provisions mailbox through email provider API.
+
+
+# Mailbox Quantity Management
+
+## Increasing Mailbox Quantity
+
+When increasing mailbox quantity:
+
+- Takes effect immediately.
+- Additional seats become available immediately.
+- Prorated billing applies immediately.
+- New mailboxes can be created immediately.
+
+
+## Decreasing Mailbox Quantity
+
+When decreasing mailbox quantity:
+
+- Unused seats can be removed.
+- Active mailbox seats cannot be removed.
+- User must delete mailbox first.
+- No immediate refund.
+- New quantity applies at next renewal.
+
+
+# Mailbox Deletion
+
+Deleting a mailbox:
+
+- Does not reduce subscription quantity.
+- Returns the seat to Empty state.
+- Allows future reuse.
+
+Example:
+
+Before:
+
+Seat 1 → john@company.com
+
+After deletion:
+
+Seat 1 → Empty
+
+
+# Last Mailbox Deletion
+
+Deleting the final mailbox:
+
+- Does not cancel subscription.
+- Subscription remains active.
+- User can create another mailbox using existing seats.
+
+
+# Plan Upgrade
+
+Upgrade:
+
+- Applies immediately.
+- Updates storage quota immediately.
+- Updates domain quota immediately.
+- Updates alias quota immediately.
+- Updates available features immediately.
+- Charges prorated price difference.
+
+No mailbox recreation required.
+
+
+# Plan Downgrade
+
+Downgrade:
+
+- Applies at next renewal.
+- Requires validation before activation.
+
+System checks:
+
+- Storage usage.
+- Mailbox quantity.
+- Domain quantity.
+- Alias quantity.
+- Forwarding rules.
+
+If limits exceed new plan:
+
+Downgrade remains pending.
+
+System never automatically deletes:
+
+- Mailboxes.
+- Emails.
+- Domains.
+- Aliases.
+
+
+# Multiple Subscriptions
+
+A user or organization supports:
+
+One active LiveMail subscription only.
+
+Example:
+
+Organization
+
+↓
+
+LiveMail Business Plan
+
+↓
+
+50 Mailbox Seats
+
+
+Multiple simultaneous LiveMail subscriptions are not supported.
+
+
+# Mailbox Limit Scope
+
+Mailbox quantity belongs to:
+
+Subscription level.
+
+Not:
+
+- Individual mailbox.
+- Individual user.
+- Account level.
+
+
+# Custom Domain Model
+
+Custom domains belong to:
+
+Subscription level.
+
+Example:
+
+Business Plan:
+
+10 Custom Domains
+
+↓
+
+company.com
+
+brand.com
+
+support.com
+
+
+All mailboxes under the subscription may use verified domains.
+
+
+# Domain Removal Rules
+
+A domain cannot be removed while used by active mailboxes.
+
+Required actions:
+
+- Move mailboxes to another domain.
+
+or
+
+- Delete affected mailboxes.
+
+
+System never automatically:
+
+- Suspends mailboxes.
+- Deletes mailboxes.
+
+
+# Alias Model
+
+Aliases belong to mailboxes.
+
+Aliases:
+
+- Do not consume mailbox seats.
+- Do not create additional storage.
+- Do not create independent mailboxes.
+
+
+Example:
+
+Mailbox:
+
+info@company.com
+
+Aliases:
+
+sales@company.com
+
+support@company.com
+
+
+# Provisioning Flow
+
+LiveMail uses:
+
+Setup First → Activate & Pay → Provision
+
+
+Flow:
+
+Choose Address
+
+↓
+
+Select Domain
+
+↓
+
+Verify Domain
+
+↓
+
+Create Mailbox Configuration
+
+↓
+
+Pending Activation
+
+↓
+
+Choose Plan
+
+↓
+
+Payment
+
+↓
+
+Payment Success
+
+↓
+
+Create Mailbox via Provider API
+
+↓
+
+Assign Storage
+
+↓
+
+Mailbox Active
+
+
+# Payment Failure
+
+If payment fails:
+
+- Do not create mailbox.
+- Keep mailbox configuration.
+- Keep domain verification.
+- Allow retry later.
+
+
+# Provisioning Failure
+
+If payment succeeds but mailbox creation fails:
+
+- Keep payment record.
+- Retry provisioning.
+- Do not charge again.
+- Keep status as Activating.
+
+
+# Partial Provisioning Failure
+
+Mailbox provisioning is independent.
+
+Example:
+
+Mailbox A → Success
+
+Mailbox B → Failed
+
+Mailbox C → Success
+
+
+Rules:
+
+- Successful mailboxes remain active.
+- Failed mailbox retries.
+- No rollback of successful mailboxes.
+
+
+# Subscription Cancellation
+
+Cancellation flow:
+
+Cancel Subscription
+
+↓
+
+Read-only Mode
+
+↓
+
+30-Day Grace Period
+
+↓
+
+Permanent Deletion
+
+
+During grace period:
+
+Allowed:
+
+- Login.
+- Read email.
+- Export email.
+- Recover subscription.
+
+
+Blocked:
+
+- Send email.
+- Receive new email.
+- Create mailbox.
+- Add domains.
+- Modify settings.
+
+
+# Mail Retention
+
+After cancellation:
+
+Retention period:
+
+30 days
+
+
+After 30 days:
+
+Permanent deletion of:
+
+- Mailboxes.
+- Emails.
+- Aliases.
+- Domain bindings.
+- Mailbox configuration.
+
+
+# Storage Model
+
+Storage is assigned per mailbox.
+
+Examples:
+
+Personal:
+
+Mailbox
+
+↓
+
+20 GB
+
+
+Pro:
+
+Mailbox
+
+↓
+
+50 GB
+
+
+Business:
+
+Mailbox
+
+↓
+
+100 GB
+
+
+Storage is not shared between mailboxes.
+
+
+# Product Positioning
+
+Personal:
+
+For individuals requiring professional email identity.
+
+
+Pro:
+
+For freelancers, creators, consultants, and professionals.
+
+
+Business:
+
+For companies requiring multiple domains and higher capacity.
+
+
+# Final Architecture Principle
+
+LiveMail separates:
+
+Billing Layer
+
+↓
+
+Subscription
+
+↓
+
+Mailbox Seat
+
+↓
+
+Mailbox Configuration
+
+↓
+
+Provisioned Mailbox
+
+↓
+
+Email Infrastructure
+
+
+This design provides:
+
+- Clean SaaS subscription management.
+- Provider independence.
+- Reseller API compatibility.
+- Easier future migration.
+- Scalable Team and Organization support.
+- Lower engineering complexity.
