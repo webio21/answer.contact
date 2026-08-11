@@ -69,7 +69,7 @@ livemail.contact/{mailID}
 username@livemail.me
 
 
-## Avatar Menu
+## Dash Avatar Menu(Top-right corner)
 Notifications ✨Upgrade  Avatar(S)▼(Menu)
 
 Avatar Menu:
