@@ -69,6 +69,34 @@ livemail.contact/{mailID}
 username@livemail.me
 
 
+## Avatar Menu
+Notifications ✨Upgrade  Avatar(S)▼(Menu)
+
+Avatar Menu:
+──────────────────────
+Avatar(Add profile picture)
+(Circular avatar with online status indicator)
+Availability [ On ▼ ]
+
+Display name (Editable inline)
+username@livemail.me (Click to copy)
+
+├─✨Upgrade
+├───────────
+├─ Invite
+├───────────
+├─ Settings
+├───────────
+├─ Feedback
+├─ Help
+├───────────
+├─ Privacy
+├─ Terms
+├───────────
+└─ Log out
+──────────────────────
+
+
 ## Contact Domain Architecture
 
 The Contact ecosystem uses the following domains for different product experiences:

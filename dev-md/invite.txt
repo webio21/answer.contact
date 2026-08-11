@@ -1,0 +1,74 @@
+## Invite & Referral
+
+Add an **Invite** item to the Avatar Menu.
+
+Each Contact user has one unique personal Invite Link, which is used to invite others to connect with their personal Contact and also serves as their referral link.
+
+## Dash Invite UI:
+dash.contact/invite
+────────────────────
+Invite
+
+Share your Contact invite link
+[ card.contact/jack/invite ] [Copy]
+────────────────────
+3 people joined Contact
+1 subscribed
+
+────────────────────
+
+
+## Public Invite UI
+card.contact/jack/invite
+┌─────────────────────────────────────────┐
+│                                         │
+│            [ Jack's Avatar ]            │
+│                  Jack                   │
+│                                         │
+│       Jack invited you to Contact       │
+│                                         │
+│   Connect with Jack and join Contact.   │
+│                                         │
+│            [ Join Contact ]             │
+│                                         │
+│     Already have an account? Log in     │
+│                                         │
+│   ───────────────────────────────────   │
+│                                         │
+│        ✨ Jack's Invite Offer           │
+│                                         │
+│   Contact plans — 17% off               │
+│   LiveMail — 40% off                    │
+│                                         │
+└─────────────────────────────────────────┘
+
+
+### Invite Link
+
+* The Invite Link identifies the referring Contact user.
+* When a visitor enters the website through Jack's Invite Link, store *Jack* as the visitor's referral attribution.
+* The referral attribution persists if the visitor leaves the website and later returns directly to the website.
+* The Invite Link only applies to the user's personal Contact. Answer Rooms and Meetings use their own separate invitation links.
+
+### Pricing
+
+The referral offer uses the existing promotional prices and does not create a separate discount, coupon, or pricing system.
+
+When a visitor enters through Jack's Invite Link, the applicable Contact and LiveMail plans should display:
+Invited by Jack
+
+instead of the existing:
+Save *%
+
+Only the promotional label changes. The underlying plan prices, billing calculations, and renewal prices must remain exactly the same.
+
+Applicable plans:
+- Contact Pro — 17% off
+- Contact Premium — 7% off
+- LiveMail Personal — 40% off
+- LiveMail Pro — 40% off
+- LiveMail Business — 40% off
+
+No invite code is required. The Invite Link automatically identifies the referrer and preserves the referral attribution for the visitor. When the visitor reaches the Pricing page, display Invited by Jack instead of Save *%.
+
+If the referred visitor later returns directly to the pricing page, keep the referral attribution and promotional eligibility, but display the normal `Save *%` promotional copy instead of `Invited by Jack`.
