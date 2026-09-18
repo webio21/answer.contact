@@ -1,0 +1,100 @@
+#Cards UI
+dash.contact/cards
+───────────────────────────────────────
+[ Search...      ]    Filters ⚙  Invite
+
+All  Recent  Favorites  Organizations
+───────────────────────────────────────
+╭────────────────────────╮
+│╭───╮ John Smith  QRCode│
+││Ava│ Founder at John   │
+│╰───╯ Capital           │
+│ ✓ Identity verified    │
+│                        │
+│  Edit · Preview        │
+│  Share My Card         │
+╰────────────────────────╯
+──────────────────────────
+╭────────────────────────╮
+│╭───╮ Alice Lee       ⋮ │
+││Ava│ Marketing at Acme │
+│╰───╯Replies within 2h  │
+│ 🏅27 Honors Received   │
+│ ✓ Identity verified    │
+│ ✓ Organization verified│
+│ + Notes·Private to you │
+╰────────────────────────╯
+╭────────────────────────╮
+│╭───╮ Bob Smith       ⋮ │
+││Ava│ Marketing at Acme │
+│╰───╯Replies within 2h  │
+│ 🏅27 Honors Received   │
+│ ✓ Identity verified    │
+│ ✓ Organization verified│
+│ Notes · Private to you │
+│────────────────────────│
+│ • Met at Web Summit    │
+│ • Interested in plan...│
+│ • Follow up next month │
+│ + Add note             │
+╰────────────────────────╯
+* Clicking the Card itself opens the Card details(card.contact/username)
+* Clicking a note title opens a pop-up window showing the full note content in an editable multi-line input. Changes are saved automatically. The window includes Close, Undo, Redo, and Delete buttons. Clicking Delete requires confirmation before removing the note.
+
+
+## Notes Window
+╭────────────────────────────────────╮
+│ Note                             × │
+│                                    │
+│ Follow up next month               │
+│                                    │
+│ Met at Web Summit 2026.            │
+│ Interested in the enterprise plan. │
+│ Follow up next month.              │
+│                                    │
+│                                    │
+│ ↶  ↷                        Delete │
+╰────────────────────────────────────╯
+╭────────────────────────────╮
+│ Delete this note?          │
+│                            │
+│ Cancel              Delete │
+╰────────────────────────────╯
+
+## Card (⋮) Menu
+
+Message
+Voice Call
+Book a meeting
+Send a Email
+───────────
+⭐️Favorite
+Share Card
+───────────
+Remove Card
+───────────
+Block
+Report
+
+
+## Filters ⚙ Menu
+
+Filters ⚙
+──────────────────────────
+Status
+○ All
+○ Available
+○ Offline
+○ Blocked
+
+Type
+○ All
+○ Personal
+○ Organization
+
+Verification
+○ All
+○ Identity verified
+○ Organization verified
+○ Expertise verified
+○ Unverified

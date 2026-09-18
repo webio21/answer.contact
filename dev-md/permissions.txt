@@ -1,0 +1,59 @@
+# Contact MVP Permissions
+
+### User Types
+
+* `internal` — Contact staff
+* `customer` — Contact users
+
+### Roles
+
+**Internal**
+
+* `developer_admin` — Full access during MVP development
+
+**Customer**
+
+* `owner`
+* `admin`
+* `member`
+* `viewer`
+
+### Permission
+
+Use:
+
+`User Type → Role → Permission`
+
+Keep permissions simple and module-based. Do not create excessive permissions for individual UI actions.
+
+Examples:
+
+* `users.manage`
+* `verified.manage`
+* `livemail.manage`
+* `answer.manage`
+* `billing.manage`
+* `projects.manage`
+* `deals.manage`
+* `drive.manage`
+* `games.manage`
+
+### MVP Development
+
+`developer_admin = full access`
+
+Developers can freely test all features, roles, test data, APIs, logs, and system maintenance.
+
+Do not add complex internal permission restrictions during MVP development.
+
+### Important
+
+* Customer Organization permissions and Contact internal permissions are separate.
+* Personal Card and Private Notes belong to the user and are not automatically accessible through Organization admin permissions.
+* Permission checks must be enforced by the backend/API, not only by hiding frontend UI.
+
+### Future
+
+Before real customer data is introduced, restrict internal roles and add stricter controls for sensitive customer-data access.
+
+Keep the permission architecture extensible, but keep the MVP implementation simple.
