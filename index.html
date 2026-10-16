@@ -6,1292 +6,40 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact™ Answer</title>
-
-<style>
-
-:root {
-    --bg: #ffffff;
-    --sidebar: #f7f8fa;
-    --surface: #ffffff;
-    --surface-hover: #dff9ff;
-    --border: #e7e8eb;
-    --text: #17181a;
-    --text-secondary: #6b6f76;
-    --text-tertiary: #9da1a8;
-    --accent: #00cfee;
-    --accent-dark: #00b8d6;
-    --accent-soft: rgba(0, 207, 238, 0.10);
-    --danger: #e5484d;
-    --sidebar-width: 272px;
-    --content-width: 800px;
-}
-
-/* ==================================================
-   RESET
-================================================== */
-
-* {
-    box-sizing: border-box;
-}
-
-html,
-body {
-    width: 100%;
-    min-height: 100%;
-    margin: 0;
-}
-
-html {
-    overflow-y: scroll;
-}
-
-body {
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "SF Pro Display",
-        "SF Pro Text",
-        "Inter",
-        "Segoe UI",
-        sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-}
-
-button,
-textarea,
-input {
-    font: inherit;
-}
-
-button {
-    border: 0;
-    background: none;
-    cursor: pointer;
-}
-
-/* ==================================================
-   APP
-================================================== */
-
-.app {
-    display: flex;
-    width: 100%;
-    min-height: 100vh;
-    overflow-x: clip;
-}
-
-/* ==================================================
-   SIDEBAR — DESKTOP
-================================================== */
-
-.sidebar {
-    position: sticky;
-    top: 0;
-    width: var(--sidebar-width);
-    height: 100vh;
-    flex: 0 0 auto;
-    display: flex;
-    flex-direction: column;
-    padding: 14px;
-    background: var(--sidebar);
-    border-right: 1px solid var(--border);
-
-    /*
-     * No transition during normal layout/resizing.
-     * Animation is enabled only while the user
-     * explicitly opens or closes the sidebar.
-     */
-    transition: none;
-
-    z-index: 100;
-}
-
-.sidebar.animate {
-    transition:
-        width 0.18s ease,
-        padding 0.18s ease,
-        border-color 0.18s ease;
-}
-
-.sidebar.closed {
-    width: 0;
-    padding-left: 0;
-    padding-right: 0;
-    border-right-color: transparent;
-    overflow: hidden;
-}
-
-/* ==================================================
-   BRAND
-================================================== */
-
-.brand {
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 8px;
-    margin-bottom: 12px;
-}
-
-.brand-name {
-    font-size: 16px;
-    font-weight: 650;
-    letter-spacing: -0.03em;
-    white-space: nowrap;
-}
-
-.sidebar-toggle {
-    width: 32px;
-    height: 32px;
-    display: grid;
-    place-items: center;
-    flex-shrink: 0;
-    border-radius: 9px;
-    color: var(--text-secondary);
-    font-size: 18px;
-    line-height: 1;
-    margin-right: -8px;
-
-    transition:
-        background 0.15s ease,
-        color 0.15s ease;
-}
-
-.sidebar-toggle:hover {
-    background: var(--surface-hover);
-    color: var(--text);
-}
-
-/* ==================================================
-   NEW ANSWER
-================================================== */
-
-.new-answer {
-    width: 100%;
-    height: 42px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 14px;
-    border-radius: 11px;
-    color: var(--text);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    font-size: 14px;
-    font-weight: 500;
-    box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.02);
-
-    transition:
-        background 0.15s ease,
-        border-color 0.15s ease;
-}
-
-.new-answer:hover {
-    background: #fbfbfc;
-    border-color: #dcdfe3;
-}
-
-.new-answer-icon {
-    width: 19px;
-    height: 19px;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    font-size: 16px;
-    font-weight: 300;
-}
-
-/* ==================================================
-   HISTORY
-================================================== */
-
-.history {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    margin-top: 22px;
-    padding: 0 2px;
-}
-
-.history-label {
-    padding: 0 10px 8px;
-    color: var(--text-tertiary);
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-}
-
-/*
- * Separate wrapper prevents invalid button-inside-button markup.
- */
-.history-item-wrap {
-    position: relative;
-    width: 100%;
-}
-
-.history-item {
-    position: relative;
-    width: 100%;
-    min-height: 38px;
-    display: flex;
-    align-items: center;
-    padding: 8px 38px 8px 10px;
-    margin-bottom: 2px;
-    border-radius: 9px;
-    color: var(--text-secondary);
-    font-size: 14px;
-    text-align: left;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-
-    transition:
-        background 0.15s ease,
-        color 0.15s ease;
-}
-
-.history-item:hover {
-    background: var(--surface-hover);
-    color: var(--text);
-}
-
-.history-item.active {
-    background: #eceef1;
-    color: var(--text);
-    font-weight: 500;
-}
-
-.history-more {
-    position: absolute;
-    right: 6px;
-    top: 50%;
-    width: 28px;
-    height: 28px;
-    transform: translateY(-50%);
-    display: none;
-    place-items: center;
-    border-radius: 7px;
-    color: var(--text-secondary);
-    font-size: 18px;
-    z-index: 2;
-}
-
-.history-item-wrap:hover .history-more {
-    display: grid;
-}
-
-.history-more:hover {
-    background: #dff9ff;
-    color: var(--text);
-}
-
-/* ==================================================
-   HISTORY MENU
-================================================== */
-
-.history-menu {
-    position: fixed;
-    z-index: 300;
-    width: 205px;
-    padding: 6px;
-    display: none;
-    background: rgba(255, 255, 255, 0.98);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    box-shadow:
-        0 12px 35px rgba(0, 0, 0, 0.12),
-        0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.history-menu.open {
-    display: block;
-}
-
-.menu-item {
-    width: 100%;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 10px;
-    border-radius: 8px;
-    color: var(--text);
-    font-size: 12px;
-    text-align: left;
-
-    transition: background 0.12s ease;
-}
-
-.menu-item:hover {
-    background: var(--surface-hover);
-}
-
-.menu-item.danger {
-    color: var(--danger);
-}
-
-.menu-icon {
-    width: 16px;
-    text-align: center;
-    color: var(--text-secondary);
-}
-
-.menu-item.danger .menu-icon {
-    color: var(--danger);
-}
-
-.menu-divider {
-    height: 1px;
-    margin: 5px 4px;
-    background: var(--border);
-}
-
-/* ==================================================
-   SIDEBAR FOOTER
-================================================== */
-
-.sidebar-footer {
-    padding-top: 10px;
-    border-top: 1px solid var(--border);
-}
-
-.credits {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 9px 8px 9px 10px;
-    border-radius: 10px;
-}
-
-.credits-left {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.credits-label {
-    font-size: 12px;
-    color: var(--text-secondary);
-}
-
-.credits-value {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text);
-}
-
-.answer-credits {
-    font-size: 10px;
-}
-
-.recharge-button {
-    height: 30px;
-    padding: 0 10px;
-    border-radius: 999px;
-    background: #00d2ff;
-    color: #ffffff;
-    font-size: 11px;
-    font-weight: 600;
-
-    transition: opacity 0.15s ease;
-}
-
-.recharge-button:hover {
-    opacity: 0.84;
-}
-
-/* ==================================================
-   MAIN
-================================================== */
-
-.main {
-    position: relative;
-    flex: 1 1 auto;
-    min-width: 0;
-    background: var(--bg);
-}
-
-/* ==================================================
-   TOPBAR
-================================================== */
-
-.topbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 50;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    background: transparent;
-    justify-content: space-between;
-    padding: 0 22px;
-}
-
-.topbar-left {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-left: var(--sidebar-width);
-}
-
-.sidebar.closed ~ .main .topbar-left {
-    margin-left: 0;
-}
-
-/*
- * Desktop:
- * hidden while sidebar is open.
- *
- * It becomes visible only when .sidebar.closed.
- */
-.mobile-menu {
-    width: 36px;
-    height: 36px;
-    display: none;
-    place-items: center;
-    border-radius: 9px;
-    color: var(--text-secondary);
-    background: rgba(255, 255, 255, 0.8);
-    font-size: 16px;
-    line-height: 1;
-}
-
-.mobile-menu:hover {
-    background: var(--surface-hover);
-    color: var(--text);
-}
-
-.sidebar.closed ~ .main .mobile-menu {
-    display: grid;
-}
-
-/* ==================================================
-   SEARCH
-================================================== */
-
-.search-button {
-    width: 36px;
-    height: 36px;
-    display: grid;
-    place-items: center;
-    border-radius: 12px;
-    color: var(--text-secondary);
-    background: rgba(255, 255, 255, 0.8);
-    font-size: 30px;
-    line-height: 0;
-
-    transition:
-        background 0.15s ease,
-        color 0.15s ease;
-}
-
-.search-button:hover {
-    background: var(--surface-hover);
-    color: var(--text);
-}
-
-.topbar-right {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.credit-pill {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 7px 10px;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    font-size: 12px;
-    color: var(--text-secondary);
-    background: #ffffff;
-}
-
-.credit-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-}
-
-.avatar {
-    width: 34px;
-    height: 34px;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    background: #00d2ff;
-    color: #ffffff;
-    font-size: 12px;
-    font-weight: 600;
-    margin-right: -5px;
-    margin-left: 5px;
-}
-
-/* ==================================================
-   CONVERSATION
-================================================== */
-
-.conversation {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-/* ==================================================
-   EMPTY STATE
-================================================== */
-
-.empty-state {
-    min-height: calc(100vh - 60px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 24px 120px;
-}
-
-.hero {
-    width: min(var(--content-width), 100%);
-    text-align: center;
-}
-
-.hero-mark {
-    width: 100px;
-    height: 100px;
-    margin: 40px auto 12px;
-}
-
-.hero-mark img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: contain;
-    user-select: none;
-    -webkit-user-drag: none;
-    pointer-events: none;
-}
-
-.hero h1 {
-    margin: 0;
-    font-size: clamp(28px, 4vw, 42px);
-    line-height: 1.08;
-    letter-spacing: -0.045em;
-    font-weight: 650;
-}
-
-.hero p {
-    max-width: 530px;
-    margin: 14px auto 30px;
-    color: var(--text-secondary);
-    font-size: 15px;
-    line-height: 1.6;
-}
-
-/* ==================================================
-   COMPOSER
-================================================== */
-
-.composer-wrap {
-    position: relative;
-    width: min(var(--content-width), 100%);
-    margin: 0 auto 18px;
-}
-
-.composer {
-    position: relative;
-    width: 100%;
-    background: #ffffff;
-    border: 1px solid #dfe2e6;
-    border-radius: 20px;
-    box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.03),
-        0 10px 35px rgba(0, 0, 0, 0.07);
-
-    transition:
-        border-color 0.15s ease,
-        box-shadow 0.15s ease;
-}
-
-.composer:focus-within {
-    border-color: hsl(210, 11%, 82%);
-    box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.03),
-        0 12px 38px rgba(0, 0, 0, 0.09);
-}
-
-.question {
-    width: 100%;
-    min-height: 76px;
-    max-height: 220px;
-    resize: none;
-    border: 0;
-    outline: none;
-    background: transparent;
-    padding: 18px 20px 8px;
-    color: var(--text);
-    font-size: 15px;
-    line-height: 1.55;
-}
-
-.question::placeholder {
-    color: #a6aab0;
-}
-
-/* ==================================================
-   COMPOSER TOOLBAR
-================================================== */
-
-.composer-bottom {
-    min-height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 10px 9px 12px;
-}
-
-.composer-left {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-/* ==================================================
-   ATTACHMENT
-================================================== */
-
-.attach-wrap {
-    position: relative;
-}
-
-.attach-button {
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 0 3px;
-    border-radius: 50%;
-    color: var(--text-secondary);
-    font-size: 18px;
-    line-height: 1;
-}
-
-.attach-button:hover {
-    background: var(--surface-hover);
-    color: var(--text);
-}
-
-.attach-menu {
-    position: absolute;
-    left: 0;
-    bottom: 42px;
-    z-index: 50;
-    width: 185px;
-    padding: 6px;
-    display: none;
-    background: rgba(255, 255, 255, 0.98);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    box-shadow:
-        0 12px 35px rgba(0, 0, 0, 0.12);
-}
-
-.attach-menu.open {
-    display: block;
-}
-
-.attach-option {
-    width: 100%;
-    height: 38px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 10px;
-    border-radius: 8px;
-    color: var(--text);
-    font-size: 12px;
-    text-align: left;
-}
-
-.attach-option:hover {
-    background: var(--surface-hover);
-}
-
-.attach-icon {
-    width: 18px;
-    text-align: center;
-    color: var(--text-secondary);
-}
-
-/* ==================================================
-   DEPTH
-================================================== */
-
-.tool-button {
-    height: 32px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 0 9px;
-    border-radius: 8px;
-    color: var(--text-secondary);
-    font-size: 12px;
-}
-
-.tool-button:hover {
-    background: var(--surface-hover);
-    color: var(--text);
-}
-
-.depth-label {
-    color: var(--text-tertiary);
-    font-size: 11px;
-}
-
-/* ==================================================
-   RIGHT CONTROLS
-================================================== */
-
-.composer-right {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-/* ==================================================
-   MICROPHONE
-================================================== */
-
-.mic-button {
-    width: 34px;
-    height: 34px;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    color: var(--text-secondary);
-    font-size: 16px;
-    margin-right: 4px;
-    margin-left: 4px;
-
-    transition:
-        background 0.15s ease,
-        color 0.15s ease;
-}
-
-.mic-button:hover {
-    background: var(--surface-hover);
-    color: var(--text);
-}
-
-.mic-button.recording {
-    background: #ffe8e8;
-    color: var(--danger);
-}
-
-/* ==================================================
-   SEND
-================================================== */
-
-.send-button {
-    width: 34px;
-    height: 34px;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    background: #00d2ff;
-    color: #ffffff;
-    font-size: 16px;
-    line-height: 1;
-
-    transition:
-        transform 0.15s ease,
-        opacity 0.15s ease;
-}
-
-.send-button:hover {
-    transform: translateY(-1px);
-}
-
-.send-button:disabled {
-    opacity: 0.25;
-    cursor: default;
-    transform: none;
-}
-
-.composer-note {
-    margin-top: 10px;
-    text-align: center;
-    color: var(--text-tertiary);
-    font-size: 11px;
-}
-
-/* ==================================================
-   SUGGESTIONS
-================================================== */
-
-.suggestions {
-    width: min(650px, 100%);
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 9px;
-    margin: 0 auto;
-}
-
-.suggestion {
-    padding: 14px;
-    border: 1px solid var(--border);
-    border-radius: 11px;
-    background: #ffffff;
-    color: var(--text-secondary);
-    font-size: 12px;
-    line-height: 1.45;
-    text-align: left;
-
-    transition:
-        border-color 0.15s ease,
-        background 0.15s ease,
-        color 0.15s ease;
-}
-
-.suggestion:hover {
-    border-color: #d5d8dc;
-    background: #fafafa;
-    color: var(--text);
-}
-
-/* ==================================================
-   MESSAGES
-================================================== */
-
-.messages {
-    width: min(
-        var(--content-width),
-        calc(100% - 48px)
-    );
-    display: none;
-    margin: 0 auto;
-    padding: 60px 0 190px;
-}
-
-.message {
-    margin-bottom: 32px;
-}
-
-.message-user {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.user-bubble {
-    max-width: 88%;
-    padding: 12px 15px;
-    border-radius: 16px;
-    background: #dff9ff;
-    font-size: 14px;
-    line-height: 1.55;
-}
-
-.answer {
-    padding-top: 5px;
-}
-
-.answer-header {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    margin-bottom: 14px;
-}
-
-.answer-icon {
-    width: 27px;
-    height: 27px;
-    display: grid;
-    place-items: center;
-    border-radius: 8px;
-    background: var(--accent-soft);
-    color: var(--accent-dark);
-    font-size: 14px;
-    font-weight: 700;
-}
-
-.answer-title {
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.answer-meta {
-    color: var(--text-tertiary);
-    font-size: 11px;
-}
-
-.answer-body {
-    color: #242629;
-    font-size: 15px;
-    line-height: 1.75;
-}
-
-.answer-body h2 {
-    margin: 20px 0 9px;
-    font-size: 20px;
-    letter-spacing: -0.02em;
-}
-
-.answer-body p {
-    margin: 0 0 14px;
-}
-
-/* ==================================================
-   VERIFICATION
-================================================== */
-
-.verification {
-    margin-top: 19px;
-    padding: 14px 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: #fafbfc;
-    color: var(--text-secondary);
-    font-size: 12px;
-}
-
-.verification-dot {
-    width: 7px;
-    height: 7px;
-    flex-shrink: 0;
-    border-radius: 50%;
-    background: #00d2ff;
-}
-
-/* ==================================================
-   FOLLOW-UP COMPOSER
-================================================== */
-
-#conversationComposer {
-    position: fixed;
-    left: calc(var(--sidebar-width) + 24px);
-    right: 24px;
-    bottom: 20px;
-    z-index: 25;
-    width: auto;
-    margin: 0;
-    pointer-events: none;
-}
-
-#conversationComposer .composer {
-    width: min(var(--content-width), 100%);
-    margin: 0 auto;
-    pointer-events: auto;
-}
-
-/*
- * Important:
- * When desktop sidebar is closed, the follow-up composer
- * must move with the expanded main content.
- */
-.sidebar.closed ~ .main #conversationComposer {
-    left: 24px;
-}
-
-/* ==================================================
-   SEARCH OVERLAY
-================================================== */
-
-.search-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 400;
-    display: none;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 90px;
-    background: rgba(20, 22, 25, 0.16);
-    backdrop-filter: blur(4px);
-}
-
-.search-overlay.open {
-    display: flex;
-}
-
-.search-box {
-    width: min(620px, calc(100% - 32px));
-    overflow: hidden;
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.15);
-}
-
-.search-input {
-    width: 100%;
-    height: 54px;
-    padding: 0 18px;
-    border: 0;
-    outline: 0;
-    color: var(--text);
-    font-size: 15px;
-}
-
-.search-results {
-    max-height: 360px;
-    overflow-y: auto;
-    padding: 7px;
-}
-
-.search-result {
-    width: 100%;
-    padding: 11px;
-    border-radius: 9px;
-    color: var(--text);
-    font-size: 12px;
-    text-align: left;
-}
-
-.search-result:hover {
-    background: var(--surface-hover);
-}
-
-/* ==================================================
-   MOBILE
-================================================== */
-
-@media (max-width: 760px) {
-
-    /*
-     * CRITICAL:
-     *
-     * Mobile does NOT use width: 0.
-     * Mobile sidebar always keeps its real width
-     * and only moves with transform.
-     *
-     * This prevents the desktop width animation
-     * from being triggered during responsive resizing.
-     */
-    .sidebar {
-        position: fixed;
-        left: 0;
-        top: 0;
-
-        width: var(--sidebar-width);
-        height: 100vh;
-
-        padding: 14px;
-
-        border-right: 1px solid var(--border);
-
-        transform: translateX(-100%);
-
-        overflow: hidden;
-
-        /*
-         * No transition during normal layout/resizing.
-         * Mobile animation is enabled only through
-         * the temporary .animate class.
-         */
-        transition: none;
-
-        z-index: 100;
-    }
-
-    body::after {
-        content: "";
-        position: fixed;
-        inset: 0;
-        background: rgba(20, 22, 25, 0.16);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.18s ease;
-        z-index: 90;
-    }
-
-    body.sidebar-open::after {
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    .sidebar {
-        z-index: 100;
-        box-shadow: none;
-    }
-
-    .sidebar.open {
-        box-shadow: 8px 0 24px rgba(0, 0, 0, 0.18);
-    }
-
-    /*
-     * Mobile manual animation only.
-     */
-    .sidebar.animate {
-        transition: transform 0.18s ease;
-    }
-
-    /*
-     * A closed mobile sidebar is still 272px wide.
-     * It is simply outside the viewport.
-     */
-    .sidebar.closed {
-        width: var(--sidebar-width);
-        padding-left: 14px;
-        padding-right: 14px;
-        border-right-color: var(--border);
-        transform: translateX(-100%);
-        overflow: hidden;
-    }
-
-    /*
-     * Open mobile sidebar.
-     */
-    .sidebar.open {
-        width: var(--sidebar-width);
-        padding-left: 14px;
-        padding-right: 14px;
-        border-right-color: var(--border);
-        transform: translateX(0);
-        overflow: visible;
-    }
-
-    .main {
-        width: 100%;
-        min-width: 0;
-    }
-
-    /*
-     * Mobile menu is always available.
-     */
-    .mobile-menu {
-        display: grid;
-        place-items: center;
-    }
-
-    .topbar {
-        padding: 0 14px;
-    }
-
-    .topbar-left {
-        margin-left: 0;
-    }
-
-    .empty-state {
-        min-height: calc(100vh - 60px);
-        padding: 40px 14px 120px;
-    }
-
-    .hero p {
-        font-size: 14px;
-    }
-
-    .composer-wrap {
-        width: 100%;
-    }
-
-    .messages {
-        width: calc(100% - 28px);
-        padding-bottom: 170px;
-    }
-
-    #conversationComposer,
-    .sidebar.closed ~ .main #conversationComposer {
-        left: 10px;
-        right: 10px;
-        bottom: 10px;
-    }
-
-    #conversationComposer .composer {
-        width: 100%;
-    }
-
-    .suggestions {
-        grid-template-columns: 1fr;
-    }
-
-    .user-bubble {
-        max-width: 88%;
-    }
-
-    .composer-left {
-        min-width: 0;
-        flex: 1;
-        gap: 2px;
-    }
-
-    .tool-button {
-        min-width: 0;
-        flex: 1 1 0;
-        padding: 0 5px;
-        gap: 3px;
-        font-size: 10px;
-        white-space: nowrap;
-    }
-
-    .answer-credits {
-        font-size: 9px;
-        white-space: nowrap;
-    }
-}
-
-/* ==================================================
-   SMALL MOBILE
-================================================== */
-
-@media (max-width: 430px) {
-
-    .hero h1 {
-        font-size: 30px;
-    }
-
-    .hero-mark {
-        width: 100px;
-        height: 100px;
-    }
-
-    .composer-bottom {
-        padding-left: 8px;
-    }
-}
-
-</style>
-
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div class="app">
 
-
 <!-- ==================================================
      SIDEBAR
 ================================================== -->
 
 <aside class="sidebar" id="sidebar">
-
-    <div class="brand">
-
-        <div class="brand-name">
-            Contact™ Answer
-        </div>
+<div class="brand">
+    <a class="brand-logo" aria-label="Contact Answer">
+        <img src="img/contact_answer_logo.png" alt="Contact Answer">
+    </a>
+    <div class="brand-actions">
+        <a class="api-btn" href="https://engine.contact">
+        <button
+            class="api-button"
+            type="button">
+            Get API
+        </button>
+        </a>
 
         <button
             class="sidebar-toggle"
             id="sidebarClose"
             type="button"
             aria-label="Close sidebar">
-            ×
+            <span class="close-icon">×</span>
         </button>
-
     </div>
+</div>
 
     <button
         class="new-answer"
@@ -1299,7 +47,7 @@ button {
         type="button">
 
         <span class="new-answer-icon">
-            +
+            <span class="add-symbol">+</span>
         </span>
 
         <span>
@@ -1308,122 +56,96 @@ button {
 
     </button>
 
+    <button class="new-room" id="newRoom" type="button">
+        <span class="new-answer-icon" aria-hidden="true">
+        <span class="add-symbol">+</span>
+        </span>
+        <span>New Room</span>
+    </button>
+
     <div class="history">
-
-        <div class="history-label">
-            Recent
-        </div>
-
-        <div class="history-item-wrap">
-
-            <button
-                class="history-item active"
-                data-title="Best database architecture for SaaS"
-                type="button">
-
-                Best database architecture for SaaS
-
+        <section class="history-section" data-section="rooms">
+            <button class="history-label section-toggle" type="button" aria-expanded="true">
+                <span>Rooms</span><span class="section-chevron">⌄</span>
             </button>
+            <div class="history-section-items">
+                <div class="history-item-wrap">
+                    <button class="history-item room-history-item" data-kind="room" data-roomid="room-strategy" data-title="Contact Engine Strategy" type="button">
+                        <span class="room-history-icon" aria-hidden="true"><img src="img/discuss.png" alt=""></span>
+                        <span class="favorite-history-title history-title-viewport">Contact Engine Strategy</span>
+                    </button>
+                    <button class="history-more" type="button" aria-label="More options"><span class="history-more-dots">···</span></button>
+                </div>
+                <div class="history-item-wrap">
+                    <button class="history-item room-history-item" data-kind="room" data-roomid="room-medicine" data-title="AI in Medicine · 20 Year Outlook" type="button">
+                        <span class="room-history-icon" aria-hidden="true"><img src="img/discuss.png" alt=""></span>
+                        <span class="favorite-history-title history-title-viewport">AI in Medicine · 20 Year Outlook</span>
+                    </button>
+                    <button class="history-more" type="button" aria-label="More options"><span class="history-more-dots">···</span></button>
+                </div>
+            </div>
+        </section>
 
-            <button
-                class="history-more"
-                type="button"
-                aria-label="More options">
-
-                ···
-
+        <section class="history-section" data-section="favorites">
+            <button class="history-label section-toggle" type="button" aria-expanded="true">
+                <span>Favorites</span><span class="section-chevron">⌄</span>
             </button>
+            <div class="history-section-items">
+                <div class="history-item-wrap">
+                    <button class="history-item favorite-history-item is-favorited" data-kind="answer-ready" data-title="Contact Engine Intelligence Architecture" type="button">
+                        <img class="history-favorite-icon" src="img/favorite.png" alt="" aria-hidden="true">
+                        <span class="favorite-history-title history-title-viewport">Contact Engine Intelligence Architecture</span>
+                    </button>
+                    <button class="history-more" type="button" aria-label="More options"><span class="history-more-dots">···</span></button>
+                </div>
+                <div class="history-item-wrap">
+                    <button class="history-item favorite-history-item is-favorited" data-kind="answer-ready" data-title="AI training corpus architecture" type="button">
+                        <img class="history-favorite-icon" src="img/favorite.png" alt="" aria-hidden="true">
+                        <span class="favorite-history-title history-title-viewport">AI training corpus architecture</span>
+                    </button>
+                    <button class="history-more" type="button" aria-label="More options"><span class="history-more-dots">···</span></button>
+                </div>
+                <div class="history-item-wrap">
+                    <button class="history-item favorite-history-item is-favorited" data-kind="answer-ready" data-title="Best model routing strategy" type="button">
+                        <img class="history-favorite-icon" src="img/favorite.png" alt="" aria-hidden="true">
+                        <span class="favorite-history-title history-title-viewport">Best model routing strategy</span>
+                    </button>
+                    <button class="history-more" type="button" aria-label="More options"><span class="history-more-dots">···</span></button>
+                </div>
+            </div>
+        </section>
 
-        </div>
-
-        <div class="history-item-wrap">
-
-            <button
-                class="history-item"
-                data-title="Compare Stripe and Paddle"
-                type="button">
-
-                Compare Stripe and Paddle
-
+        <section class="history-section" data-section="recents">
+            <button class="history-label section-toggle" type="button" aria-expanded="true">
+                <span>Recents</span><span class="section-chevron">⌄</span>
             </button>
-
-            <button
-                class="history-more"
-                type="button"
-                aria-label="More options">
-
-                ···
-
-            </button>
-
-        </div>
-
-        <div class="history-item-wrap">
-
-            <button
-                class="history-item"
-                data-title="Cloud storage architecture"
-                type="button">
-
-                Cloud storage architecture
-
-            </button>
-
-            <button
-                class="history-more"
-                type="button"
-                aria-label="More options">
-
-                ···
-
-            </button>
-
-        </div>
-
-        <div class="history-item-wrap">
-
-            <button
-                class="history-item"
-                data-title="Best model routing strategy"
-                type="button">
-
-                Best model routing strategy
-
-            </button>
-
-            <button
-                class="history-more"
-                type="button"
-                aria-label="More options">
-
-                ···
-
-            </button>
-
-        </div>
-
-        <div class="history-item-wrap">
-
-            <button
-                class="history-item"
-                data-title="Trademark registration options"
-                type="button">
-
-                Trademark registration options
-
-            </button>
-
-            <button
-                class="history-more"
-                type="button"
-                aria-label="More options">
-
-                ···
-
-            </button>
-
-        </div>
-
+            <div class="history-section-items">
+                <div class="history-item-wrap">
+                    <button class="history-item active" data-kind="answer-ready" data-title="Best database architecture for SaaS" type="button"><span class="favorite-history-title history-title-viewport">Best database architecture for SaaS</span></button>
+                    <button class="history-more" type="button" aria-label="More options"><span class="history-more-dots">···</span></button>
+                </div>
+                <div class="history-item-wrap">
+                    <button class="history-item" data-kind="answer-ready" data-title="AI in medicine over the next 20 years" type="button"><span class="favorite-history-title history-title-viewport">AI in medicine over the next 20 years</span></button>
+                    <button class="history-more" type="button" aria-label="More options"><span class="history-more-dots">···</span></button>
+                </div>
+                <div class="history-item-wrap">
+                    <button class="history-item" data-kind="answer-progress" data-title="Compare ChatGPT, Claude, and Gemini Answers" type="button"><span class="favorite-history-title history-title-viewport">Compare ChatGPT, Claude, and Gemini Answers</span></button>
+                    <button class="history-more" type="button" aria-label="More options"><span class="history-more-dots">···</span></button>
+                </div>
+                <div class="history-item-wrap">
+                    <button class="history-item" data-kind="answer-ready" data-title="AI training corpus architecture" type="button"><span class="favorite-history-title history-title-viewport">AI training corpus architecture</span></button>
+                    <button class="history-more" type="button" aria-label="More options"><span class="history-more-dots">···</span></button>
+                </div>
+                <div class="history-item-wrap">
+                    <button class="history-item" data-kind="answer-ready" data-title="Best model routing strategy" type="button"><span class="favorite-history-title history-title-viewport">Best model routing strategy</span></button>
+                    <button class="history-more" type="button" aria-label="More options"><span class="history-more-dots">···</span></button>
+                </div>
+                <div class="history-item-wrap">
+                    <button class="history-item" data-kind="answer-ready" data-title="Trademark registration automation" type="button"><span class="favorite-history-title history-title-viewport">Trademark registration automation</span></button>
+                    <button class="history-more" type="button" aria-label="More options"><span class="history-more-dots">···</span></button>
+                </div>
+            </div>
+        </section>
     </div>
 
     <div class="sidebar-footer">
@@ -1432,12 +154,12 @@ button {
 
             <div class="credits-left">
 
-                <span class="credits-label">
-                    Answer Credits
+                <span class="credits-value">
+                    3,000
                 </span>
 
-                <span class="credits-value">
-                    42
+                <span class="credits-label">
+                    Answer Credits
                 </span>
 
             </div>
@@ -1465,17 +187,16 @@ button {
     <!-- TOPBAR -->
 
     <header class="topbar">
-
         <div class="topbar-left">
-
+            <a class="topbar-brand-logo" aria-label="Contact Answer">
+                    <img src="img/contact_answer_logo.png" >
+            </a>
             <button
                 class="mobile-menu"
                 id="mobileMenu"
                 type="button"
                 aria-label="Open sidebar">
-
-                ☰
-
+                    <img src="img/menu.png" class="menu-icon" alt="">
             </button>
 
             <button
@@ -1483,22 +204,22 @@ button {
                 id="searchButton"
                 type="button"
                 aria-label="Search">
-
-                ⌕
-
+                    <img src="img/search.png" class="search-icon" alt="">
             </button>
 
         </div>
 
         <div class="topbar-right">
 
-            <div class="credit-pill">
+            <button
+                class="credit-pill"
+                aria-label="Recharge credits">
 
                 <span class="credit-dot"></span>
+                <span class="credits-count">3,000</span>
+                <span class="credits-label">Credits</span>
 
-                42 Credits
-
-            </div>
+            </button>
 
             <button
                 class="recharge-button"
@@ -1510,11 +231,12 @@ button {
 
             <button
                 class="avatar"
+                id="accountAvatar"
                 type="button"
-                aria-label="Account">
-
+                aria-label="Account menu"
+                aria-haspopup="menu"
+                aria-expanded="false">
                 N
-
             </button>
 
         </div>
@@ -1530,13 +252,25 @@ button {
         <div
             class="empty-state"
             id="emptyState">
-
             <div class="hero">
 
                 <div class="hero-mark">
 
                     <img
-                        src="contact_answer.png"
+                        class="hero-mark-source"
+                        src="img/logo.png"
+                        alt=""
+                        draggable="false">
+
+                    <img
+                        class="hero-mark-blink"
+                        src="img/logo2.png"
+                        alt=""
+                        draggable="false">
+
+                    <img
+                        class="hero-mark-final"
+                        src="img/contact_answer.png"
                         alt="Contact Answer"
                         draggable="false">
 
@@ -1550,6 +284,7 @@ button {
                     Contact™ Answer analyzes your question across
                     multiple AI models, challenges the results,
                     and delivers one carefully verified answer.
+                    <a class="learn-more" href="learn-more">Learn more</a>
                 </p>
 
                 <!-- MAIN COMPOSER -->
@@ -1562,84 +297,72 @@ button {
                             id="question"
                             class="question"
                             rows="1"
-                            placeholder="Ask anything..."
+                            placeholder="Ask a question for a verified answer..."
                             aria-label="Question" autofocus></textarea>
 
                         <div class="composer-bottom">
-
                             <div class="composer-left">
-
                                 <div class="attach-wrap">
-
                                     <button
                                         class="attach-button"
                                         type="button"
                                         aria-label="Add attachment">
-
                                         +
-
                                     </button>
-
                                     <div class="attach-menu">
-
-                                        <button
-                                            class="attach-option"
-                                            type="button">
-
+                                        <button class="attach-option" type="button">
                                             <span class="attach-icon">
-                                                ↥
+                                                <img src="img/attachment.png" alt="" aria-hidden="true">
                                             </span>
-
                                             <span>
                                                 Upload files
                                             </span>
-
                                         </button>
-
-                                        <button
-                                            class="attach-option"
-                                            type="button">
-
+                                        <button class="attach-option" type="button">
                                             <span class="attach-icon">
-                                                ▧
+                                                <img src="img/image.png" alt="" aria-hidden="true">
                                             </span>
-
                                             <span>
                                                 Add photos
                                             </span>
-
                                         </button>
-
                                     </div>
-
                                 </div>
 
                                 <button
-                                    class="tool-button"
+                                    class="tool-button is-selected"
+                                    data-depth="verified"
+                                    aria-pressed="true"
                                     type="button">
-                                    <span>
-                                        ✓ Verified<br>
+                                    <span class="depth-copy">
+                                        <span class="depth-title">Verified</span><br>
                                         <span class="answer-credits">1–3 Credits</span>
                                     </span>
                                 </button>
 
                                 <button
                                     class="tool-button"
+                                    data-depth="deep"
+                                    aria-pressed="false"
                                     type="button">
-                                    <span class="depth-label">
-                                        Deep<br>
+                                    <span class="depth-copy">
+                                        <span class="depth-title">Deep</span><br>
                                         <span class="answer-credits">5–10 Credits</span>
                                     </span>
                                 </button>
 
                                 <button
                                     class="tool-button"
+                                    data-depth="research"
+                                    aria-pressed="false"
                                     type="button">
-                                    <span class="depth-label">
-                                        Research<br>
+                                    <span class="depth-copy">
+                                        <span class="depth-title">Research</span><br>
                                         <span class="answer-credits">20–50 Credits</span>
                                     </span>
                                 </button>
+
+
                             </div>
 
                             <div class="composer-right">
@@ -1648,9 +371,7 @@ button {
                                     class="mic-button"
                                     type="button"
                                     aria-label="Voice input">
-
-                                    ◉
-
+                                <img src="img/microphone.png" alt="" aria-hidden="true">
                                 </button>
 
                                 <button
@@ -1659,9 +380,7 @@ button {
                                     type="button"
                                     disabled
                                     aria-label="Send">
-
                                     ⇧
-
                                 </button>
 
                             </div>
@@ -1672,8 +391,7 @@ button {
 
                     <div class="composer-note">
 
-                        Contact automatically determines the required
-                        verification depth and estimated Credit usage.
+                        Contact automatically determines intelligence depth and estimates Credit usage. AI-verified answers can contain mistakes. Check important information.
 
                     </div>
 
@@ -1721,6 +439,17 @@ button {
 
         </div>
 
+        <div class="room-header" id="roomHeader" hidden>
+            <div class="room-header-title-row">
+                <div class="room-header-title-wrap">
+                    <div class="room-header-eyebrow">ANSWER ROOM<span class="room-tagline">People + AI. One shared answer.</span><span class="member-count-label room-member-count" id="roomMemberCount"></span></div>
+                    <h2 class="room-header-title" id="roomHeaderTitle">AI in Medicine · 20 Year Outlook</h2>
+                </div>
+                <button class="room-header-more" id="roomHeaderMore" type="button" aria-label="Room options">···</button>
+            </div>
+            <div class="room-members-strip" id="roomMembersStrip" aria-label="Room members"></div>
+        </div>
+
         <!-- ==================================================
              MESSAGES
         ================================================== -->
@@ -1729,30 +458,27 @@ button {
             class="messages"
             id="messages">
 
-            <div class="message message-user">
+            <div class="message message-user" data-request-depth="verified">
 
-                <div
-                    class="user-bubble"
-                    id="userQuestion">
-
-                    Best database architecture for a SaaS platform?
-
+                <div class="user-bubble" id="userQuestion">Best database architecture for a SaaS platform?</div>
+                <div class="user-message-footer">
+                    <time class="message-timestamp" data-live-time></time>
+                    <button class="message-copy-action" type="button" data-copy-kind="user-question" aria-label="Copy question"><img src="img/copy.png" alt="" aria-hidden="true"></button>
                 </div>
-
             </div>
 
-            <div class="message answer">
+            <div class="message answer answer-version" data-answer-version="1" data-answer-title="Best database architecture for SaaS">
 
                 <div class="answer-header">
 
                     <div class="answer-icon">
-                        A
+                        <img src="img/avatar_answer.png" alt="Contact Answer" onerror="this.style.display='none';this.parentElement.textContent='A'">
                     </div>
 
                     <div>
 
                         <div class="answer-title">
-                            Contact Answer
+                            Contact Answer <span class="answer-version-label">Answer 1</span>
                         </div>
 
                         <div class="answer-meta">
@@ -1797,6 +523,14 @@ button {
 
                     </div>
 
+                    <div class="answer-actions" data-answer-actions>
+                        <button class="answer-action" data-action="copy-answer" type="button"><span class="action-icon">⧉</span><span>Copy Answer</span></button>
+                        <button class="answer-action" data-action="rate-answer" type="button"><span class="action-icon">♡</span><span>Rate Answer</span></button>
+                        <button class="answer-action" data-action="share-answer" type="button"><span class="action-icon">↗</span><span>Share</span></button>
+                        <button class="answer-action" data-action="try-again" type="button"><span class="action-icon">↻</span><span>Try Again</span></button>
+                        <time class="message-timestamp answer-action-time" data-live-time></time>
+                    </div>
+
                 </div>
 
             </div>
@@ -1813,6 +547,13 @@ button {
         id="conversationComposer"
         style="display: none;">
 
+        <div class="typing-indicator" id="typingIndicator" aria-live="polite"><span class="typing-dots"><i></i><i></i><i></i></span><span id="typingText">Jack is typing…</span></div>
+
+        <div class="replying-to-banner" id="replyingToBanner" hidden>
+            <div class="replying-to-copy"><strong>Replying to <span id="replyingToName"></span></strong><span id="replyingToText"></span></div>
+            <button class="reply-cancel-button" id="cancelRoomReply" type="button" aria-label="Cancel reply"><span class="close-icon">×</span></button>
+        </div>
+
         <div class="composer">
 
             <textarea
@@ -1821,81 +562,74 @@ button {
                 placeholder="Ask a follow-up..."
                 aria-label="Follow-up question"></textarea>
 
-            <div class="composer-bottom">
+                        <div class="composer-bottom">
+                            <div class="composer-left">
+                                <div class="attach-wrap">
+                                    <button
+                                        class="attach-button"
+                                        type="button"
+                                        aria-label="Add attachment">
+                                        +
+                                    </button>
+                                    <div class="attach-menu">
+                                        <button class="attach-option" type="button">
+                                            <span class="attach-icon">
+                                                <img src="img/attachment.png" alt="" aria-hidden="true">
+                                            </span>
+                                            <span>
+                                                Upload files
+                                            </span>
+                                        </button>
+                                        <button class="attach-option" type="button">
+                                            <span class="attach-icon">
+                                                <img src="img/image.png" alt="" aria-hidden="true">
+                                            </span>
+                                            <span>
+                                                Add photos
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
 
-                <div class="composer-left">
-
-                    <div class="attach-wrap">
-
-                        <button
-                            class="attach-button"
-                            type="button"
-                            aria-label="Add attachment">
-
-                            +
-
-                        </button>
-
-                        <div class="attach-menu">
-
-                            <button
-                                class="attach-option"
-                                type="button">
-
-                                <span class="attach-icon">
-                                    ↥
-                                </span>
-
-                                <span>
-                                    Upload files
-                                </span>
-
-                            </button>
-
-                            <button
-                                class="attach-option"
-                                type="button">
-
-                                <span class="attach-icon">
-                                    ▧
-                                </span>
-
-                                <span>
-                                    Add photos
-                                </span>
-
-                            </button>
-
-                        </div>
-
-                    </div>
+                                <button class="get-answer-trigger" type="button" aria-label="Let Contact Answer analyze the discussion and find an answer for everyone" title="Let Contact Answer analyze the discussion and find an answer for everyone">✦ Get a Verified Answer for This Discussion</button>
 
                                 <button
-                                    class="tool-button"
+                                    class="tool-button is-selected"
+                                    data-depth="verified"
+                                    aria-pressed="true"
                                     type="button">
-                                    <span>
-                                        ✓ Verified<br>
+                                    <span class="depth-copy">
+                                        <span class="depth-title">Verified</span><br>
                                         <span class="answer-credits">1–3 Credits</span>
                                     </span>
                                 </button>
 
                                 <button
                                     class="tool-button"
+                                    data-depth="deep"
+                                    aria-pressed="false"
                                     type="button">
-                                    <span class="depth-label">
-                                        Deep<br>
+                                    <span class="depth-copy">
+                                        <span class="depth-title">Deep</span><br>
                                         <span class="answer-credits">5–10 Credits</span>
                                     </span>
                                 </button>
 
                                 <button
                                     class="tool-button"
+                                    data-depth="research"
+                                    aria-pressed="false"
                                     type="button">
-                                    <span class="depth-label">
-                                        Research<br>
+                                    <span class="depth-copy">
+                                        <span class="depth-title">Research</span><br>
                                         <span class="answer-credits">20–50 Credits</span>
                                     </span>
                                 </button>
+
+                                <button
+                                    class="close-room-depths"
+                                    type="button"
+                                    aria-label="Close answer depth options"><span class="close-icon">×</span></button>
 
                 </div>
 
@@ -1905,9 +639,7 @@ button {
                         class="mic-button"
                         type="button"
                         aria-label="Voice input">
-
-                        ◉
-
+                    <img src="img/microphone.png" alt="" aria-hidden="true">
                     </button>
 
                     <button
@@ -1915,13 +647,17 @@ button {
                         type="button"
                         aria-label="Send"
                         disabled>
-
                         ⇧
                     </button>
 
                 </div>
 
             </div>
+
+            <button class="scroll-to-bottom" id="scrollToBottom" type="button" aria-label="Scroll to latest message" title="Scroll to latest message">
+                <span class="scroll-bottom-arrow" aria-hidden="true">↓</span>
+                <img class="scroll-bottom-spinner" src="img/avatar_answer.png" alt="" aria-hidden="true">
+            </button>
 
         </div>
 
@@ -1935,46 +671,45 @@ button {
      HISTORY MENU
 ================================================== -->
 
-<div
-    class="history-menu"
-    id="historyMenu">
+<div class="history-menu" id="historyMenu" role="menu" aria-label="Conversation options"></div>
 
-<button class="menu-item" type="button">
-    <span class="menu-icon">✎</span>
-    <span>Rename</span>
-</button>
+<div class="history-menu account-menu" id="accountMenu" role="menu" aria-label="Account menu">
+        <div class="avatar-menu-profile">
+        <div class="profile-avatar-wrap">
+            <img class="profile-avatar" id="profileAvatarImage" src="img/avatar.png" alt="" draggable="false">
+            <span class="profile-status status-on" id="profileAvatarStatus" aria-hidden="true"></span>
+        </div>
+        <div class="profile-info">
+            <span class="profile-name" id="profileName">Display name</span>
+            <span class="profile-email" id="profileEmail">username@livemail.me</span>
+        </div>
+    </div>
 
-<button class="menu-item" type="button">
-    <span class="menu-icon">♧</span>
-    <span>Invite to chat</span>
-</button>
+    <div class="availability-row" id="availabilityRow">
+        <span class="availability-label">Availability</span>
+        <button class="availability-button" id="availabilityButton" type="button" aria-expanded="false">
+            <span class="availability-indicator status-on" id="availabilityIndicator"></span>
+            <span id="availabilityText">ON</span>
+            <span class="availability-chevron">⌄</span>
+        </button>
+        <div class="availability-menu" id="availabilityMenu">
+            <button type="button" data-status="on"><span class="availability-indicator status-on"></span>ON</button>
+            <button type="button" data-status="away"><span class="availability-indicator status-away"></span>Away</button>
+            <button type="button" data-status="busy"><span class="availability-indicator status-busy"></span>Busy</button>
+            <button type="button" data-status="dnd"><span class="availability-indicator status-dnd"></span>Do not disturb</button>
+            <button type="button" data-status="off"><span class="availability-indicator status-off"></span>Offline</button>
+        </div>
+    </div>
 
-<button class="menu-item" type="button">
-    <span class="menu-icon">↗</span>
-    <span>Share</span>
-</button>
-
-<button class="menu-item" type="button">
-    <span class="menu-icon">⌖</span>
-    <span>Pin</span>
-</button>
-
-<div class="menu-divider"></div>
-
-<button
-    class="menu-item danger"
-    type="button">
-
-    <span class="menu-icon">
-        ⌫
-    </span>
-
-    <span>
-        Delete
-    </span>
-
-</button>
-
+    <div class="menu-divider"></div>
+    <a class="menu-item" href="settings" role="menuitem"><span class="menu-icon" aria-hidden="true"><img src="img/settings.png" alt=""></span><span>Settings</span></a>
+    <div class="menu-divider"></div>
+    <a class="menu-item" href="feedback" role="menuitem"><span class="menu-icon" aria-hidden="true"><img src="img/feedback.png" alt=""></span><span>Feedback</span></a>
+    <a class="menu-item" href="help" role="menuitem"><span class="menu-icon" aria-hidden="true"><img src="img/help.png" alt=""></span><span>Help</span></a>
+    <a class="menu-item" href="privacy" role="menuitem"><span class="menu-icon" aria-hidden="true"><img src="img/privacy.png" alt=""></span><span>Privacy</span></a>
+    <a class="menu-item" href="terms" role="menuitem"><span class="menu-icon" aria-hidden="true"><img src="img/terms.png" alt=""></span><span>Terms</span></a>
+    <div class="menu-divider"></div>
+    <a class="menu-item" href="logout" role="menuitem"><span class="menu-icon" aria-hidden="true"><img src="img/logout.png" alt=""></span><span>Log out</span></a>
 </div>
 
 <!-- ==================================================
@@ -2003,11 +738,11 @@ button {
         </button>
 
         <button class="search-result" type="button">
-            Compare Stripe and Paddle
+            Compare ChatGPT, Claude, and Gemini Answers
         </button>
 
         <button class="search-result" type="button">
-            Cloud storage architecture
+            AI training corpus architecture
         </button>
 
         <button class="search-result" type="button">
@@ -2015,7 +750,7 @@ button {
         </button>
 
         <button class="search-result" type="button">
-            Trademark registration options
+            Trademark registration automation
         </button>
 
     </div>
@@ -2023,6 +758,25 @@ button {
 </div>
 
 </div>
+
+<div class="room-dialog-overlay" id="roomDialogOverlay" aria-hidden="true">
+    <div class="search-box room-dialog" role="dialog" aria-modal="true" aria-labelledby="roomDialogTitle">
+        <div class="room-dialog-head"><div><h2 id="roomDialogTitle">Create a Room</h2><p>Bring everyone and AI together to find a shared answer.</p></div><button class="dialog-close" type="button" data-close-dialog aria-label="Close"><span class="close-icon">×</span></button></div>
+        <form id="roomSettingsForm">
+            <label class="form-label" for="roomNameInput">Room name</label>
+            <input class="search-input room-name-input" id="roomNameInput" maxlength="100" value="AI in Medicine · 20 Year Outlook" autocomplete="off">
+            <div class="setting-row"><div><strong>AI participation</strong><span>Contact Answer may offer useful context during discussion.</span></div><label class="switch"><input id="roomAutoAI" type="checkbox" checked><span class="switch-track"></span></label></div>
+            <div class="setting-row"><div><strong>Hide members’ Contact Cards</strong><span>Members can’t open each other’s public card previews.</span></div><label class="switch"><input id="roomHideCards" type="checkbox"><span class="switch-track"></span></label></div>
+            <fieldset class="settings-fieldset"><legend>Credits</legend><p class="settings-subtitle">Who pays for answers requested in this Room?</p><div class="credit-choices"><label class="credit-choice"><input type="radio" name="roomCreditPayer" value="owner" checked><span class="choice-marker" aria-hidden="true"></span><span class="choice-copy"><strong>Room owner pays</strong><small>You cover all Get an Answer requests in this Room.</small></span></label><label class="credit-choice"><input type="radio" name="roomCreditPayer" value="requester"><span class="choice-marker" aria-hidden="true"></span><span class="choice-copy"><strong>Each requester pays</strong><small>Credits are charged to the member requesting the answer.</small></span></label></div></fieldset>
+            <fieldset class="settings-fieldset"><legend>Allowed answer depth</legend><p class="settings-subtitle">Choose one or more levels available in this Room.</p><div class="depth-checks"><label class="depth-choice"><input type="checkbox" name="allowedDepth" value="verified" checked><span class="depth-choice-copy"><span class="depth-title">Verified</span><span class="answer-credits">1–3 Credits</span></span></label><label class="depth-choice"><input type="checkbox" name="allowedDepth" value="deep" checked><span class="depth-choice-copy"><span class="depth-title">Deep</span><span class="answer-credits">5–10 Credits</span></span></label><label class="depth-choice"><input type="checkbox" name="allowedDepth" value="research" checked><span class="depth-choice-copy"><span class="depth-title">Research</span><span class="answer-credits">20–50 Credits</span></span></label></div></fieldset>
+            <div class="room-dialog-actions"><button class="dialog-cancel" type="button" data-close-dialog>Cancel</button><button class="dialog-save" id="saveRoomSettings" type="submit">Create Room</button></div>
+        </form>
+    </div>
+</div>
+
+<div class="member-menu" id="memberMenu" role="dialog" aria-label="Room members and invitations"></div>
+<div class="answer-action-menu" id="answerActionMenu" role="menu"></div>
+<div class="contact-toast" id="contactToast" role="status" aria-live="polite"></div>
 
 <script>
 
@@ -2060,6 +814,15 @@ const newAnswer =
 const historyMenu =
     document.getElementById("historyMenu");
 
+const accountAvatar =
+    document.getElementById("accountAvatar");
+
+const accountMenu =
+    document.getElementById("accountMenu");
+
+const scrollToBottomButton =
+    document.getElementById("scrollToBottom");
+
 const searchButton =
     document.getElementById("searchButton");
 
@@ -2070,7 +833,9 @@ const searchInput =
     document.getElementById("searchInput");
 
 const rechargeButtons =
-    document.querySelectorAll(".recharge-button");
+    document.querySelectorAll(
+        ".recharge-button, .credit-pill"
+    );
 
 /* ==================================================
    RESPONSIVE HELPER
@@ -2199,14 +964,17 @@ window.addEventListener(
 
 function resizeTextarea(element) {
 
-    element.style.height = "auto";
+    element.style.height = "76px";
 
-    element.style.height =
-        Math.min(
-            element.scrollHeight,
-            220
-        ) + "px";
+    const height = Math.min(
+        Math.max(element.scrollHeight, 76),
+        220
+    );
 
+    element.style.height = height + "px";
+
+    element.style.overflowY =
+        element.scrollHeight > height ? "auto" : "hidden";
 }
 
 /* ==================================================
@@ -2255,40 +1023,36 @@ sendButton.addEventListener(
 ================================================== */
 
 function submitQuestion() {
+    const value = question.value.trim();
+    if (!value) return;
 
-    const value =
-        question.value.trim();
+    const depth = document.querySelector("#emptyState .tool-button.is-selected")?.dataset.depth || "verified";
+    currentAnswerTitle = value;
+    answerVersion = 0;
+    emptyState.style.display = "none";
+    messages.style.display = "block";
+    conversationComposer.style.display = "block";
+    messages.innerHTML = `<div class="message message-user" data-request-depth="${depth}"><div class="user-bubble">${escapeHTML(value)}</div><div class="user-message-footer">${timestampMarkup()}<button class="message-copy-action" type="button" data-copy-kind="user-question" aria-label="Copy question"><img src="img/copy.png" alt="" aria-hidden="true"></button></div></div><div class="standard-answer-stack" id="standardAnswerStack"></div>`;
+    const sentQuestion = messages.querySelector(".message-user");
+    ensureStandardMessageControls(sentQuestion);
+    ensureAnswerRequestBadge(sentQuestion, depth);
 
-    if (!value) {
-        return;
-    }
-
-    document.getElementById(
-        "userQuestion"
-    ).textContent = value;
-
-    emptyState.style.display =
-        "none";
-
-    messages.style.display =
-        "block";
-
-    conversationComposer.style.display =
-        "block";
+    const depthLabel = depth[0].toUpperCase() + depth.slice(1);
+    const stack = document.getElementById("standardAnswerStack");
+    const loading = document.createElement("div");
+    loading.className = "answer-loading message";
+    loading.id = "answerLoading";
+    loading.innerHTML = `<div class="answer-header">${answerAvatarHTML()}<div><div class="answer-title">Contact Answer</div><div class="answer-meta">Contact Engine · Multi-model analysis</div></div></div><div class="loading-card"><span class="loading-spinner"></span><div><strong id="analysisStatus" aria-live="polite">Analyzing your question…</strong><p id="analysisDetail">Comparing candidate answers and checking evidence.</p><div class="loading-progress"><span></span></div></div></div>`;
+    stack.appendChild(loading);
 
     question.value = "";
-
-    question.style.height =
-        "76px";
-
-    sendButton.disabled =
-        true;
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
+    question.style.height = "76px";
+    sendButton.disabled = true;
+    followUpTextareaRoom.value = "";
+    followUpTextareaRoom.style.height = "76px";
+    followUpSendRoom.disabled = true;
+    startAnswerGeneration({ target: stack, title: value, room: false, depth: depthLabel, duration: depth === "research" ? 7600 : depth === "deep" ? 5600 : 4200 });
+    requestAnimationFrame(scrollToLatestMessage);
 }
 
 /* ==================================================
@@ -2338,6 +1102,14 @@ newAnswer.addEventListener(
             100
         );
 
+    }
+);
+
+document.querySelector(".topbar-brand-logo").addEventListener(
+    "click",
+    event => {
+        event.preventDefault();
+        newAnswer.click();
     }
 );
 
@@ -2417,40 +1189,6 @@ document
 /* ==================================================
    HISTORY MENU
 ================================================== */
-
-document
-    .querySelectorAll(".history-more")
-    .forEach(button => {
-
-        button.addEventListener(
-            "click",
-            event => {
-
-                event.stopPropagation();
-
-                const rect =
-                    button.getBoundingClientRect();
-
-                historyMenu.style.left =
-                    Math.min(
-                        rect.right + 4,
-                        window.innerWidth - 220
-                    ) + "px";
-
-                historyMenu.style.top =
-                    Math.min(
-                        rect.top,
-                        window.innerHeight - 260
-                    ) + "px";
-
-                historyMenu.classList.add(
-                    "open"
-                );
-
-            }
-        );
-
-    });
 
 document.addEventListener(
     "click",
@@ -2911,6 +1649,1992 @@ if (SpeechRecognition) {
         });
 
 }
+
+/* ==================================================
+   INTELLIGENCE DEPTH & PLACEHOLDERS
+================================================== */
+
+const depthPlaceholders = {
+    verified: {
+        main: "Ask a question for a verified answer...",
+        followUp: "Ask a follow-up for a verified answer..."
+    },
+
+    deep: {
+        main: "Ask a question for deeper analysis...",
+        followUp: "Ask a follow-up for deeper analysis..."
+    },
+
+    research: {
+        main: "Ask a question for in-depth research...",
+        followUp: "Ask a follow-up for in-depth research..."
+    }
+};
+
+const roomDepthPlaceholders = {
+    verified: "Ask a question for a verified answer based on this conversation...\nPaid by Room owner/Paid by you · 1–3 Credits",
+    deep: "Ask a question for deeper analysis based on this conversation...\nPaid by Room owner/Paid by you · 5–10 Credits",
+    research: "Ask a question for in-depth research based on this conversation...\nPaid by Room owner/Paid by you · 20–50 Credits"
+};
+
+document.querySelectorAll(".composer").forEach(composer => {
+
+    const textarea = composer.querySelector(".question");
+
+    const buttons = composer.querySelectorAll(
+        ".tool-button[data-depth]"
+    );
+
+    const isFollowUp = Boolean(
+        composer.closest("#conversationComposer")
+    );
+
+    function selectDepth(depth) {
+
+        const copy = depthPlaceholders[depth];
+
+        if (!copy) {
+            return;
+        }
+
+        textarea.placeholder = isFollowUp
+            ? copy.followUp
+            : copy.main;
+
+        buttons.forEach(button => {
+
+            const selected =
+                button.dataset.depth === depth;
+
+            button.classList.toggle(
+                "is-selected",
+                selected
+            );
+
+            button.setAttribute(
+                "aria-pressed",
+                String(selected)
+            );
+
+        });
+
+    }
+
+    buttons.forEach(button => {
+
+        button.addEventListener("click", () => {
+            selectDepth(button.dataset.depth);
+        });
+
+    });
+
+    selectDepth("verified");
+
+});
+
+/* ==================================================
+   HISTORY TITLE HOVER SCROLLING
+================================================== */
+
+document.querySelectorAll('.history-item').forEach(item => {
+    const title = item.querySelector('.history-title-viewport');
+    if (!title) return;
+
+    let frame = null;
+
+    function resetScroll() {
+        if (frame !== null) {
+            cancelAnimationFrame(frame);
+        }
+
+        frame = null;
+        title.scrollLeft = 0;
+        title.classList.remove('is-scrolling');
+    }
+
+    item.addEventListener('mouseenter', () => {
+        resetScroll();
+
+        requestAnimationFrame(() => {
+            const distance = title.scrollWidth - title.clientWidth;
+
+            if (distance <= 2) return;
+
+            title.classList.add('is-scrolling');
+
+            let start = null;
+
+            function scroll(now) {
+                if (start === null) start = now;
+
+                const elapsed = now - start - 400;
+                const maxScroll = title.scrollWidth - title.clientWidth;
+
+                if (elapsed >= 0) {
+                    title.scrollLeft = Math.min(
+                        maxScroll,
+                        elapsed * 0.035
+                    );
+                }
+
+                if (elapsed < 0 || title.scrollLeft < maxScroll) {
+                    frame = requestAnimationFrame(scroll);
+                } else {
+                    frame = null;
+                }
+            }
+
+            frame = requestAnimationFrame(scroll);
+        });
+    });
+
+    item.addEventListener('mouseleave', resetScroll);
+});
+
+
+/* ==================================================
+   ROOM EXPERIENCE & ANSWER INTERACTIONS
+================================================== */
+
+const roomHeader = document.getElementById("roomHeader");
+const roomHeaderTitle = document.getElementById("roomHeaderTitle");
+const roomHeaderMore = document.getElementById("roomHeaderMore");
+const roomMembersStrip = document.getElementById("roomMembersStrip");
+const newRoomButton = document.getElementById("newRoom");
+const roomDialogOverlay = document.getElementById("roomDialogOverlay");
+const roomSettingsForm = document.getElementById("roomSettingsForm");
+const roomDialogTitle = document.getElementById("roomDialogTitle");
+const saveRoomSettingsButton = document.getElementById("saveRoomSettings");
+const roomNameInput = document.getElementById("roomNameInput");
+const memberMenu = document.getElementById("memberMenu");
+const answerActionMenu = document.getElementById("answerActionMenu");
+const contactToast = document.getElementById("contactToast");
+const typingIndicator = document.getElementById("typingIndicator");
+const typingText = document.getElementById("typingText");
+const followUpComposer = conversationComposer.querySelector(".composer");
+const followUpComposerLeft = conversationComposer.querySelector(".composer-left");
+const getAnswerTrigger = conversationComposer.querySelector(".get-answer-trigger");
+const roomDepthButtons = Array.from(conversationComposer.querySelectorAll(".tool-button[data-depth]"));
+const followUpTextareaRoom = conversationComposer.querySelector(".question");
+const followUpSendRoom = conversationComposer.querySelector(".send-button");
+const replyingToBanner = document.getElementById("replyingToBanner");
+const replyingToName = document.getElementById("replyingToName");
+const replyingToText = document.getElementById("replyingToText");
+const cancelRoomReplyButton = document.getElementById("cancelRoomReply");
+
+let replyTarget = null;
+let isRoomMode = false;
+let activeHistoryButton = document.querySelector('.history-item.active');
+let activeRoom = null;
+let roomDraftMode = "create";
+let roomSeedTitle = "";
+let roomSettingsTarget = null;
+let toastTimer = null;
+let generationTimer = null;
+let generationInterval = null;
+let generationActive = false;
+let isProgrammaticScroll = false;
+let userScrolledAwayWhileGenerating = false;
+let answerVersion = 1;
+let currentAnswerTitle = "Best database architecture for SaaS";
+let typingTimer = null;
+let currentTypingInterval = null;
+let activeActionAnchor = null;
+
+const demoMembers = [
+    { id: "jack", name: "Jack", username: "jack", publicCard: true, color: "#d9eef4" },
+    { id: "tim", name: "Tim", username: "tim", publicCard: true, color: "#e7e1f7" },
+    { id: "maya", name: "Maya", username: "maya", publicCard: true, color: "#f9e8d8" },
+    { id: "sam", name: "Sam", username: "sam", publicCard: false, color: "#e0efdf" },
+    { id: "ella", name: "Ella", username: "ella", publicCard: true, color: "#f6dfe9" },
+    { id: "noah", name: "Noah", username: "noah", publicCard: true, color: "#e5e9ed" }
+];
+
+const roomStore = {
+    "room-strategy": {
+        id: "room-strategy",
+        title: "Contact Engine Strategy",
+        owner: true,
+        autoAI: true,
+        hideCards: false,
+        payer: "owner",
+        allowedDepths: ["verified", "deep", "research"],
+        members: demoMembers.map(member => ({ ...member })),
+        seedTitle: "Best database architecture for SaaS",
+        scenario: "strategy"
+    },
+    "room-medicine": {
+        id: "room-medicine",
+        title: "AI in Medicine · 20 Year Outlook",
+        owner: true,
+        autoAI: true,
+        hideCards: false,
+        payer: "owner",
+        allowedDepths: ["verified", "deep", "research"],
+        members: demoMembers.map(member => ({ ...member })),
+        seedTitle: "How will AI affect medicine over the next 20 years?",
+        scenario: "medicine"
+    }
+};
+
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[char]));
+}
+
+function formatMessageTime(date = new Date()) {
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+function setMessageTime(element, date = new Date()) {
+    if (!element) return;
+    element.dateTime = date.toISOString();
+    element.textContent = formatMessageTime(date);
+}
+
+function timestampMarkup(extraClass = "", minutesAgo = 0, daysAgo = 0) {
+    const date = new Date(Date.now() - minutesAgo * 60000 - daysAgo * 86400000);
+    const classes = ["message-timestamp", extraClass].filter(Boolean).join(" ");
+    return `<time class="${classes}" datetime="${date.toISOString()}">${formatMessageTime(date)}</time>`;
+}
+
+
+const answerDepthLabels = { verified: "Verified", deep: "Deep", research: "Research" };
+const emojiOptions = [
+    ["smile", "Smile"], ["happy", "Happy"], ["sweet", "Sweet"], ["admire", "Admire"],
+    ["laugh", "Laugh"], ["cool", "Cool"], ["giggle", "Giggle"], ["surprised", "Surprised"],
+    ["neutral", "Neutral"], ["moved", "Moved"], ["crying", "Crying"], ["salute", "Salute"],
+    ["ok", "OK"], ["like", "Like"], ["thanks", "Thanks"], ["handshake", "Handshake"],
+    ["clap", "Clap"], ["victory", "Victory"], ["love", "Love"], ["flower", "Flower"],
+    ["celebrate", "Celebrate"], ["correct", "Correct"], ["perfect", "Perfect"], ["alien", "Alien"]
+];
+let activeEmojiMessage = null;
+let activeEmojiAnchor = null;
+
+function answerRequestBadgeMarkup(depth) {
+    const safeDepth = Object.prototype.hasOwnProperty.call(answerDepthLabels, depth) ? depth : "verified";
+    return `<span class="answer-request-badge" data-depth="${safeDepth}"><img src="img/${safeDepth}.png" alt="" aria-hidden="true"><span>${answerDepthLabels[safeDepth]} Answer Request</span></span>`;
+}
+
+function ensureMessageBadgeRow(message) {
+    if (!message) return null;
+    const content = message.classList.contains("room-chat-message")
+        ? message.querySelector(".room-chat-content")
+        : message;
+    if (!content) return null;
+    let row = content.querySelector(":scope > .message-badges");
+    if (!row) {
+        row = document.createElement("div");
+        row.className = "message-badges";
+        const bubble = content.querySelector(message.classList.contains("room-chat-message") ? ".room-chat-bubble" : ".user-bubble");
+        if (bubble) content.insertBefore(row, bubble);
+        else content.appendChild(row);
+    }
+    return row;
+}
+
+function ensureAnswerRequestBadge(message, depth = message?.dataset.requestDepth || "verified") {
+    if (!message || !depth) return;
+    const safeDepth = Object.prototype.hasOwnProperty.call(answerDepthLabels, depth) ? depth : "verified";
+    message.dataset.requestDepth = safeDepth;
+    const row = ensureMessageBadgeRow(message);
+    if (!row) return;
+    let badge = row.querySelector(":scope > .answer-request-badge");
+    if (!badge) row.insertAdjacentHTML("afterbegin", answerRequestBadgeMarkup(safeDepth));
+    else if (badge.dataset.depth !== safeDepth) badge.outerHTML = answerRequestBadgeMarkup(safeDepth);
+}
+
+function makeEmojiQuickMenuMarkup() {
+    return `<div class="emoji-quick-menu" role="menu" aria-label="Quick reactions">
+        <button class="emoji-quick-reaction" type="button" data-reaction-key="like" aria-label="Like"><img src="img/emoji_like.png" alt=""></button>
+        <button class="emoji-quick-reaction" type="button" data-reaction-key="love" aria-label="Love"><img src="img/emoji_love.png" alt=""></button>
+        <button class="emoji-quick-reaction" type="button" data-reaction-key="laugh" aria-label="Laugh"><img src="img/emoji_laugh.png" alt=""></button>
+        <button class="emoji-quick-expand" type="button" aria-label="More reactions"><img src="img/emoji_more.png" alt="" onerror="this.style.display='none';this.parentElement.classList.add('icon-fallback')"></button>
+    </div>`;
+}
+
+function ensureRoomMessageControls(message) {
+    if (!message || !message.classList.contains("room-chat-message")) return;
+    const footer = message.querySelector(".room-message-footer");
+    if (!footer) return;
+    const copy = footer.querySelector(".message-copy-action");
+    if (copy && !footer.querySelector(".emoji-action-wrap")) {
+        const wrap = document.createElement("span");
+        wrap.className = "emoji-action-wrap";
+        wrap.innerHTML = `<button class="message-emoji-action" type="button" aria-label="Add reaction" aria-haspopup="dialog"><img src="img/emoji.png" alt="" aria-hidden="true"></button>${makeEmojiQuickMenuMarkup()}`;
+        copy.insertAdjacentElement("afterend", wrap);
+    }
+    if (copy && !footer.querySelector(".message-reply-action")) {
+        const emojiWrap = footer.querySelector(".emoji-action-wrap");
+        const replyMarkup = '<button class="message-reply-action" type="button" data-action="reply-to-message" aria-label="Reply to message"><img src="img/reply.png" alt="" aria-hidden="true"></button>';
+        if (emojiWrap) emojiWrap.insertAdjacentHTML("afterend", replyMarkup);
+        else copy.insertAdjacentHTML("afterend", replyMarkup);
+    }
+    // Normalize legacy and newly-created message footers to Copy → Emoji → Reply.
+    const emojiWrap = footer.querySelector(".emoji-action-wrap");
+    const replyAction = footer.querySelector(".message-reply-action");
+    if (copy && emojiWrap) footer.insertBefore(emojiWrap, copy.nextSibling);
+    if (emojiWrap && replyAction) footer.insertBefore(replyAction, emojiWrap.nextSibling);
+    const isSelf = message.classList.contains("room-chat-message-self") || message.dataset.author === "you" || message.querySelector(".room-chat-meta strong")?.textContent?.trim() === "You";
+    if (isSelf && !footer.querySelector("[data-message-edit]")) {
+        const controls = document.createElement("span");
+        controls.className = "room-self-message-actions";
+        controls.innerHTML = `<button class="message-edit-action" type="button" data-message-edit aria-label="Edit message"><img src="img/rename.png" alt="" aria-hidden="true"></button><button class="message-delete-action" type="button" data-message-delete aria-label="Delete message"><img src="img/delete.png" alt="" aria-hidden="true"></button>`;
+        const timestamp = footer.querySelector(".message-timestamp");
+        if (timestamp) timestamp.insertAdjacentElement("beforebegin", controls);
+        else footer.appendChild(controls);
+    }
+    const timestamp = footer.querySelector(".message-timestamp");
+    if (timestamp) footer.appendChild(timestamp);
+}
+
+function ensureStandardMessageControls(message) {
+    if (!message || !message.classList.contains("message-user")) return;
+    const footer = message.querySelector(".user-message-footer");
+    if (!footer) return;
+    const copy = footer.querySelector(".message-copy-action");
+    if (copy && !footer.querySelector("[data-message-forward]")) {
+        copy.insertAdjacentHTML("afterend", '<button class="message-forward-action" type="button" data-message-forward aria-label="Forward question"><img src="img/share.png" alt="" aria-hidden="true"></button>');
+    }
+    const timestamp = footer.querySelector(".message-timestamp");
+    if (timestamp) footer.appendChild(timestamp);
+}
+
+function decorateRoomMessages(log) {
+    if (!log) return;
+    log.querySelectorAll(".room-chat-message").forEach(message => {
+        ensureRoomMessageControls(message);
+        if (message.dataset.requestDepth) ensureAnswerRequestBadge(message, message.dataset.requestDepth);
+        else ensureMessageBadgeRow(message);
+    });
+}
+
+function addReactionChip(message, key, initialCount = 1, userReacted = true) {
+    if (!message) return;
+    const row = ensureMessageBadgeRow(message);
+    if (!row) return;
+    const safeKey = emojiOptions.some(([value]) => value === key) ? key : "like";
+    let chip = row.querySelector(`.message-reaction-chip[data-reaction="${safeKey}"]`);
+    if (!chip) {
+        chip = document.createElement("span");
+        chip.className = "message-reaction-chip";
+        chip.dataset.reaction = safeKey;
+        chip.innerHTML = `<img src="img/emoji_${safeKey}.png" alt="" aria-hidden="true"><span></span>`;
+        row.appendChild(chip);
+    }
+    chip.dataset.count = String(Math.max(1, Number(initialCount) || 1));
+    chip.dataset.userReacted = String(Boolean(userReacted));
+    chip.querySelector("span").textContent = chip.dataset.count;
+}
+
+function toggleRoomReaction(message, key) {
+    const row = ensureMessageBadgeRow(message);
+    if (!row) return;
+    const existing = row.querySelector(".message-reaction-chip");
+    if (existing?.dataset.reaction === key) {
+        const count = Number(existing.dataset.count || 1);
+        if (existing.dataset.userReacted === "true") {
+            if (count <= 1) existing.remove();
+            else {
+                existing.dataset.count = String(count - 1);
+                existing.dataset.userReacted = "false";
+                existing.querySelector("span").textContent = String(count - 1);
+            }
+        } else {
+            existing.dataset.count = String(count + 1);
+            existing.dataset.userReacted = "true";
+            existing.querySelector("span").textContent = String(count + 1);
+        }
+        return;
+    }
+    addReactionChip(message, key, 1, true);
+}
+
+function buildEmojiPicker() {
+    let picker = document.getElementById("emojiPicker");
+    if (picker) return picker;
+    picker = document.createElement("div");
+    picker.className = "emoji-picker";
+    picker.id = "emojiPicker";
+    picker.setAttribute("role", "dialog");
+    picker.setAttribute("aria-label", "Choose a reaction");
+    picker.hidden = true;
+    picker.innerHTML = emojiOptions.map(([key, label]) => `<button class="emoji-picker-item" type="button" data-reaction-key="${key}" aria-label="${label}"><img src="img/emoji_${key}.png" alt="" aria-hidden="true"></button>`).join("");
+    document.body.appendChild(picker);
+    return picker;
+}
+
+function openEmojiPicker(anchor, message) {
+    const picker = buildEmojiPicker();
+    activeEmojiAnchor = anchor;
+    activeEmojiMessage = message;
+    picker.hidden = false;
+    picker.classList.add("open");
+    const rect = anchor.getBoundingClientRect();
+    const mobile = window.matchMedia("(max-width: 600px)").matches;
+    const columns = mobile ? 6 : 12;
+    const cell = mobile ? 31 : 31;
+    const gap = 4;
+    const padding = 14;
+    const width = columns * cell + (columns - 1) * gap + padding;
+    const height = Math.ceil(24 / columns) * cell + (Math.ceil(24 / columns) - 1) * gap + padding;
+    const left = Math.max(8, Math.min(rect.left, window.innerWidth - width - 8));
+    const above = rect.top - height - 8;
+    const top = above >= 8 ? above : Math.min(window.innerHeight - height - 8, rect.bottom + 8);
+    picker.style.left = `${left}px`;
+    picker.style.top = `${Math.max(8, top)}px`;
+    requestAnimationFrame(() => picker.classList.add("visible"));
+}
+
+function closeEmojiPicker() {
+    const picker = document.getElementById("emojiPicker");
+    if (picker) {
+        picker.classList.remove("open", "visible");
+        picker.hidden = true;
+    }
+    activeEmojiAnchor = null;
+    activeEmojiMessage = null;
+}
+
+function roomReplyQuoteMarkup(reply = replyTarget) {
+    if (!reply) return "";
+    const quote = String(reply.text || "").trim();
+    return `<div class="room-reply-quote"><strong>Replying to ${escapeHTML(reply.author || "Room member")}</strong><span>${escapeHTML(quote.length > 220 ? quote.slice(0, 217) + "…" : quote)}</span></div>`;
+}
+
+function setRoomReplyTarget(message) {
+    if (!message || !isRoomMode) return;
+    const author = message.querySelector(".room-chat-meta strong")?.textContent?.trim() || "Room member";
+    const text = message.querySelector(".room-chat-bubble")?.textContent?.trim() || "";
+    if (!text) return;
+    replyTarget = { author, text };
+    replyingToName.textContent = author;
+    replyingToText.textContent = text;
+    replyingToBanner.hidden = false;
+    if (!followUpComposerLeft.classList.contains("room-depth-open")) {
+        followUpTextareaRoom.placeholder = `Reply to ${author}…`;
+    }
+    followUpTextareaRoom.focus();
+}
+
+function clearRoomReplyTarget() {
+    replyTarget = null;
+    if (replyingToBanner) replyingToBanner.hidden = true;
+    if (replyingToName) replyingToName.textContent = "";
+    if (replyingToText) replyingToText.textContent = "";
+    if (followUpTextareaRoom) {
+        followUpTextareaRoom.placeholder = isRoomMode
+            ? (followUpComposerLeft?.classList.contains("room-depth-open")
+                ? (roomDepthPlaceholders[roomDepthButtons.find(button => button.classList.contains("is-selected"))?.dataset.depth || "verified"])
+                : "Message the room…")
+            : "Ask a follow-up…";
+    }
+}
+
+function roomDateLabel(date) {
+    const today = new Date();
+    const startToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const day = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const diff = Math.round((startToday - day) / 86400000);
+    if (diff === 0) return "Today";
+    if (diff === 1) return "Yesterday";
+    return new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric", year: date.getFullYear() === today.getFullYear() ? undefined : "numeric" }).format(date);
+}
+
+function ensureRoomDateSeparators(log) {
+    if (!log) return;
+    log.querySelectorAll(":scope > .room-date-separator").forEach(separator => separator.remove());
+    const entries = Array.from(log.children).filter(element =>
+        element.matches(".room-chat-message, .room-answer")
+    );
+    let previousDay = "";
+    entries.forEach(entry => {
+        const timeElement = entry.querySelector("time[datetime]");
+        const date = timeElement ? new Date(timeElement.dateTime) : new Date();
+        if (Number.isNaN(date.getTime())) return;
+        const dayKey = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+        if (dayKey === previousDay) return;
+        previousDay = dayKey;
+        const separator = document.createElement("div");
+        separator.className = "room-date-separator";
+        separator.innerHTML = `<span>${escapeHTML(roomDateLabel(date))}</span>`;
+        log.insertBefore(separator, entry);
+    });
+}
+
+function showToast(message) {
+    contactToast.textContent = message;
+    contactToast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => contactToast.classList.remove("show"), 2200);
+}
+
+function updateScrollToBottomButton() {
+    if (!scrollToBottomButton) return;
+    const conversationIsVisible = getComputedStyle(messages).display !== "none";
+    const distanceToBottom = document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+    const visible = conversationIsVisible && distanceToBottom > 120;
+    scrollToBottomButton.classList.toggle("visible", visible);
+    scrollToBottomButton.classList.toggle("generating", visible && generationActive);
+}
+
+function scrollToLatestMessage() {
+    userScrolledAwayWhileGenerating = false;
+    isProgrammaticScroll = true;
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
+    window.setTimeout(() => { isProgrammaticScroll = false; updateScrollToBottomButton(); }, 700);
+}
+
+scrollToBottomButton.addEventListener("click", scrollToLatestMessage);
+window.addEventListener("scroll", () => {
+    const distanceToBottom = document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+    if (generationActive && distanceToBottom > 120 && !isProgrammaticScroll) userScrolledAwayWhileGenerating = true;
+    updateScrollToBottomButton();
+}, { passive: true });
+window.addEventListener("resize", updateScrollToBottomButton, { passive: true });
+
+async function copyText(text, success = "Copied to clipboard") {
+    try {
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+        } else {
+            const field = document.createElement("textarea");
+            field.value = text;
+            field.style.position = "fixed";
+            field.style.opacity = "0";
+            document.body.appendChild(field);
+            field.select();
+            document.execCommand("copy");
+            field.remove();
+        }
+        showToast(success);
+    } catch (error) {
+        showToast("Unable to copy automatically");
+    }
+}
+
+function makeShareURL(title) {
+    return `${window.location.origin}${window.location.pathname}?title=${encodeURIComponent(title || "Contact Answer")}`;
+}
+
+function getHistoryButtonFromWrap(wrap) {
+    return wrap?.querySelector(".history-item") || null;
+}
+
+function setActiveHistory(button) {
+    document.querySelectorAll(".history-item.active").forEach(item => item.classList.remove("active"));
+    if (button) button.classList.add("active");
+    activeHistoryButton = button || null;
+}
+
+function syncRoomHeaderSpace() {
+    if (!isRoomMode || roomHeader.hidden) {
+        messages.style.marginTop = "";
+        return;
+    }
+    // Account for both the fixed header's height and its top offset.
+    // This prevents the first Room messages from being covered on stacked layouts.
+    const headerRect = roomHeader.getBoundingClientRect();
+    const headerBottom = Math.ceil(headerRect.bottom);
+    messages.style.marginTop = `${headerBottom + 14}px`;
+}
+
+function setConversationVisible({ room = false } = {}) {
+    isRoomMode = room;
+    document.body.classList.toggle("room-mode", room);
+    emptyState.style.display = "none";
+    messages.style.display = "block";
+    conversationComposer.style.display = "block";
+    roomHeader.hidden = !room;
+    if (!room) messages.style.marginTop = "";
+    typingIndicator.classList.toggle("visible", room && Boolean(activeRoom?.autoAI));
+    followUpTextareaRoom.placeholder = room ? "Message the room…" : "Ask a follow-up…";
+    followUpComposerLeft.classList.remove("room-depth-open");
+    getAnswerTrigger?.setAttribute("aria-expanded", "false");
+    roomDepthButtons.forEach(button => button.style.display = "");
+    clearRoomReplyTarget();
+    requestAnimationFrame(syncRoomHeaderSpace);
+}
+
+function answerActionsHTML() {
+    return `<div class="answer-actions" data-answer-actions>
+        <button class="answer-action" data-action="copy-answer" type="button"><img class="action-icon" src="img/copy.png" alt="" aria-hidden="true"><span>Copy Answer</span></button>
+        <button class="answer-action" data-action="rate-answer" type="button"><img class="action-icon" src="img/rate_answer.png" alt="" aria-hidden="true"><span>Rate Answer</span></button>
+        <button class="answer-action" data-action="share-answer" type="button"><img class="action-icon" src="img/share.png" alt="" aria-hidden="true"><span>Share</span></button>
+        <button class="answer-action" data-action="try-again" type="button"><img class="action-icon" src="img/try_again.png" alt="" aria-hidden="true"><span>Try Again</span></button>
+        ${timestampMarkup("answer-action-time")}
+    </div>`;
+}
+
+function answerAvatarHTML() {
+    return `<div class="answer-icon"><img src="img/avatar_answer.png" alt="Contact Answer" onerror="this.style.display='none';this.parentElement.textContent='A'"></div>`;
+}
+
+function renderAnswerCard({ title, version = 1, depth = "Verified", credits = 3, heading = "Recommended approach", paragraphs = [], room = false, isLatest = true } = {}) {
+    const body = paragraphs.map(text => `<p>${escapeHTML(text)}</p>`).join("");
+    const card = document.createElement("article");
+    card.className = `message answer answer-version${room ? " room-answer" : ""}`;
+    card.dataset.answerVersion = version;
+    card.dataset.answerTitle = title || currentAnswerTitle;
+    card.innerHTML = `
+        <div class="answer-header">
+            ${answerAvatarHTML()}
+            <div class="answer-heading-copy">
+                <div class="answer-title">Contact Answer <span class="answer-version-label">Answer ${version}</span></div>
+                <div class="answer-meta">${escapeHTML(depth)} Answer · ${credits} Credits${room ? " · Shared with Room" : ""}</div>
+            </div>
+        </div>
+        <div class="answer-body">
+            <h2>${escapeHTML(heading)}</h2>
+            ${body}
+            <div class="verification"><span class="verification-dot"></span><span>Cross-model analysis completed · Evidence checks completed</span></div>
+            ${answerActionsHTML()}
+        </div>`;
+    if (isLatest) card.classList.add("answer-latest");
+    return card;
+}
+
+function renderStandardAnswer(title, kind = "answer-ready") {
+    isRoomMode = false;
+    activeRoom = null;
+    setConversationVisible({ room: false });
+    currentAnswerTitle = title || "Best database architecture for SaaS";
+    answerVersion = 1;
+    messages.innerHTML = `<div class="message message-user" data-request-depth="verified"><div class="user-bubble">${escapeHTML(currentAnswerTitle)}${currentAnswerTitle.endsWith("?") ? "" : "?"}</div><div class="user-message-footer">${timestampMarkup()}<button class="message-copy-action" type="button" data-copy-kind="user-question" aria-label="Copy question"><img src="img/copy.png" alt="" aria-hidden="true"></button></div></div><div class="standard-answer-stack" id="standardAnswerStack"></div>`;
+    const seededQuestion = messages.querySelector(".message-user");
+    ensureStandardMessageControls(seededQuestion);
+    ensureAnswerRequestBadge(seededQuestion, "verified");
+    const stack = document.getElementById("standardAnswerStack");
+    if (kind === "answer-progress") {
+        const loading = document.createElement("div");
+        loading.className = "answer-loading message";
+        loading.id = "answerLoading";
+        loading.innerHTML = `<div class="answer-header">${answerAvatarHTML()}<div><div class="answer-title">Contact Answer</div><div class="answer-meta">Contact Engine · Multi-model analysis</div></div></div><div class="loading-card"><span class="loading-spinner"></span><div><strong id="analysisStatus" aria-live="polite">Analyzing your question…</strong><p id="analysisDetail">Comparing candidate answers and checking evidence.</p><div class="loading-progress"><span></span></div></div></div>`;
+        stack.appendChild(loading);
+        startAnswerGeneration({ target: stack, title: currentAnswerTitle, room: false, depth: "Verified", duration: 7600 });
+    } else {
+        const answer = answerContentFor(title);
+        stack.appendChild(renderAnswerCard({ title: currentAnswerTitle, version: 1, depth: "Verified", credits: 3, heading: answer.heading, paragraphs: answer.paragraphs }));
+    }
+    followUpTextareaRoom.value = "";
+    followUpTextareaRoom.style.height = "76px";
+    followUpSendRoom.disabled = true;
+    typingIndicator.classList.remove("visible");
+    requestAnimationFrame(scrollToLatestMessage);
+    updateScrollToBottomButton();
+}
+
+function answerContentFor(title) {
+    const normalized = (title || "").toLowerCase();
+    if (normalized.includes("medicine") || normalized.includes("medical") || normalized.includes("health")) {
+        return {
+            heading: "A more predictive, preventive, and personalized health system",
+            paragraphs: [
+                "Over the next 20 years, AI is likely to assist clinicians with earlier detection, personalized treatment planning, faster drug discovery, and more efficient clinical trials.",
+                "Progress will depend on safe validation, representative data, privacy protections, clinical accountability, and equitable access. AI is more likely to augment most clinical teams than fully replace them.",
+                "The largest near-term gains may come from administrative automation and decision support, while high-stakes diagnosis and treatment will continue to require human oversight and prospective evidence."
+            ]
+        };
+    }
+    if (normalized.includes("model") || normalized.includes("chatgpt") || normalized.includes("gemini") || normalized.includes("claude")) {
+        return {
+            heading: "Compare models by task, not by one overall score",
+            paragraphs: [
+                "Evaluate each model against the same task-specific benchmark, using answer quality, factual reliability, latency, cost, tool support, and failure behavior.",
+                "A practical system routes simple requests to efficient models and reserves deeper multi-model verification for tasks where uncertainty or consequences justify the added cost."
+            ]
+        };
+    }
+    if (normalized.includes("training corpus") || normalized.includes("corpus")) {
+        return {
+            heading: "Store structured feedback, not just generated text",
+            paragraphs: [
+                "A useful evaluation corpus links task type, prompt context, candidate answers, disagreements, evidence, user edits, quality outcomes, latency, and cost.",
+                "Keep operational records, evaluation datasets, and any training-eligible data separated by consent, retention rules, and provider terms."
+            ]
+        };
+    }
+    if (normalized.includes("routing") || normalized.includes("architecture")) {
+        return {
+            heading: "Start simple and add complexity only when justified",
+            paragraphs: [
+                "For a typical SaaS product, start with a reliable default architecture and instrument quality, latency, and cost before adding more complex routing or verification paths.",
+                "Use task-specific routing, bounded context, clear tenant isolation, and explicit fallback behavior. Add extra model calls when their expected quality improvement justifies their cost."
+            ]
+        };
+    }
+    return {
+        heading: "A practical answer based on the available context",
+        paragraphs: [
+            "Start by defining the outcome, constraints, and evidence needed to make a useful decision. Compare realistic options against those criteria rather than relying on one general-purpose answer.",
+            "Where uncertainty remains, verify the most consequential assumptions and make the limits of the recommendation explicit."
+        ]
+    };
+}
+
+function renderMemberAvatar(member, index, compact = false) {
+    const initials = (member?.name || "?").split(/\s+/).map(part => part[0]).join("").slice(0, 2).toUpperCase();
+    if (!member) return "";
+    const avatarContent = member.avatar
+        ? `<img src="${escapeHTML(member.avatar)}" alt="${escapeHTML(member.name)}" onerror="this.remove();this.parentElement.textContent='${escapeHTML(initials)}'">`
+        : escapeHTML(initials);
+    const privateLabel = activeRoom?.hideCards || !member.publicCard;
+    return `<div class="member-avatar-wrap${compact ? " compact" : ""}" data-member-wrap="${escapeHTML(member.id)}">
+        <button class="member-avatar" style="--member-color:${member.color || "#e8edf0"}" type="button" data-member-id="${escapeHTML(member.id)}" aria-label="${escapeHTML(member.name)}" aria-expanded="false">${avatarContent}</button>
+        <div class="member-card-popover"><strong>${escapeHTML(member.name)}</strong><span>${privateLabel ? "Contact Card is not public." : "Contact Card · Member"}</span>${!privateLabel ? `<button type="button" data-action="view-card" data-member-id="${escapeHTML(member.id)}">View Contact Card</button>` : ""}${activeRoom?.owner ? `<button type="button" class="member-remove" data-action="remove-member" data-member-id="${escapeHTML(member.id)}">Remove from Room</button>` : ""}</div>
+    </div>`;
+}
+
+function renderRoomHeader() {
+    if (!activeRoom) return;
+    roomHeaderTitle.textContent = activeRoom.title;
+    const members = activeRoom.members;
+    roomMembersStrip.innerHTML = `<div class="invite-avatar-wrap"><button class="member-avatar invite-member-button" id="inviteMembersButton" type="button" aria-label="Invite members" aria-expanded="false">＋</button></div>${members.map((member, index) => renderMemberAvatar(member, index)).join("")}`;
+    requestAnimationFrame(syncRoomHeaderSpace);
+}
+
+function roomConversationHTML(room) {
+    return `<div class="room-chat-log" id="roomChatLog">
+        <div class="room-chat-message" data-author="jack" data-request-depth="deep">
+            ${renderMemberAvatar(demoMembers[0], 0, true)}
+            <div class="room-chat-content"><div class="room-chat-meta"><strong>Jack</strong></div><div class="room-chat-bubble">How might AI change medicine over the next 20 years? I’m especially interested in diagnosis and drug discovery.</div><div class="room-message-footer">${timestampMarkup("", 4, 1)}<button class="message-copy-action" type="button" data-copy-kind="room-message" aria-label="Copy message"><img src="img/copy.png" alt="" aria-hidden="true"></button><button class="message-reply-action" type="button" data-action="reply-to-message" aria-label="Reply to message"><img src="img/reply.png" alt="" aria-hidden="true"></button></div></div>
+        </div>
+        <div class="room-chat-message" data-author="tim">
+            ${renderMemberAvatar(demoMembers[1], 1, true)}
+            <div class="room-chat-content"><div class="room-chat-meta"><strong>Tim</strong></div><div class="room-chat-bubble">Earlier diagnosis seems plausible. Models could find subtle patterns across imaging, lab results, and longitudinal records, provided the data is reliable.</div><div class="room-message-footer">${timestampMarkup("", 3)}<button class="message-copy-action" type="button" data-copy-kind="room-message" aria-label="Copy message"><img src="img/copy.png" alt="" aria-hidden="true"></button><button class="message-reply-action" type="button" data-action="reply-to-message" aria-label="Reply to message"><img src="img/reply.png" alt="" aria-hidden="true"></button></div></div>
+        </div>
+        <div class="room-chat-message room-chat-message-self" data-author="you">
+            <div class="room-chat-content"><div class="room-chat-meta"><strong>You</strong></div><div class="room-chat-bubble">Drug discovery could also shorten early-stage screening, but I’m concerned about clinical validation and whether benefits reach smaller hospitals.</div><div class="room-message-footer"><button class="message-copy-action" type="button" data-copy-kind="room-message" aria-label="Copy message"><img src="img/copy.png" alt="" aria-hidden="true"></button><button class="message-reply-action" type="button" data-action="reply-to-message" aria-label="Reply to message"><img src="img/reply.png" alt="" aria-hidden="true"></button>${timestampMarkup("", 2)}</div></div>
+            <div class="room-self-avatar">N</div>
+        </div>
+        <div class="room-chat-message" data-author="maya">
+            ${renderMemberAvatar(demoMembers[2], 2, true)}
+            <div class="room-chat-content"><div class="room-chat-meta"><strong>Maya</strong></div><div class="room-chat-bubble">We should distinguish research acceleration from proven clinical benefit. Better predictions don’t automatically mean better patient outcomes.</div><div class="room-message-footer">${timestampMarkup("", 1)}<button class="message-copy-action" type="button" data-copy-kind="room-message" aria-label="Copy message"><img src="img/copy.png" alt="" aria-hidden="true"></button><button class="message-reply-action" type="button" data-action="reply-to-message" aria-label="Reply to message"><img src="img/reply.png" alt="" aria-hidden="true"></button></div></div>
+        </div>
+        ${room.autoAI ? `<div class="room-insight-hint" id="roomInsightHint"><span class="insight-sparkle">✦</span><span>Contact Answer may have a useful perspective on this discussion.</span></div>` : ""}
+        ${room.hideCards ? '<div class="room-message-note">Member Contact Cards are hidden in this Room.</div>' : ""}
+    </div>`;
+}
+
+function showRoom(roomId) {
+    const room = roomStore[roomId];
+    if (!room) return;
+    if (generationActive) stopAnswerGeneration();
+    activeRoom = room;
+    activeRoom.id = roomId;
+    setConversationVisible({ room: true });
+    renderRoomHeader();
+    messages.innerHTML = roomConversationHTML(room);
+    const roomLog = messages.querySelector("#roomChatLog");
+    if (roomLog) {
+        const seeded = answerContentFor(room.seedTitle || room.title);
+        const seedCard = renderAnswerCard({ title: room.seedTitle || room.title, version: 1, depth: "Deep", credits: 8, heading: seeded.heading, paragraphs: seeded.paragraphs, room: true });
+        const insightHint = roomLog.querySelector("#roomInsightHint");
+        if (insightHint) roomLog.insertBefore(seedCard, insightHint); else roomLog.appendChild(seedCard);
+        decorateRoomMessages(roomLog);
+        const sampleReactedMessage = roomLog.querySelector('[data-author="jack"]');
+        if (sampleReactedMessage) addReactionChip(sampleReactedMessage, "like", 2, false);
+        ensureRoomDateSeparators(roomLog);
+    }
+    followUpTextareaRoom.value = "";
+    followUpTextareaRoom.style.height = "76px";
+    followUpSendRoom.disabled = true;
+    setTypingDemo();
+    if (isMobile()) closeSidebar();
+    scrollToRoomBottom();
+}
+
+function showCreateRoomDialog(seedTitle = "") {
+    roomDraftMode = "create";
+    roomSettingsTarget = null;
+    roomSeedTitle = seedTitle;
+    roomDialogTitle.textContent = "Create a Room";
+    saveRoomSettingsButton.textContent = "Create Room";
+    roomNameInput.value = seedTitle ? `${seedTitle}` : "";
+    document.getElementById("roomAutoAI").checked = true;
+    document.getElementById("roomHideCards").checked = false;
+    roomSettingsForm.querySelector('input[name="roomCreditPayer"][value="owner"]').checked = true;
+    roomSettingsForm.querySelectorAll('input[name="allowedDepth"]').forEach(input => input.checked = true);
+    roomDialogOverlay.classList.add("open");
+    roomDialogOverlay.setAttribute("aria-hidden", "false");
+    setTimeout(() => roomNameInput.focus(), 50);
+}
+
+function showRoomSettings(room) {
+    if (!room) return;
+    roomDraftMode = "edit";
+    roomSettingsTarget = room;
+    roomSeedTitle = room.seedTitle || "";
+    roomDialogTitle.textContent = "Room settings";
+    saveRoomSettingsButton.textContent = "Save changes";
+    roomNameInput.value = room.title;
+    document.getElementById("roomAutoAI").checked = room.autoAI;
+    document.getElementById("roomHideCards").checked = room.hideCards;
+    roomSettingsForm.querySelector(`input[name="roomCreditPayer"][value="${room.payer}"]`).checked = true;
+    roomSettingsForm.querySelectorAll('input[name="allowedDepth"]').forEach(input => input.checked = room.allowedDepths.includes(input.value));
+    roomDialogOverlay.classList.add("open");
+    roomDialogOverlay.setAttribute("aria-hidden", "false");
+}
+
+function closeRoomDialog() {
+    roomDialogOverlay.classList.remove("open");
+    roomDialogOverlay.setAttribute("aria-hidden", "true");
+}
+
+function createRoomFromDraft() {
+    const title = roomNameInput.value.trim() || roomSeedTitle || "Untitled Room";
+    const id = `room-${Date.now()}`;
+    const allowedDepths = Array.from(roomSettingsForm.querySelectorAll('input[name="allowedDepth"]:checked')).map(input => input.value);
+    if (!allowedDepths.length) {
+        showToast("Select at least one answer depth");
+        return;
+    }
+    const room = {
+        id, title, owner: true,
+        autoAI: document.getElementById("roomAutoAI").checked,
+        hideCards: document.getElementById("roomHideCards").checked,
+        payer: roomSettingsForm.querySelector('input[name="roomCreditPayer"]:checked').value,
+        allowedDepths, members: demoMembers.map(member => ({ ...member })),
+        seedTitle: roomSeedTitle || title, scenario: /medicine|medical|health/i.test(title + " " + roomSeedTitle) ? "medicine" : "strategy"
+    };
+    roomStore[id] = room;
+    const items = document.querySelector('[data-section="rooms"] .history-section-items');
+    const wrap = document.createElement("div");
+    wrap.className = "history-item-wrap";
+    wrap.innerHTML = `<button class="history-item room-history-item" data-kind="room" data-roomid="${id}" data-title="${escapeHTML(title)}" type="button"><span class="room-history-icon" aria-hidden="true"><img src="img/discuss.png" alt=""></span><span class="favorite-history-title history-title-viewport">${escapeHTML(title)}</span></button><button class="history-more" type="button" aria-label="More options"><span class="history-more-dots">···</span></button>`;
+    items.prepend(wrap);
+    closeRoomDialog();
+    setActiveHistory(wrap.querySelector(".history-item"));
+    showRoom(id);
+    showToast("Room created");
+}
+
+roomSettingsForm.addEventListener("submit", event => {
+    event.preventDefault();
+    const title = roomNameInput.value.trim() || "Untitled Room";
+    const allowedDepths = Array.from(roomSettingsForm.querySelectorAll('input[name="allowedDepth"]:checked')).map(input => input.value);
+    if (!allowedDepths.length) {
+        showToast("Select at least one answer depth");
+        return;
+    }
+    if (roomDraftMode === "create") {
+        createRoomFromDraft();
+        return;
+    }
+    if (!roomSettingsTarget) return;
+    Object.assign(roomSettingsTarget, {
+        title,
+        autoAI: document.getElementById("roomAutoAI").checked,
+        hideCards: document.getElementById("roomHideCards").checked,
+        payer: roomSettingsForm.querySelector('input[name="roomCreditPayer"]:checked').value,
+        allowedDepths
+    });
+    const row = document.querySelector(`[data-roomid="${roomSettingsTarget.id}"]`);
+    if (row) {
+        row.dataset.title = title;
+        const titleSpan = row.querySelector(".history-title-viewport");
+        if (titleSpan) titleSpan.textContent = title;
+    }
+    if (activeRoom?.id === roomSettingsTarget.id) {
+        renderRoomHeader();
+        roomHeaderTitle.textContent = title;
+        const log = messages.querySelector("#roomChatLog");
+        const note = log?.querySelector(".room-message-note");
+        if (activeRoom.hideCards && log && !note) {
+            const privacyNote = document.createElement("div");
+            privacyNote.className = "room-message-note";
+            privacyNote.textContent = "Member Contact Cards are hidden in this Room.";
+            log.appendChild(privacyNote);
+        } else if (!activeRoom.hideCards) {
+            note?.remove();
+}
+        let hint = log?.querySelector("#roomInsightHint");
+        if (activeRoom.autoAI && log && !hint) {
+            hint = document.createElement("div");
+            hint.className = "room-insight-hint";
+            hint.id = "roomInsightHint";
+            hint.innerHTML = '<span class="insight-sparkle">✦</span><span>Contact Answer may have a useful perspective on this discussion.</span>';
+            note ? log.insertBefore(hint, note) : log.appendChild(hint);
+        } else if (!activeRoom.autoAI && hint) hint.remove();
+        setTypingDemo();
+    }
+    closeRoomDialog();
+    showToast("Room settings saved");
+});
+
+function setTypingDemo() {
+    clearTimeout(typingTimer);
+    clearInterval(currentTypingInterval);
+    typingIndicator.classList.remove("visible");
+    if (!isRoomMode || !activeRoom?.autoAI) return;
+    typingText.textContent = "Jack, Tim are typing…";
+    typingIndicator.classList.add("visible");
+    typingTimer = setTimeout(() => typingIndicator.classList.remove("visible"), 3200);
+}
+
+function hideHistoryMenu() {
+    historyMenu.classList.remove("open");
+    historyMenu.innerHTML = "";
+}
+
+function menuButton(action, label, icon = "") {
+    const iconFiles = { settings: "settings.png", rename: "rename.png", invite: "discuss.png", share: "share.png", favorite: "favorite.png", delete: "delete.png" };
+    const iconMarkup = iconFiles[action] ? `<img src="img/${iconFiles[action]}" alt="" aria-hidden="true">` : escapeHTML(icon);
+    return `<button class="menu-item ${action === "delete" ? "danger" : ""}" type="button" role="menuitem" data-menu-action="${action}"><span class="menu-icon ${iconFiles[action] ? "" : "menu-text-icon"}" aria-hidden="true">${iconMarkup}</span><span>${label}</span></button>`;
+}
+
+function openAccountMenu() {
+    closeFloatMenus();
+    const rect = accountAvatar.getBoundingClientRect();
+    const width = accountMenu.offsetWidth || 220;
+    accountMenu.style.left = `${Math.max(8, Math.min(rect.right - width, window.innerWidth - width - 8))}px`;
+    accountMenu.style.top = `${Math.max(8, Math.min(rect.bottom + 7, window.innerHeight - 270))}px`;
+    accountMenu.classList.add("open");
+    accountAvatar.setAttribute("aria-expanded", "true");
+}
+
+function openHistoryMenu(button, anchor) {
+    const wrap = button.closest(".history-item-wrap");
+    const row = getHistoryButtonFromWrap(wrap);
+    if (!row) return;
+    activeHistoryButton = row;
+    const isRoom = row.dataset.kind === "room";
+    const isFavorite = row.classList.contains("is-favorited") || Boolean(row.closest('[data-section="favorites"]'));
+    historyMenu.innerHTML = isRoom
+        ? `${menuButton("settings", "Settings", "⚙")} ${menuButton("invite", "Invite to discuss", "♧")} ${menuButton("share", "Share", "↗")} ${menuButton("favorite", isFavorite ? "Remove from favorites" : "Add to favorites", "☆")}<div class="menu-divider"></div>${menuButton("delete", "Delete", "⌫")}`
+        : `${menuButton("rename", "Rename", "✎")} ${menuButton("invite", "Invite to discuss", "♧")} ${menuButton("share", "Share", "↗")} ${menuButton("favorite", isFavorite ? "Remove from favorites" : "Add to favorites", "☆")}<div class="menu-divider"></div>${menuButton("delete", "Delete", "⌫")}`;
+    historyMenu.dataset.rowType = isRoom ? "room" : "answer";
+    historyMenu.dataset.roomId = row.dataset.roomid || "";
+    historyMenu.dataset.rowTitle = row.dataset.title || row.textContent.trim();
+    const rect = (anchor || button).getBoundingClientRect();
+    historyMenu.style.left = `${Math.max(8, Math.min(rect.right + 4, window.innerWidth - 230))}px`;
+    historyMenu.style.top = `${Math.max(8, Math.min(rect.top, window.innerHeight - 270))}px`;
+    historyMenu.classList.add("open");
+}
+
+function openMemberMenu(anchor) {
+    if (!activeRoom) return;
+    const membersHTML = activeRoom.members.map(member => {
+        const initials = (member?.name || "?").split(/\s+/).map(part => part[0]).join("").slice(0, 2).toUpperCase();
+        const avatar = member.avatar ? `<img src="${escapeHTML(member.avatar)}" alt="">` : initials;
+        return `<div class="member-list-row"><button class="member-list-open" type="button" data-action="view-card" data-member-id="${escapeHTML(member.id)}"><span class="member-list-avatar" style="--member-color:${member.color || "#edf0f2"}">${avatar}</span><span>${escapeHTML(member.name)}</span></button>${activeRoom.owner ? `<button class="member-list-remove" type="button" data-action="remove-member" data-member-id="${escapeHTML(member.id)}" aria-label="Remove ${escapeHTML(member.name)}"><span class="close-icon">×</span></button>` : ""}</div>`;
+    }).join("");
+    memberMenu.innerHTML = `<div class="member-menu-top"><strong>Invite people</strong><button type="button" class="dialog-close" data-close-member-menu aria-label="Close"><span class="close-icon">×</span></button></div><button class="member-invite-action" type="button" data-action="invite-link"><span class="member-action-icon"><img src="img/link.png" alt="" aria-hidden="true"></span><span>Invite via link</span></button><button class="member-invite-action" type="button" data-action="contact-card-link"><span class="member-action-icon"><img src="img/add_contact.png" alt="" aria-hidden="true"></span><span>Add Contact Card</span></button><div class="menu-divider"></div><div class="member-list-head">Members (${activeRoom.members.length})</div><div class="member-list-scroll">${membersHTML || `<p class="empty-members">No members yet.</p>`}</div><div class="menu-divider"></div><button class="member-invite-action leave-room-action" type="button" data-action="leave-room"><span class="member-action-icon"><img src="img/${activeRoom.owner ? "delete.png" : "logout.png"}" alt="" aria-hidden="true"></span><span>${activeRoom.owner ? "Dissolve room" : "Leave the room"}</span></button>`;
+    const rect = anchor.getBoundingClientRect();
+    memberMenu.style.left = `${Math.max(8, Math.min(rect.left, window.innerWidth - 300))}px`;
+    memberMenu.style.top = `${Math.max(70, Math.min(rect.bottom + 8, window.innerHeight - 490))}px`;
+    memberMenu.classList.add("open");
+}
+
+function getMemberCardPopover(button) {
+    const wrap = button?.closest(".member-avatar-wrap");
+    if (!wrap) return null;
+
+    let popover = wrap._memberCardPopover || wrap.querySelector(".member-card-popover");
+    if (!popover) return null;
+
+    // Only move Room Header popovers outside their parent stacking context.
+    if (wrap.closest(".room-header")) {
+        if (!wrap._memberCardPopover) {
+            wrap._memberCardPopover = popover;
+            popover._memberCardWrap = wrap;
+        }
+
+        if (popover.parentElement !== document.body) {
+            document.body.appendChild(popover);
+        }
+
+        popover.style.position = "fixed";
+        popover.style.zIndex = "2147483647";
+    }
+
+    return popover;
+}
+
+function positionMemberCardPopover(button) {
+    const wrap = button?.closest(".member-avatar-wrap");
+    const popover = getMemberCardPopover(button);
+    if (!wrap || !popover) return;
+
+    const rect = button.getBoundingClientRect();
+    const width = Math.min(200, window.innerWidth - 16);
+
+    popover.style.width = `${width}px`;
+    popover.style.maxWidth = `calc(100vw - 16px)`;
+    popover.style.left = "8px";
+    popover.style.top = "8px";
+    popover.style.bottom = "auto";
+    popover.style.transform = "none";
+
+    const measuredHeight = popover.offsetHeight || 136;
+    const left = Math.max(
+        8,
+        Math.min(
+            rect.left + rect.width / 2 - width / 2,
+            window.innerWidth - width - 8
+        )
+    );
+    const top = Math.max(
+        8,
+        Math.min(
+            rect.bottom - 5,
+            window.innerHeight - measuredHeight - 8
+        )
+    );
+
+    popover.style.left = `${left}px`;
+    popover.style.top = `${top}px`;
+}
+
+function closeMemberCardPopover(wrap) {
+    if (!wrap) return;
+
+    const button = wrap.querySelector(".member-avatar[data-member-id]");
+    const popover = wrap._memberCardPopover || wrap.querySelector(".member-card-popover");
+
+    wrap.classList.remove("popover-open");
+
+    if (button) {
+        button.setAttribute("aria-expanded", "false");
+    }
+
+    if (popover) {
+        popover.style.display = "none";
+    }
+}
+
+function showMemberCardPopover(button) {
+    const wrap = button?.closest(".member-avatar-wrap");
+    const popover = getMemberCardPopover(button);
+    if (!wrap || !popover) return;
+
+    const opened = !wrap.classList.contains("popover-open");
+
+    document.querySelectorAll(".member-avatar-wrap.popover-open").forEach(item => {
+        if (item !== wrap) {
+            closeMemberCardPopover(item);
+        }
+    });
+
+    document.querySelectorAll("body > .member-card-popover").forEach(item => {
+        if (item !== popover) {
+            item.style.display = "none";
+        }
+    });
+
+    if (opened) {
+        wrap.classList.add("popover-open");
+        button.setAttribute("aria-expanded", "true");
+        popover.style.display = "flex";
+        requestAnimationFrame(() => positionMemberCardPopover(button));
+    } else {
+        closeMemberCardPopover(wrap);
+    }
+
+    /* Close member popovers when clicking outside. */
+    document.addEventListener("click", event => {
+    const target = event.target;
+
+    // Keep the menu open when clicking an avatar or inside a popover.
+    if (
+        target.closest(".member-avatar-wrap .member-avatar[data-member-id]") ||
+        target.closest(".member-card-popover")
+    ) {
+        return;
+    }
+
+    // Close all open member popovers.
+    document.querySelectorAll(".member-avatar-wrap.popover-open").forEach(wrap => {
+        closeMemberCardPopover(wrap);
+    });
+
+    // Also hide portaled popovers that are no longer attached to their wrappers.
+    document.querySelectorAll("body > .member-card-popover").forEach(popover => {
+        popover.style.display = "none";
+    });
+});
+}
+
+
+/* Show and position Room Header popovers on hover. */
+document.addEventListener("pointerover", event => {
+    const button = event.target.closest(
+        ".member-avatar-wrap .member-avatar[data-member-id]"
+    );
+    if (!button) return;
+
+    const wrap = button.closest(".member-avatar-wrap");
+    if (!wrap?.closest(".room-header")) {
+        requestAnimationFrame(() => positionMemberCardPopover(button));
+        return;
+    }
+
+    const popover = getMemberCardPopover(button);
+    if (!popover) return;
+
+    popover.style.display = "flex";
+    requestAnimationFrame(() => positionMemberCardPopover(button));
+}, true);
+
+/* Close a hover popover when the pointer leaves both the avatar and its popover. */
+document.addEventListener("pointerout", event => {
+    const button = event.target.closest(
+        ".member-avatar-wrap .member-avatar[data-member-id]"
+    );
+    if (!button) return;
+
+    const wrap = button.closest(".member-avatar-wrap");
+    if (!wrap?.closest(".room-header")) return;
+
+    const popover = getMemberCardPopover(button);
+    if (!popover) return;
+
+    if (
+        event.relatedTarget &&
+        (button.contains(event.relatedTarget) || popover.contains(event.relatedTarget))
+    ) {
+        return;
+    }
+
+    if (!wrap.classList.contains("popover-open")) {
+        popover.style.display = "none";
+    }
+}, true);
+
+/* Keep keyboard focus positioning. */
+document.addEventListener("focusin", event => {
+    const button = event.target.closest(
+        ".member-avatar-wrap .member-avatar[data-member-id]"
+    );
+    if (!button) return;
+
+    const wrap = button.closest(".member-avatar-wrap");
+    const popover = getMemberCardPopover(button);
+
+    if (wrap?.closest(".room-header") && popover) {
+        popover.style.display = "flex";
+    }
+
+    requestAnimationFrame(() => positionMemberCardPopover(button));
+}, true);
+
+function repositionVisibleMemberCardPopovers() {
+    document.querySelectorAll(
+        ".member-avatar-wrap.popover-open .member-avatar[data-member-id]"
+    ).forEach(button => {
+        positionMemberCardPopover(button);
+    });
+}
+
+window.addEventListener("scroll", repositionVisibleMemberCardPopovers, true);
+
+window.addEventListener("resize", () => {
+    repositionVisibleMemberCardPopovers();
+    syncRoomHeaderSpace();
+});
+
+function openAnswerActionMenu(button, action) {
+    activeActionAnchor = button;
+    const rect = button.getBoundingClientRect();
+    let content = "";
+    if (action === "rate-answer") {
+        content = `<button class="menu-item" data-action="rate-good" type="button"><span class="action-menu-icon"><img src="img/good_answer.png" alt="" aria-hidden="true"></span><span>Good Answer</span></button><button class="menu-item" data-action="rate-bad" type="button"><span class="action-menu-icon"><img src="img/bad_answer.png" alt="" aria-hidden="true"></span><span>Bad Answer</span></button>`;
+    } else if (action === "try-again") {
+        content = `<div class="action-menu-title">Generate another answer</div>${["verified", "deep", "research"].map(depth => `<button class="menu-item" data-action="regenerate" data-depth="${depth}" type="button"><span class="action-menu-icon"><img src="img/${depth}.png" alt="" aria-hidden="true"></span><span>${depth[0].toUpperCase() + depth.slice(1)}</span><span class="menu-option-cost">${depth === "verified" ? "1–3" : depth === "deep" ? "5–10" : "20–50"} Credits</span></button>`).join("")}`;
+    } else if (action === "share-answer") {
+        content = `<button class="menu-item" data-action="share-copy" type="button"><span class="action-menu-icon"><img src="img/link.png" alt="" aria-hidden="true"></span><span>Copy link</span></button><button class="menu-item" data-action="share-x" type="button"><span class="action-menu-icon"><img src="img/x.png" alt="" aria-hidden="true"></span><span>X</span></button><button class="menu-item" data-action="share-linkedin" type="button"><span class="action-menu-icon"><img src="img/linkedin.png" alt="" aria-hidden="true"></span><span>LinkedIn</span></button><button class="menu-item" data-action="share-reddit" type="button"><span class="action-menu-icon"><img src="img/reddit.png" alt="" aria-hidden="true"></span><span>Reddit</span></button>`;
+    }
+    answerActionMenu.innerHTML = content;
+    answerActionMenu.style.left = `${Math.max(8, Math.min(rect.left, window.innerWidth - 235))}px`;
+    answerActionMenu.style.top = `${Math.max(8, Math.min(rect.bottom + 6, window.innerHeight - 240))}px`;
+    answerActionMenu.classList.add("open");
+}
+
+function closeFloatMenus() {
+    hideHistoryMenu();
+    accountMenu.classList.remove("open");
+    accountAvatar.setAttribute("aria-expanded", "false");
+    memberMenu.classList.remove("open");
+    answerActionMenu.classList.remove("open");
+    document.querySelectorAll(".member-avatar-wrap.popover-open").forEach(wrap => wrap.classList.remove("popover-open"));
+}
+
+function findAnswerCardFromAction(button) {
+    return button.closest(".answer");
+}
+
+function stopAnswerGeneration() {
+    if (generationTimer) clearTimeout(generationTimer);
+    if (generationInterval) clearInterval(generationInterval);
+    generationTimer = null;
+    generationInterval = null;
+    generationActive = false;
+    updateScrollToBottomButton();
+    document.querySelectorAll(".send-button").forEach(button => {
+        button.classList.remove("is-stop");
+        button.textContent = "⇧";
+        button.setAttribute("aria-label", "Send");
+        const textarea = button.closest(".composer")?.querySelector(".question");
+        button.disabled = !textarea?.value.trim();
+    });
+}
+
+function startAnswerGeneration({ target, title, room, depth = "Verified", duration = 6500 }) {
+    stopAnswerGeneration();
+    userScrolledAwayWhileGenerating = false;
+    generationActive = true;
+    updateScrollToBottomButton();
+    document.querySelectorAll(".send-button").forEach(button => {
+        button.classList.add("is-stop");
+        button.textContent = "■";
+        button.setAttribute("aria-label", "Stop generating");
+        button.disabled = false;
+    });
+    const status = target.querySelector("#analysisStatus");
+    const detail = target.querySelector("#analysisDetail");
+    const stages = room ? [
+        ["Reading the Room context…", "Collecting the questions, messages, and perspectives shared by members."],
+        ["Routing analysis across AI models…", "Contact Engine is assigning the discussion to complementary reasoning paths."],
+        ["Comparing independent answers…", "Checking where model conclusions agree and where they differ."],
+        ["Checking claims and evidence…", "Reviewing important assertions and the support available for them."],
+        ["Resolving conflicting conclusions…", "Re-examining differences before combining the findings."],
+        ["Synthesizing the Room answer…", "Preparing one structured answer for everyone in this discussion."]
+    ] : [
+        ["Understanding your question…", "Extracting the main request, context, and constraints."],
+        ["Routing analysis across AI models…", "Contact Engine is selecting complementary reasoning paths for this request."],
+        ["Comparing independent answers…", "Checking conclusions for consistency and meaningful disagreement."],
+        ["Checking claims and evidence…", "Reviewing key assertions and supporting information."],
+        ["Resolving conflicting conclusions…", "Reassessing differences before producing a final answer."],
+        ["Synthesizing the answer…", "Organizing the strongest supported findings into one answer."]
+    ];
+    let stage = 0;
+    if (status && detail) {
+        status.textContent = stages[0][0];
+        detail.textContent = stages[0][1];
+        generationInterval = setInterval(() => {
+            stage = (stage + 1) % stages.length;
+            status.textContent = stages[stage][0];
+            detail.textContent = stages[stage][1];
+        }, 1050);
+    }
+    generationTimer = setTimeout(() => {
+        if (!generationActive) return;
+        stopAnswerGeneration();
+        if (!target.isConnected) return;
+        const result = answerContentFor(title);
+        const oldLoading = target.querySelector("#answerLoading");
+        const nextVersion = room ? nextRoomAnswerVersion() : target.querySelectorAll(".answer-version").length + 1;
+        const card = renderAnswerCard({ title, version: nextVersion, depth, credits: depth === "Verified" ? 3 : depth === "Deep" ? 8 : 30, heading: result.heading, paragraphs: result.paragraphs, room });
+        if (oldLoading) oldLoading.replaceWith(card);
+        else target.appendChild(card);
+        if (room) ensureRoomDateSeparators(target);
+        if (room) showToast(`${depth} answer added to the Room`);
+        if (!userScrolledAwayWhileGenerating) scrollToLatestMessage();
+        else updateScrollToBottomButton();
+    }, duration);
+}
+
+function nextRoomAnswerVersion() {
+    const count = messages.querySelectorAll(".room-answer").length;
+    return count + 1;
+}
+
+function scrollToRoomBottom() {
+    requestAnimationFrame(scrollToLatestMessage);
+}
+
+function requestRoomAnswer(depth) {
+    if (!activeRoom) return;
+    if (!activeRoom.allowedDepths.includes(depth)) {
+        showToast("This answer depth is disabled for the Room");
+        return;
+    }
+    const prompt = followUpTextareaRoom.value.trim();
+    const stack = messages.querySelector("#roomChatLog") || messages;
+    if (prompt) {
+        const you = document.createElement("div");
+        you.className = "room-chat-message room-chat-message-self";
+        you.dataset.requestDepth = depth;
+        you.innerHTML = `<div class="room-chat-content"><div class="room-chat-meta"><strong>You</strong></div>${roomReplyQuoteMarkup()}<div class="room-chat-bubble">${escapeHTML(prompt)}</div><div class="room-message-footer">${timestampMarkup()}<button class="message-copy-action" type="button" data-copy-kind="room-message" aria-label="Copy message"><img src="img/copy.png" alt="" aria-hidden="true"></button><button class="message-reply-action" type="button" data-action="reply-to-message" aria-label="Reply to message"><img src="img/reply.png" alt="" aria-hidden="true"></button></div></div><div class="room-self-avatar">N</div>`;
+        stack.appendChild(you);
+        ensureRoomMessageControls(you);
+        ensureAnswerRequestBadge(you, depth);
+        clearRoomReplyTarget();
+        followUpTextareaRoom.value = "";
+        followUpTextareaRoom.style.height = "76px";
+        followUpSendRoom.disabled = true;
+        ensureRoomDateSeparators(stack);
+    }
+    const loading = document.createElement("div");
+    loading.className = "answer-loading message room-loading";
+    loading.id = "answerLoading";
+    loading.innerHTML = `<div class="answer-header">${answerAvatarHTML()}<div><div class="answer-title">Contact Answer</div><div class="answer-meta">Contact Engine · ${depth} analysis for everyone</div></div></div><div class="loading-card"><span class="loading-spinner"></span><div><strong id="analysisStatus" aria-live="polite">Analyzing the discussion…</strong><p id="analysisDetail">Reading the Room context and comparing perspectives.</p><div class="loading-progress"><span></span></div></div></div>`;
+    stack.appendChild(loading);
+    followUpComposerLeft.classList.remove("room-depth-open");
+    followUpTextareaRoom.placeholder = "Message the room…";
+    roomDepthButtons.forEach(button => button.style.display = "none");
+    getAnswerTrigger?.setAttribute("aria-expanded", "false");
+    startAnswerGeneration({ target: stack, title: prompt || activeRoom.seedTitle || activeRoom.title, room: true, depth: depth[0].toUpperCase() + depth.slice(1), duration: depth === "research" ? 7600 : depth === "deep" ? 5600 : 4200 });
+    scrollToRoomBottom();
+}
+
+function handleHistorySelection(button) {
+    if (generationActive) stopAnswerGeneration();
+    setActiveHistory(button);
+    closeFloatMenus();
+    if (button.dataset.kind === "room") {
+        showRoom(button.dataset.roomid);
+    } else {
+        const title = button.dataset.title || button.textContent.trim();
+        currentAnswerTitle = title;
+        renderStandardAnswer(title, button.dataset.kind || "answer-ready");
+    }
+    if (isMobile()) closeSidebar();
+}
+
+function addToFavorites(row) {
+    if (!row) return;
+    const isFav = row.classList.contains("is-favorited") || Boolean(row.closest('[data-section="favorites"]'));
+    if (isFav) {
+        row.classList.remove("is-favorited", "favorite-history-item");
+        row.querySelector(".history-favorite-icon")?.remove();
+        const recents = document.querySelector('[data-section="recents"] .history-section-items');
+        if (recents && row.closest('[data-section="favorites"]')) recents.prepend(row.closest(".history-item-wrap"));
+        showToast("Removed from Favorites");
+        return;
+    }
+    row.classList.add("is-favorited", "favorite-history-item");
+    const titleSpan = row.querySelector(".history-title-viewport");
+    if (titleSpan && !row.querySelector(".history-favorite-icon")) {
+        const icon = document.createElement("img");
+        icon.className = "history-favorite-icon";
+        icon.src = "img/favorite.png";
+        icon.alt = "";
+        icon.setAttribute("aria-hidden", "true");
+        row.insertBefore(icon, titleSpan);
+    }
+    const favorites = document.querySelector('[data-section="favorites"] .history-section-items');
+    if (favorites && !row.closest('[data-section="favorites"]')) favorites.prepend(row.closest(".history-item-wrap"));
+    showToast("Added to Favorites");
+}
+
+function removeRoomMember(memberId) {
+    if (!activeRoom || !activeRoom.owner) return;
+    activeRoom.members = activeRoom.members.filter(member => member.id !== memberId);
+    renderRoomHeader();
+    openMemberMenu(document.getElementById("inviteMembersButton"));
+    showToast("Member removed");
+}
+
+function handleMenuAction(action, target) {
+    const row = activeHistoryButton;
+    const title = row?.dataset.title || currentAnswerTitle;
+    if (action === "rename" && row) {
+        const updated = prompt("Rename answer", title);
+        if (updated?.trim()) {
+            row.dataset.title = updated.trim();
+            const span = row.querySelector(".history-title-viewport");
+            if (span) span.textContent = updated.trim();
+            showToast("Answer renamed");
+        }
+    } else if (action === "settings") {
+        showRoomSettings(roomStore[row?.dataset.roomid] || activeRoom);
+    } else if (action === "invite") {
+        if (row?.dataset.kind === "room") {
+            if (!activeRoom || activeRoom.id !== row.dataset.roomid) activeRoom = roomStore[row.dataset.roomid];
+            const rectAnchor = row.closest(".history-item-wrap")?.querySelector(".history-more") || row;
+            hideHistoryMenu();
+            openMemberMenu(rectAnchor);
+        } else {
+            hideHistoryMenu();
+            showCreateRoomDialog(title);
+        }
+    } else if (action === "share") {
+        const isRoom = row?.dataset.kind === "room";
+        historyMenu.innerHTML = `<div class="action-menu-title">Share ${isRoom ? "Room" : "Answer"}</div><button class="menu-item" data-menu-action="copy-link" type="button">Copy link</button><button class="menu-item" data-menu-action="share-x" type="button">X</button><button class="menu-item" data-menu-action="share-linkedin" type="button">LinkedIn</button><button class="menu-item" data-menu-action="share-reddit" type="button">Reddit</button>`;
+    } else if (action === "copy-link") {
+        copyText(makeShareURL(title), "Link copied");
+        hideHistoryMenu();
+    } else if (["share-x", "share-linkedin", "share-reddit"].includes(action)) {
+        const url = makeShareURL(title);
+        const text = encodeURIComponent(title);
+        const targetURL = action === "share-x" ? `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(url)}` : action === "share-linkedin" ? `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}` : `https://www.reddit.com/submit?url=${encodeURIComponent(url)}&title=${text}`;
+        window.open(targetURL, "_blank", "noopener,noreferrer");
+        hideHistoryMenu();
+    } else if (action === "favorite" && row) {
+        addToFavorites(row);
+        hideHistoryMenu();
+    } else if (action === "delete" && row) {
+        const roomId = row.dataset.roomid;
+        if (roomId) delete roomStore[roomId];
+        row.closest(".history-item-wrap")?.remove();
+        hideHistoryMenu();
+        if (roomId && activeRoom?.id === roomId) newAnswer.click();
+        showToast("Deleted");
+    }
+}
+
+/* Room Enter submits a member message; Shift+Enter keeps a newline. */
+document.addEventListener("keydown", event => {
+    if (event.target === followUpTextareaRoom && event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        if (followUpTextareaRoom.value.trim() || generationActive) followUpSendRoom.click();
+    }
+}, true);
+
+/* All interactive additions are delegated in capture phase to avoid double-running the original demo handlers. */
+document.addEventListener("click", event => {
+    const pickerItem = event.target.closest("#emojiPicker [data-reaction-key]");
+    if (pickerItem) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        if (activeEmojiMessage) toggleRoomReaction(activeEmojiMessage, pickerItem.dataset.reactionKey);
+        closeEmojiPicker();
+        return;
+    }
+
+    const quickReaction = event.target.closest(".emoji-quick-reaction[data-reaction-key]");
+    if (quickReaction) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        const roomMessage = quickReaction.closest(".room-chat-message");
+        if (roomMessage) toggleRoomReaction(roomMessage, quickReaction.dataset.reactionKey);
+        closeEmojiPicker();
+        return;
+    }
+
+    const emojiExpand = event.target.closest(".emoji-quick-expand");
+    if (emojiExpand) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        const roomMessage = emojiExpand.closest(".room-chat-message");
+        const anchor = emojiExpand.closest(".emoji-action-wrap")?.querySelector(".message-emoji-action") || emojiExpand;
+        if (roomMessage) openEmojiPicker(anchor, roomMessage);
+        return;
+    }
+
+    const emojiTrigger = event.target.closest(".message-emoji-action");
+    if (emojiTrigger) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        const roomMessage = emojiTrigger.closest(".room-chat-message");
+        if (roomMessage) openEmojiPicker(emojiTrigger, roomMessage);
+        return;
+    }
+
+    const editMessageButton = event.target.closest("[data-message-edit]");
+    if (editMessageButton) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        const roomMessage = editMessageButton.closest(".room-chat-message");
+        const bubble = roomMessage?.querySelector(".room-chat-bubble");
+        if (bubble) {
+            const updated = prompt("Edit message", bubble.textContent.trim());
+            if (updated !== null && updated.trim()) {
+                bubble.textContent = updated.trim();
+                showToast("Message updated");
+            }
+        }
+        return;
+    }
+
+    const deleteMessageButton = event.target.closest("[data-message-delete]");
+    if (deleteMessageButton) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        const roomMessage = deleteMessageButton.closest(".room-chat-message");
+        if (roomMessage && confirm("Delete this message?")) {
+            const log = roomMessage.closest(".room-chat-log");
+            roomMessage.remove();
+            ensureRoomDateSeparators(log);
+            showToast("Message deleted");
+        }
+        return;
+    }
+
+    const forwardQuestionButton = event.target.closest("[data-message-forward]");
+    if (forwardQuestionButton) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        const userMessage = forwardQuestionButton.closest(".message-user");
+        const text = userMessage?.querySelector(".user-bubble")?.textContent?.trim();
+        if (text) copyText(makeShareURL(text), "Question link copied");
+        return;
+    }
+
+    if (!event.target.closest("#emojiPicker") && !event.target.closest(".emoji-action-wrap")) closeEmojiPicker();
+
+    const accountTrigger = event.target.closest("#accountAvatar");
+    if (accountTrigger) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        if (accountMenu.classList.contains("open")) closeFloatMenus();
+        else openAccountMenu();
+        return;
+    }
+
+    if (event.target.closest("#accountMenu a")) {
+        accountMenu.classList.remove("open");
+        accountAvatar.setAttribute("aria-expanded", "false");
+        return;
+    }
+
+    const messageCopy = event.target.closest(".message-copy-action[data-copy-kind]");
+    if (messageCopy) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        const kind = messageCopy.dataset.copyKind;
+        const root = kind === "room-message" ? messageCopy.closest(".room-chat-message") : messageCopy.closest(".message-user");
+        const text = kind === "room-message" ? root?.querySelector(".room-chat-bubble")?.innerText : root?.querySelector(".user-bubble")?.innerText;
+        if (text) copyText(text.trim(), kind === "room-message" ? "Message copied" : "Question copied");
+        return;
+    }
+
+    const sectionToggle = event.target.closest(".section-toggle");
+    if (sectionToggle) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        const section = sectionToggle.closest(".history-section");
+        const items = section?.querySelector(".history-section-items");
+        if (items) {
+            const open = sectionToggle.getAttribute("aria-expanded") !== "false";
+            sectionToggle.setAttribute("aria-expanded", String(!open));
+            section?.classList.toggle("collapsed", open);
+        }
+        return;
+    }
+
+    const historyMore = event.target.closest(".history-more");
+    if (historyMore) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+        openHistoryMenu(historyMore, historyMore);
+        return;
+    }
+
+    const historyItem = event.target.closest(".history-item");
+    if (historyItem) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        handleHistorySelection(historyItem);
+        return;
+    }
+
+    if (event.target.closest("#newRoom")) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        showCreateRoomDialog("");
+        return;
+    }
+
+    if (event.target.closest("#newAnswer")) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        if (generationActive) stopAnswerGeneration();
+        isRoomMode = false;
+        activeRoom = null;
+        document.body.classList.remove("room-mode");
+        roomHeader.hidden = true;
+        emptyState.style.display = "flex";
+        messages.style.display = "none";
+        conversationComposer.style.display = "none";
+        question.value = "";
+        question.style.height = "76px";
+        sendButton.disabled = true;
+        followUpTextareaRoom.value = "";
+        followUpTextareaRoom.style.height = "76px";
+        followUpSendRoom.disabled = true;
+        closeFloatMenus();
+        if (isMobile()) closeSidebar();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        setTimeout(() => question.focus(), 100);
+        updateScrollToBottomButton();
+        return;
+    }
+
+    if (event.target.closest("#roomHeaderMore")) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        if (!activeRoom) return;
+        const rect = roomHeaderMore.getBoundingClientRect();
+        const roomRow = document.querySelector(`[data-roomid="${activeRoom.id}"]`);
+        const roomMore = roomRow?.closest(".history-item-wrap")?.querySelector(".history-more");
+        if (roomRow && roomMore) {
+            activeHistoryButton = roomRow;
+            openHistoryMenu(roomMore, roomHeaderMore);
+        } else {
+            historyMenu.innerHTML = `${menuButton("settings", "Settings", "⚙")} ${menuButton("invite", "Invite to discuss", "♧")} ${menuButton("share", "Share", "↗")} ${menuButton("favorite", "Add to favorites", "☆")}<div class="menu-divider"></div>${menuButton("delete", "Delete", "⌫")}`;
+            historyMenu.dataset.rowType = "room"; historyMenu.dataset.roomId = activeRoom.id; historyMenu.dataset.rowTitle = activeRoom.title;
+            historyMenu.style.left = `${Math.max(8, Math.min(rect.right + 4, window.innerWidth - 230))}px`;
+            historyMenu.style.top = `${Math.max(8, Math.min(rect.top, window.innerHeight - 270))}px`;
+            historyMenu.classList.add("open");
+        }
+        return;
+    }
+
+    const closeDialog = event.target.closest("[data-close-dialog]");
+    if (closeDialog) { event.preventDefault(); closeRoomDialog(); return; }
+
+    if (event.target === roomDialogOverlay) { closeRoomDialog(); return; }
+
+    const inviteMembers = event.target.closest("#inviteMembersButton");
+    if (inviteMembers) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        memberMenu.classList.contains("open") ? memberMenu.classList.remove("open") : openMemberMenu(inviteMembers);
+        return;
+    }
+
+    const memberAvatar = event.target.closest(".member-avatar[data-member-id]");
+    if (memberAvatar) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        showMemberCardPopover(memberAvatar);
+        return;
+    }
+
+    const memberMenuClose = event.target.closest("[data-close-member-menu]");
+    if (memberMenuClose) { memberMenu.classList.remove("open"); return; }
+
+    const menuItem = event.target.closest("[data-menu-action]");
+    if (menuItem && historyMenu.contains(menuItem)) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        handleMenuAction(menuItem.dataset.menuAction, menuItem);
+        return;
+    }
+
+    const cancelReply = event.target.closest("#cancelRoomReply");
+    if (cancelReply) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        clearRoomReplyTarget();
+        followUpTextareaRoom.focus();
+        return;
+    }
+
+    const memberAction = event.target.closest("[data-action]");
+    if (memberAction) {
+        const action = memberAction.dataset.action;
+        if (action === "reply-to-message") {
+            event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+            const message = memberAction.closest(".room-chat-message");
+            setRoomReplyTarget(message);
+            return;
+        }
+        if (action === "view-card") {
+            event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+            const member = activeRoom?.members.find(person => person.id === memberAction.dataset.memberId) || demoMembers.find(person => person.id === memberAction.dataset.memberId);
+            if (!member) return;
+            if (activeRoom.hideCards || !member.publicCard) showToast("Contact Card is not public");
+            else window.open(`https://card.contact/${encodeURIComponent(member.username)}`, "_blank", "noopener,noreferrer");
+            return;
+        }
+        if (action === "remove-member") {
+            event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+            removeRoomMember(memberAction.dataset.memberId);
+            return;
+        }
+        if (action === "invite-link") {
+            event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+            copyText(makeShareURL(activeRoom?.title || "Room") + "&join=" + encodeURIComponent(activeRoom?.id || "room"), "Room invite link copied");
+            return;
+        }
+        if (action === "contact-card-link") {
+            event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+            copyText("https://card.contact/username", "Contact Card link copied");
+            return;
+        }
+        if (action === "leave-room") {
+            event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+            const owner = activeRoom?.owner;
+            if (confirm(owner ? "Dissolve this Room?" : "Leave this Room?")) {
+                const id = activeRoom?.id;
+                if (id) {
+                    delete roomStore[id];
+                    document.querySelector(`[data-roomid="${id}"]`)?.closest(".history-item-wrap")?.remove();
+                }
+                memberMenu.classList.remove("open");
+                newAnswer.click();
+                showToast(owner ? "Room dissolved" : "Left Room");
+            }
+            return;
+        }
+        if (action === "open-room-depths") {
+            event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+            followUpComposerLeft.classList.add("room-depth-open");
+            getAnswerTrigger?.setAttribute("aria-expanded", "true");
+            roomDepthButtons.forEach(button => {
+                button.style.display = activeRoom?.allowedDepths.includes(button.dataset.depth) ? "flex" : "none";
+            });
+            followUpTextareaRoom.focus();
+            return;
+        }
+    }
+
+const getAnswer = event.target.closest(".get-answer-trigger");
+
+if (getAnswer && isRoomMode) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    const opening =
+        !followUpComposerLeft.classList.contains("room-depth-open");
+
+    followUpComposerLeft.classList.toggle("room-depth-open", opening);
+    getAnswer.setAttribute("aria-expanded", String(opening));
+
+    const selectedDepth =
+        roomDepthButtons.find(button =>
+            button.classList.contains("is-selected")
+        )?.dataset.depth || "verified";
+
+    followUpTextareaRoom.placeholder = opening
+        ? roomDepthPlaceholders[selectedDepth]
+        : "Message the room…";
+
+    roomDepthButtons.forEach(button => {
+        button.style.display =
+            opening && activeRoom?.allowedDepths.includes(button.dataset.depth)
+                ? "flex"
+                : "none";
+    });
+
+    followUpSendRoom.disabled =
+        !followUpTextareaRoom.value.trim();
+
+    if (opening) {
+        followUpTextareaRoom.focus();
+    }
+
+    return;
+}
+
+
+const closeDepths = event.target.closest(".close-room-depths");
+
+if (
+    closeDepths &&
+    isRoomMode &&
+    followUpComposerLeft.classList.contains("room-depth-open")
+) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    followUpComposerLeft.classList.remove("room-depth-open");
+
+    getAnswerTrigger?.setAttribute("aria-expanded", "false");
+
+    roomDepthButtons.forEach(button => {
+        button.style.display = "none";
+    });
+
+    followUpTextareaRoom.placeholder = "Message the room…";
+
+    followUpSendRoom.disabled =
+        !followUpTextareaRoom.value.trim();
+
+    followUpTextareaRoom.focus();
+
+    return;
+}
+
+
+const depthButton = event.target.closest(
+    "#conversationComposer .tool-button[data-depth]"
+);
+
+if (
+    depthButton &&
+    isRoomMode &&
+    followUpComposerLeft.classList.contains("room-depth-open")
+) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    const depth = depthButton.dataset.depth;
+
+    roomDepthButtons.forEach(button => {
+        const selected = button.dataset.depth === depth;
+
+        button.classList.toggle("is-selected", selected);
+        button.setAttribute("aria-pressed", String(selected));
+    });
+
+    followUpTextareaRoom.placeholder =
+        roomDepthPlaceholders[depth] ||
+        roomDepthPlaceholders.verified;
+
+    followUpSendRoom.disabled =
+        !followUpTextareaRoom.value.trim();
+
+    followUpTextareaRoom.focus();
+
+    return;
+}
+
+    const send = event.target.closest("#conversationComposer .send-button, #sendButton");
+    if (send && generationActive) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        stopAnswerGeneration();
+        const loading = document.getElementById("answerLoading");
+        if (loading) {
+            const status = loading.querySelector("#analysisStatus");
+            const detail = loading.querySelector("#analysisDetail");
+            if (status) status.textContent = "Analysis stopped";
+            if (detail) detail.textContent = "You can restart the request whenever you’re ready.";
+            loading.classList.add("is-stopped");
+        }
+        showToast("Answer generation stopped");
+        return;
+    }
+
+        if (send && isRoomMode && followUpComposerLeft.classList.contains("room-depth-open")) {
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+
+            const selectedDepth =
+            roomDepthButtons.find(button => button.classList.contains("is-selected"))?.dataset.depth || "verified";
+
+            requestRoomAnswer(selectedDepth);
+            return;
+    }
+
+    if (send && isRoomMode) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        const value = followUpTextareaRoom.value.trim();
+        if (!value) return;
+        const log = document.getElementById("roomChatLog");
+        if (log) {
+            const message = document.createElement("div");
+            message.className = "room-chat-message room-chat-message-self";
+            message.innerHTML = `<div class="room-chat-content"><div class="room-chat-meta"><strong>You</strong></div>${roomReplyQuoteMarkup()}<div class="room-chat-bubble">${escapeHTML(value)}</div><div class="room-message-footer"><button class="message-copy-action" type="button" data-copy-kind="room-message" aria-label="Copy message"><img src="img/copy.png" alt="" aria-hidden="true"></button><button class="message-reply-action" type="button" data-action="reply-to-message" aria-label="Reply to message"><img src="img/reply.png" alt="" aria-hidden="true"></button>${timestampMarkup()}</div></div><div class="room-self-avatar">N</div>`;
+            log.appendChild(message);
+            ensureRoomMessageControls(message);
+            ensureMessageBadgeRow(message);
+            clearRoomReplyTarget();
+            ensureRoomDateSeparators(log);
+        }
+        followUpTextareaRoom.value = "";
+        followUpTextareaRoom.style.height = "76px";
+        followUpSendRoom.disabled = true;
+        if (activeRoom?.autoAI) {
+            const hint = document.getElementById("roomInsightHint");
+            if (hint) hint.classList.add("hint-pulse");
+        }
+        scrollToRoomBottom();
+        return;
+    }
+
+    if (send && send.matches("#conversationComposer .send-button") && !isRoomMode && !generationActive) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        const value = followUpTextareaRoom.value.trim();
+        if (!value) return;
+        let stack = messages.querySelector(".standard-answer-stack");
+        if (!stack) {
+            stack = document.createElement("div");
+            stack.className = "standard-answer-stack";
+            messages.appendChild(stack);
+        }
+        const depth = document.querySelector("#conversationComposer .tool-button.is-selected")?.dataset.depth || "verified";
+        const prompt = document.createElement("div");
+        prompt.className = "message message-user";
+        prompt.dataset.requestDepth = depth;
+        prompt.innerHTML = `<div class="user-bubble">${escapeHTML(value)}</div><div class="user-message-footer">${timestampMarkup()}<button class="message-copy-action" type="button" data-copy-kind="user-question" aria-label="Copy question"><img src="img/copy.png" alt="" aria-hidden="true"></button></div>`;
+        stack.appendChild(prompt);
+        ensureStandardMessageControls(prompt);
+        ensureAnswerRequestBadge(prompt, depth);
+        const depthLabel = depth[0].toUpperCase() + depth.slice(1);
+        const loading = document.createElement("div");
+        loading.className = "answer-loading message";
+        loading.id = "answerLoading";
+        loading.innerHTML = `<div class="answer-header">${answerAvatarHTML()}<div><div class="answer-title">Contact Answer</div><div class="answer-meta">Contact Engine · Multi-model analysis</div></div></div><div class="loading-card"><span class="loading-spinner"></span><div><strong id="analysisStatus" aria-live="polite">Analyzing your follow-up…</strong><p id="analysisDetail">Checking the new question against the conversation context.</p><div class="loading-progress"><span></span></div></div></div>`;
+        stack.appendChild(loading);
+        followUpTextareaRoom.value = "";
+        followUpTextareaRoom.style.height = "76px";
+        followUpSendRoom.disabled = true;
+        startAnswerGeneration({ target: stack, title: value, room: false, depth: depthLabel, duration: depth === "research" ? 7600 : depth === "deep" ? 5600 : 4200 });
+        scrollToLatestMessage();
+        return;
+    }
+
+    const answerAction = event.target.closest(".answer-action[data-action]");
+    if (answerAction) {
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        const action = answerAction.dataset.action;
+        const card = findAnswerCardFromAction(answerAction);
+        if (action === "copy-answer") {
+            const body = card?.querySelector(".answer-body");
+            const copy = body?.cloneNode(true);
+            copy?.querySelectorAll(".answer-actions, .verification").forEach(element => element.remove());
+            copyText(copy?.innerText?.trim() || currentAnswerTitle, "Answer copied");
+        } else if (["rate-answer", "try-again", "share-answer"].includes(action)) {
+            openAnswerActionMenu(answerAction, action);
+        }
+        return;
+    }
+
+    if (answerActionMenu.contains(event.target)) {
+        const actionItem = event.target.closest("[data-action]");
+        if (!actionItem) return;
+        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        const action = actionItem.dataset.action;
+        const card = activeActionAnchor?.closest(".answer");
+        if (action === "rate-good" || action === "rate-bad") {
+            answerActionMenu.classList.remove("open");
+            if (activeActionAnchor) activeActionAnchor.classList.add("rated");
+            showToast(action === "rate-good" ? "Thanks for your feedback" : "Feedback recorded");
+        } else if (action === "regenerate") {
+            answerActionMenu.classList.remove("open");
+            const depth = actionItem.dataset.depth;
+            const parent = card?.parentElement || messages.querySelector(".standard-answer-stack") || messages;
+            const loading = document.createElement("div");
+            loading.className = "answer-loading message";
+            loading.id = "answerLoading";
+            loading.innerHTML = `<div class="answer-header">${answerAvatarHTML()}<div><div class="answer-title">Contact Answer</div><div class="answer-meta">Contact Engine · Answer ${++answerVersion} in progress</div></div></div><div class="loading-card"><span class="loading-spinner"></span><div><strong id="analysisStatus" aria-live="polite">Generating another answer…</strong><p id="analysisDetail">The previous answer will remain available for comparison.</p><div class="loading-progress"><span></span></div></div></div>`;
+            parent.appendChild(loading);
+            const result = answerContentFor(card?.dataset.answerTitle || currentAnswerTitle);
+            startAnswerGeneration({ target: parent, title: card?.dataset.answerTitle || currentAnswerTitle, room: Boolean(activeRoom && isRoomMode), depth: depth[0].toUpperCase() + depth.slice(1), duration: depth === "research" ? 7600 : depth === "deep" ? 5600 : 4200 });
+            scrollToRoomBottom();
+        } else if (action.startsWith("share-")) {
+            const title = card?.dataset.answerTitle || currentAnswerTitle;
+            const url = makeShareURL(title);
+            const text = encodeURIComponent(title);
+            if (action === "share-copy") copyText(url, "Answer link copied");
+            else {
+                const destination = action === "share-x" ? `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(url)}` : action === "share-linkedin" ? `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}` : `https://www.reddit.com/submit?url=${encodeURIComponent(url)}&title=${text}`;
+                window.open(destination, "_blank", "noopener,noreferrer");
+            }
+            answerActionMenu.classList.remove("open");
+        }
+        return;
+    }
+
+    if (!event.target.closest(".history-menu") && !event.target.closest(".member-menu") && !event.target.closest(".answer-action-menu") && !event.target.closest(".member-avatar-wrap")) {
+        closeFloatMenus();
+    }
+}, true);
+
+/* Support text submission, stop controls, and Room-mode-only depth controls. */
+question.addEventListener("input", () => { sendButton.disabled = !question.value.trim() && !generationActive; });
+followUpTextareaRoom.addEventListener("input", () => {
+    resizeTextarea(followUpTextareaRoom);
+    followUpSendRoom.disabled = !followUpTextareaRoom.value.trim() && !generationActive;
+});
+
+function createRecentSample(title, kind = "answer-ready") {
+    const section = document.querySelector('[data-section="recents"] .history-section-items');
+    const wrap = document.createElement("div");
+    wrap.className = "history-item-wrap";
+    wrap.innerHTML = `<button class="history-item" data-kind="${kind}" data-title="${escapeHTML(title)}" type="button"><span class="favorite-history-title history-title-viewport">${escapeHTML(title)}</span></button><button class="history-more" type="button" aria-label="More options"><span class="history-more-dots">···</span></button>`;
+    section.prepend(wrap);
+    return wrap.querySelector(".history-item");
+}
+
+/* Existing static answer uses the same four action controls as generated answers. */
+const originalAnswerBody = messages.querySelector(".answer-body");
+if (originalAnswerBody && !originalAnswerBody.querySelector(".answer-actions")) originalAnswerBody.insertAdjacentHTML("beforeend", answerActionsHTML());
+const originalAnswerActions = originalAnswerBody?.querySelector(".answer-actions");
+if (originalAnswerActions && !originalAnswerActions.querySelector(".message-timestamp")) originalAnswerActions.insertAdjacentHTML("beforeend", timestampMarkup("answer-action-time"));
+document.querySelectorAll("time[data-live-time]").forEach(time => setMessageTime(time));
+document.querySelectorAll(".message-user").forEach(message => {
+    ensureStandardMessageControls(message);
+    if (message.dataset.requestDepth) ensureAnswerRequestBadge(message, message.dataset.requestDepth);
+});
+document.querySelectorAll(".room-chat-message").forEach(message => ensureRoomMessageControls(message));
+buildEmojiPicker();
+updateScrollToBottomButton();
+
+/* Seed links for demo answer entries and keep ordinary Answer depth controls untouched. */
+if (newRoomButton) newRoomButton.setAttribute("aria-label", "Create a new Room");
 
 </script>
 

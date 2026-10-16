@@ -1,0 +1,82 @@
+
+# Settings UI
+dash.contact/settings
+
+General  Billing  Account
+───────────────────────────────────────────────────────────────────────────
+
+# General
+answer.contact/settings/general
+────────────────────────────────
+- Appearance -
+✓ System
+  Dark
+  Light
+
+- Theme -
+✓ Blue
+  Teal
+  Green
+  Yellow
+  Orange
+  Red
+  Pink
+  Purple
+  Brown
+  Slate
+
+- Language -
+✓ English
+  Español
+  ...
+
+- Currency -
+USD — US Dollar
+EUR — Euro
+GBP — British Pound
+CAD — Canadian Dollar
+AUD — Australian Dollar
+CHF — Swiss Franc
+JPY — Japanese Yen
+SGD — Singapore Dollar
+KRW — South Korean Won
+TWD — New Taiwan Dollar
+HKD — Hong Kong Dollar
+NZD — New Zealand Dollar
+
+────────────────────────────────
+* If Appearance, Theme, Language, or Currency has been configured in Dash, the settings will be inherited by default. However, these settings can be configured independently in each interface.
+
+
+# Billing
+────────────────────────────────
+- Current Credits -
+
+3,000
+✓ You will be charged automatically.
+
+[Recharge]
+
+View pricing (link)
+
+
+- Payment method -
+────────────────────────────────────────────────────────────────
+Visa **** 4242
+Expires 12/27 CVC ***
+[Update] [Remove]
+
+- Billing History -
+Date         Service           Amount(USD)   Status     Invoice(Download)
+2027-09-15   Credit Purchase   $20.00        Paid       2Lp9WdRmN7kD
+2026-05-15   Credit Purchase   $50.00        Paid       1X9X21KmN9hV
+────────────────────────────────────────────────────────────────
+
+
+# Account
+────────────────────────────────
+Username            jack123
+
+Manage account >
+(Account link, redirect to Contact’s Account Management page.)
+──────────────────────────────
