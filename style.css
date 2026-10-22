@@ -2212,7 +2212,18 @@ body.room-mode .messages {
 .action-icon { display: block; width: 22px; height: 22px; flex: 0 0 22px; object-fit: contain; pointer-events: none; user-select: none;  }
 .action-menu-icon { width: 24px; height: 24px; flex: 0 0 24px; display: inline-grid; place-items: center; }
 .action-menu-icon img { width: 24px; height: 24px; display: block; object-fit: contain; user-select: none; -webkit-user-drag: none; pointer-events: none; }
-.answer-action-menu, .member-menu { position: fixed; z-index: 320; display: none; width: 220px; max-width: calc(100vw - 16px); padding: 6px; border-radius: 12px; background: rgba(255,255,255); box-shadow: 0 12px 35px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.05); }
+.answer-action-menu, .member-menu {
+    position: fixed;
+    z-index: 320;
+    display: none;
+    max-width: calc(100vw - 16px);
+    padding: 6px;
+    border-radius: 12px;
+    background: rgba(255,255,255);
+    box-shadow: 0 12px 35px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.05);
+}
+.answer-action-menu { width: 200px; }
+.member-menu { width: 220px; }
 .answer-action-menu.open, .member-menu.open { display: block; }
 .action-menu-title { padding: 6px 8px 8px; color: var(--text-tertiary); font-size: 11px; letter-spacing: .04em; }
 .menu-option-cost { margin-left: auto; color: var(--text-tertiary); font-size: 10px; white-space: nowrap; }
@@ -3089,8 +3100,7 @@ body.room-mode .messages { padding-top: 18px; }
 .emoji-quick-menu {
     position: absolute;
     left: -6px;
-    right: auto;
-    bottom: calc(100% - 2px);
+    bottom: calc(100% + -2px);
     z-index: 80;
     display: flex;
     align-items: center;
@@ -3101,31 +3111,18 @@ body.room-mode .messages { padding-top: 18px; }
     box-shadow: 0 6px 20px rgba(0, 0, 0, .10);
     opacity: 0;
     visibility: hidden;
+    transform: translateY(3px) scale(.98);
+    transform-origin: left bottom;
     transition: opacity .14s ease, transform .16s cubic-bezier(.2, .8, .2, 1), visibility .14s ease;
 }
-.emoji-quick-menu.is-flipped {
-    left: auto;
-    right: -6px;
-    flex-direction: row-reverse;
-    transform-origin: right bottom;
-}
-.emoji-action-wrap:hover .emoji-quick-menu, .emoji-action-wrap:focus-within .emoji-quick-menu {
+
+.emoji-action-wrap:hover .emoji-quick-menu,
+.emoji-action-wrap:focus-within .emoji-quick-menu {
     opacity: 1;
     visibility: visible;
-    transform: translate(-50%, 0) scale(1);
+    transform: translateY(0) scale(1);
 }
-.room-chat-message:not(.room-chat-message-self) .emoji-quick-menu {
-    left: 0;
-    right: auto;
-    bottom: calc(100% + 4px);
-    transform-origin: left bottom;
-}
-.room-chat-message-self .emoji-quick-menu {
-    left: auto;
-    right: -5px;
-    bottom: calc(100% + 4px);
-    transform-origin: right bottom;
-}
+
 .emoji-quick-reaction, .emoji-quick-expand { display: grid; place-items: center; width: 30px; height: 30px; flex: 0 0 30px; padding: 2px; border-radius: 999px; }
 .emoji-quick-reaction img, .emoji-quick-expand img { width: 22px; height: 22px; display: block; object-fit: contain; }
 .emoji-quick-reaction:hover, .emoji-quick-expand:hover { background: var(--surface-hover); }
@@ -3258,7 +3255,7 @@ body.room-mode .messages { padding-top: 18px; }
 .message-reaction-chip:hover .reaction-members-tooltip, .message-reaction-chip:focus-visible .reaction-members-tooltip, .reference-reaction-chip:hover .reaction-members-tooltip, .reference-reaction-chip:focus-visible .reaction-members-tooltip { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
 .message-reaction-chip.is-own-reaction, .reference-reaction-chip.is-own-reaction { border-color: rgba(0,190,225,.55); background: rgba(0,207,238,.12); }
 .message-reaction-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-.emoji-action-wrap.quick-open .emoji-quick-menu { opacity: 1; visibility: visible; transform: translate(-50%, 0) scale(1); }
+.emoji-action-wrap.quick-open .emoji-quick-menu { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
 .emoji-action-wrap.reaction-picked .emoji-quick-menu {
     opacity: 0 !important;
     visibility: hidden !important;

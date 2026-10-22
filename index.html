@@ -1948,42 +1948,6 @@ function makeEmojiQuickMenuMarkup() {
     </div>`;
 }
 
-/* Keep the first quick reaction (Like/Good) directly above its trigger.
-   Flip the strip only when the viewport's right edge would clip it. */
-function positionEmojiQuickMenu(wrap) {
-    const menu = wrap?.querySelector(".emoji-quick-menu");
-    if (!wrap || !menu) return;
-
-    menu.classList.remove("is-flipped");
-    menu.style.removeProperty("left");
-    menu.style.removeProperty("right");
-
-    const wrapRect = wrap.getBoundingClientRect();
-    const viewportWidth = document.documentElement.clientWidth || window.innerWidth;
-    const menuWidth = menu.getBoundingClientRect().width || menu.offsetWidth;
-    const edge = 4;
-    const centeredLeft = wrapRect.left - 8;
-
-    // Normal order: the first reaction's center aligns with the trigger's center.
-    if (centeredLeft + menuWidth <= viewportWidth - edge) {
-        if (centeredLeft < edge) menu.style.left = `${edge - wrapRect.left}px`;
-        return;
-    }
-
-    // At the right edge, reverse the strip so the first reaction stays above the trigger.
-    const flippedLeft = wrapRect.right + 8 - menuWidth;
-    if (flippedLeft >= edge) {
-        menu.classList.add("is-flipped");
-        const overflow = Math.max(0, wrapRect.right + 8 - (viewportWidth - edge));
-        if (overflow > 0) menu.style.right = `${-8 + overflow}px`;
-        return;
-    }
-
-    // Very narrow fallback: keep the complete strip within the viewport.
-    const safeLeft = Math.max(edge, Math.min(centeredLeft, viewportWidth - menuWidth - edge));
-    menu.style.left = `${safeLeft - wrapRect.left}px`;
-}
-
 function ensureStandardMessageControls(message) {
     if (!message || !message.classList.contains("message-user")) return;
     const footer = message.querySelector(".user-message-footer");
@@ -3095,6 +3059,7 @@ if (roomHeaderSidebar && "ResizeObserver" in window) {
 
 function openAnswerActionMenu(button, action) {
     activeActionAnchor = button;
+    delete answerActionMenu.dataset.shareTitle;
     const rect = button.getBoundingClientRect();
     let content = "";
     const currentRating = button.dataset.rating || "";
@@ -3106,9 +3071,16 @@ function openAnswerActionMenu(button, action) {
         content = `<button class="menu-item" data-action="share-copy" type="button"><span class="action-menu-icon"><img src="img/link.png" alt="" aria-hidden="true"></span><span>Copy link</span></button><button class="menu-item" data-action="share-x" type="button"><span class="action-menu-icon"><img src="img/x.png" alt="" aria-hidden="true"></span><span>X</span></button><button class="menu-item" data-action="share-linkedin" type="button"><span class="action-menu-icon"><img src="img/linkedin.png" alt="" aria-hidden="true"></span><span>LinkedIn</span></button><button class="menu-item" data-action="share-reddit" type="button"><span class="action-menu-icon"><img src="img/reddit.png" alt="" aria-hidden="true"></span><span>Reddit</span></button>`;
     }
     answerActionMenu.innerHTML = content;
-    answerActionMenu.style.left = `${Math.max(8, Math.min(rect.left, window.innerWidth - 235))}px`;
-    answerActionMenu.style.top = `${Math.max(8, Math.min(rect.bottom + 6, window.innerHeight - 240))}px`;
     answerActionMenu.classList.add("open");
+
+    const menuWidth = answerActionMenu.offsetWidth || 200;
+    const menuHeight = answerActionMenu.offsetHeight || 240;
+
+    answerActionMenu.style.left =
+        `${Math.max(8, Math.min(rect.left, window.innerWidth - menuWidth - 8))}px`;
+
+    answerActionMenu.style.top =
+    `${Math.max(8, Math.min(rect.bottom + 6, window.innerHeight - menuHeight - 8))}px`;
 }
 
 function closeFloatMenus() {
@@ -3480,11 +3452,6 @@ document.addEventListener("click", event => {
             document.querySelectorAll(".emoji-action-wrap.quick-open").forEach(item => { if (item !== wrap) item.classList.remove("quick-open"); });
             wrap?.classList.remove("reaction-picked");
             wrap?.classList.toggle("quick-open");
-            if (wrap?.classList.contains("quick-open")) {
-                requestAnimationFrame(() => {
-                    if (wrap.classList.contains("quick-open")) positionEmojiQuickMenu(wrap);
-                });
-            }
         } else if (msg) openEmojiPicker(emojiTrigger, msg);
         return;
     }
@@ -3617,11 +3584,18 @@ document.addEventListener("click", event => {
 
     const forwardQuestionButton = event.target.closest("[data-message-forward]");
     if (forwardQuestionButton) {
-        event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
         const userMessage = forwardQuestionButton.closest(".message-user");
         const text = userMessage?.querySelector(".user-bubble")?.textContent?.trim();
-        if (text) copyText(makeShareURL(text), "Question link copied");
-        return;
+
+    if (text) {
+        openAnswerActionMenu(forwardQuestionButton, "share-answer");
+        answerActionMenu.dataset.shareTitle = text;
+    }
+    return;
     }
 
     if (!event.target.closest("#emojiPicker") && !event.target.closest(".emoji-action-wrap")) closeEmojiPicker();
@@ -4085,10 +4059,19 @@ if (
             startAnswerGeneration({ target: parent, title: card?.dataset.answerTitle || currentAnswerTitle, room: Boolean(activeRoom && isRoomMode), depth: depth[0].toUpperCase() + depth.slice(1), duration: depth === "research" ? 7600 : depth === "deep" ? 5600 : 4200 });
             scrollToRoomBottom();
         } else if (action.startsWith("share-")) {
-            const title = card?.dataset.answerTitle || currentAnswerTitle;
+            const title = answerActionMenu.dataset.shareTitle
+                || card?.dataset.answerTitle
+                || currentAnswerTitle;
             const url = makeShareURL(title);
             const text = encodeURIComponent(title);
-            if (action === "share-copy") copyText(url, "Answer link copied");
+            if (action === "share-copy") {
+            copyText(
+                url,
+                answerActionMenu.dataset.shareTitle
+                    ? "Question link copied"
+                    : "Answer link copied"
+            );
+        }
             else {
                 const destination = action === "share-x" ? `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(url)}` : action === "share-linkedin" ? `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}` : `https://www.reddit.com/submit?url=${encodeURIComponent(url)}&title=${text}`;
                 window.open(destination, "_blank", "noopener,noreferrer");
@@ -4451,9 +4434,9 @@ function openRoomMessageMenu(anchor, message) {
     pendingRoomMessageForDelete = message;
     hideHistoryMenu();
     historyMenu.innerHTML = `<button class="menu-item danger" type="button" data-menu-action="delete-message"><span class="menu-icon"><img src="img/delete.png" alt="" aria-hidden="true"></span><span>Delete message</span></button>`;
-    historyMenu.style.width = "190px";
+    historyMenu.style.width = "200px";
     historyMenu.classList.add("open");
-    positionFloatingMenu(historyMenu, anchor, 190);
+    positionFloatingMenu(historyMenu, anchor, 200);
 }
 function beginRoomMessageEdit(message) {
     if (!message || !isRoomMode) return;
@@ -4556,7 +4539,23 @@ function handleMenuAction(action, target) {
         }
     } else if (action === "share") {
         const isRoom = row?.dataset.kind === "room";
-        historyMenu.innerHTML = `<div class="action-menu-title">Share ${isRoom ? "Room" : "Answer"}</div><button class="menu-item" data-menu-action="copy-link" type="button">Copy link</button><button class="menu-item" data-menu-action="share-x" type="button">X</button><button class="menu-item" data-menu-action="share-linkedin" type="button">LinkedIn</button><button class="menu-item" data-menu-action="share-reddit" type="button">Reddit</button>`;
+        historyMenu.innerHTML = `
+        <button class="menu-item" data-menu-action="copy-link" type="button">
+        <span class="action-menu-icon"><img src="img/link.png" alt="" aria-hidden="true"></span>
+        <span>Copy link</span>
+        </button>
+        <button class="menu-item" data-menu-action="share-x" type="button">
+        <span class="action-menu-icon"><img src="img/x.png" alt="" aria-hidden="true"></span>
+        <span>X</span>
+        </button>
+        <button class="menu-item" data-menu-action="share-linkedin" type="button">
+        <span class="action-menu-icon"><img src="img/linkedin.png" alt="" aria-hidden="true"></span>
+        <span>LinkedIn</span>
+        </button>
+        <button class="menu-item" data-menu-action="share-reddit" type="button">
+        <span class="action-menu-icon"><img src="img/reddit.png" alt="" aria-hidden="true"></span>
+        <span>Reddit</span>
+        </button>`;
         historyMenu.style.width = "200px";
     } else if (action === "copy-link") {
         copyText(makeShareURL(title), "Link copied"); hideHistoryMenu();
@@ -4638,7 +4637,6 @@ document.addEventListener("pointerover", event => {
     if (trigger) {
         const wrap = trigger.closest(".emoji-action-wrap");
         wrap?.classList.remove("reaction-picked");
-        if (wrap) positionEmojiQuickMenu(wrap);
     }
 });
 
@@ -4649,7 +4647,6 @@ document.addEventListener("focusin", event => {
     if (trigger) {
         const wrap = trigger.closest(".emoji-action-wrap");
         wrap?.classList.remove("reaction-picked");
-        if (wrap) positionEmojiQuickMenu(wrap);
     }
 });
 
