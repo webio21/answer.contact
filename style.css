@@ -3588,7 +3588,13 @@ body.room-mode .messages { padding-top: 18px; }
 .copied-fallback { display: grid; place-items: center; width: 22px; height: 22px; font-size: 18px; line-height: 1; font-weight: 700; color: var(--accent-dark); }
 
 /* Small, targeted spacing refinements: don't change the button layout. */
-.answer-action { padding-right: 9px; }
+@media (min-width: 761px) {
+    .answer-action { padding-right: 9px; }
+}
+
+@media (max-width: 760px) {
+    .answer-action { padding-right: 4px; }
+}
 .room-chat-log > .room-insight-hint { margin-top: -4px; }
 
 .credit-pack-footnote a {
