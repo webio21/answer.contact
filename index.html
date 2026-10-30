@@ -399,6 +399,27 @@
 
                 </div>
 
+                <!-- DISCOVERY MODE -->
+
+                <button class="discovery-entry" id="discoveryEntry" type="button">
+                    <img
+                        class="discovery-icon"
+                        src="img/search.png"
+                        alt=""
+                        aria-hidden="true">
+                    <span class="discovery-content">
+                        <span class="discovery-title">
+                            Find. Compare. Connect.
+                        </span>
+                        <span class="discovery-categories">
+                            SERVICES · PRODUCTS · SUPPLIERS · MORE
+                        </span>
+                        <span class="discovery-description">
+                            Find what you need, compare your options, and get quotes faster.
+                        </span>
+                    </span>
+                </button>
+
                 <!-- SUGGESTIONS -->
 
                 <div class="suggestions">
@@ -1138,6 +1159,67 @@ document
         );
 
     });
+
+/* ==================================================
+   DISCOVERY MODE
+================================================== */
+
+const discoveryEntry = document.getElementById("discoveryEntry");
+
+const answerTitle = document.querySelector(".hero h1");
+const answerDescription = document.querySelector(".hero > p");
+
+const verifiedSuggestions = [
+    "Compare two technical architectures",
+    "Research a complex business question",
+    "Check whether a claim is reliable",
+    "Find the best solution to a difficult problem"
+];
+
+const discoverySuggestions = [
+    "Find a reliable web development agency",
+    "Compare cloud storage providers and prices",
+    "Find manufacturers in Japan and request quotes",
+    "Compare two companies before investing"
+];
+
+let discoveryMode = false;
+
+discoveryEntry.addEventListener("click", () => {
+
+    discoveryMode = !discoveryMode;
+
+    answerTitle.textContent = discoveryMode
+        ? "What are you looking for?"
+        : "What do you want to know?";
+
+    answerDescription.innerHTML = discoveryMode
+        ? 'Contact™ Answer helps you discover services, compare products and suppliers, evaluate your options, and connect with the right providers. <a class="learn-more" href="learn-more">Learn more</a>'
+        : 'Contact™ Answer analyzes your question across multiple AI models, challenges the results, and delivers one carefully verified answer. <a class="learn-more" href="learn-more">Learn more</a>';
+
+    question.placeholder = discoveryMode
+        ? "Describe what you're looking for, your requirements, and budget..."
+        : "Ask a question for a verified answer...";
+
+    document.querySelectorAll(".suggestion").forEach((button, index) => {
+        button.textContent = discoveryMode
+            ? discoverySuggestions[index]
+            : verifiedSuggestions[index];
+    });
+
+    discoveryEntry.querySelector(".discovery-title").textContent =
+        discoveryMode
+            ? "Back to Default Mode"
+            : "Find. Compare. Connect.";
+
+    discoveryEntry.querySelector(".discovery-categories").hidden =
+        discoveryMode;
+
+    discoveryEntry.querySelector(".discovery-description").hidden =
+        discoveryMode;
+
+    question.focus();
+});
 
 /* ==================================================
    HISTORY

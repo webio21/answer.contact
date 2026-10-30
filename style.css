@@ -1387,6 +1387,67 @@ button {
 }
 
 /* ==================================================
+   DISCOVERY ENTRY
+================================================== */
+
+.discovery-entry {
+    width: min(650px, 100%);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    margin: 0 auto 16px;
+    padding: 17px 18px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.discovery-entry:hover {
+    border-color: var(--accent);
+    background: #fcfeff;
+}
+
+.discovery-icon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+}
+
+.discovery-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 7px;
+    min-width: 0;
+}
+
+.discovery-title {
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.discovery-categories {
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+.discovery-description {
+    color: var(--text-secondary);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* ==================================================
    SUGGESTIONS
 ================================================== */
 
