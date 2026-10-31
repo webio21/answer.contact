@@ -1062,7 +1062,7 @@ function submitQuestion() {
     const loading = document.createElement("div");
     loading.className = "answer-loading message";
     loading.id = "answerLoading";
-    loading.innerHTML = `<div class="answer-header">${answerAvatarHTML()}<div><div class="answer-title">Contact Answer</div><div class="answer-meta">Contact Engine · Multi-model analysis</div></div></div><div class="loading-card"><span class="loading-spinner"></span><div><strong id="analysisStatus" aria-live="polite">Analyzing your question…</strong><p id="analysisDetail">Comparing candidate answers and checking evidence.</p><div class="loading-progress"><span></span></div></div></div>`;
+    loading.innerHTML = `<div class="answer-header">${answerAvatarHTML(true)}<div><div class="answer-title">Contact Answer</div><div class="answer-meta">Contact Engine · Multi-model analysis</div></div></div><div class="loading-card"><span class="loading-spinner"></span><div><strong id="analysisStatus" aria-live="polite">Analyzing your question…</strong><p id="analysisDetail">Comparing candidate answers and checking evidence.</p><div class="loading-progress"><span></span></div></div></div>`;
     stack.appendChild(loading);
 
     question.value = "";
@@ -2420,7 +2420,15 @@ function answerActionsHTML() {
     </div>`;
 }
 
-function answerAvatarHTML() {
+function answerAvatarHTML(animated = false) {
+    if (animated) {
+        return `<div class="answer-icon answer-icon-cycling">
+            <img src="img/avatar_answer1.png" alt="">
+            <img src="img/avatar_answer2.png" alt="">
+            <img src="img/avatar_answer3.png" alt="">
+        </div>`;
+    }
+
     return `<div class="answer-icon"><img src="img/avatar_answer.png" alt="Contact Answer" onerror="this.style.display='none';this.parentElement.textContent='A'"></div>`;
 }
 
@@ -2463,7 +2471,7 @@ function renderStandardAnswer(title, kind = "answer-ready") {
         const loading = document.createElement("div");
         loading.className = "answer-loading message";
         loading.id = "answerLoading";
-        loading.innerHTML = `<div class="answer-header">${answerAvatarHTML()}<div><div class="answer-title">Contact Answer</div><div class="answer-meta">Contact Engine · Multi-model analysis</div></div></div><div class="loading-card"><span class="loading-spinner"></span><div><strong id="analysisStatus" aria-live="polite">Analyzing your question…</strong><p id="analysisDetail">Comparing candidate answers and checking evidence.</p><div class="loading-progress"><span></span></div></div></div>`;
+        loading.innerHTML = `<div class="answer-header">${answerAvatarHTML(true)}<div><div class="answer-title">Contact Answer</div><div class="answer-meta">Contact Engine · Multi-model analysis</div></div></div><div class="loading-card"><span class="loading-spinner"></span><div><strong id="analysisStatus" aria-live="polite">Analyzing your question…</strong><p id="analysisDetail">Comparing candidate answers and checking evidence.</p><div class="loading-progress"><span></span></div></div></div>`;
         stack.appendChild(loading);
         startAnswerGeneration({ target: stack, title: currentAnswerTitle, room: false, depth: "Verified", duration: 7600 });
     } else {
@@ -3296,7 +3304,7 @@ function requestRoomAnswer(depth) {
     const loading = document.createElement("div");
     loading.className = "answer-loading message room-loading";
     loading.id = "answerLoading";
-    loading.innerHTML = `<div class="answer-header">${answerAvatarHTML()}<div><div class="answer-title">Contact Answer</div><div class="answer-meta">Contact Engine · ${depth} analysis for everyone</div></div></div><div class="loading-card"><span class="loading-spinner"></span><div><strong id="analysisStatus" aria-live="polite">Analyzing the discussion…</strong><p id="analysisDetail">Reading the Room context and comparing perspectives.</p><div class="loading-progress"><span></span></div></div></div>`;
+    loading.innerHTML = `<div class="answer-header">${answerAvatarHTML(true)}<div><div class="answer-title">Contact Answer</div><div class="answer-meta">Contact Engine · ${depth} analysis for everyone</div></div></div><div class="loading-card"><span class="loading-spinner"></span><div><strong id="analysisStatus" aria-live="polite">Analyzing the discussion…</strong><p id="analysisDetail">Reading the Room context and comparing perspectives.</p><div class="loading-progress"><span></span></div></div></div>`;
     stack.appendChild(loading);
     followUpComposerLeft.classList.remove("room-depth-open");
     followUpTextareaRoom.placeholder = "Message the room…";
@@ -4092,7 +4100,7 @@ if (
         const loading = document.createElement("div");
         loading.className = "answer-loading message";
         loading.id = "answerLoading";
-        loading.innerHTML = `<div class="answer-header">${answerAvatarHTML()}<div><div class="answer-title">Contact Answer</div><div class="answer-meta">Contact Engine · Multi-model analysis</div></div></div><div class="loading-card"><span class="loading-spinner"></span><div><strong id="analysisStatus" aria-live="polite">Analyzing your follow-up…</strong><p id="analysisDetail">Checking the new question against the conversation context.</p><div class="loading-progress"><span></span></div></div></div>`;
+        loading.innerHTML = `<div class="answer-header">${answerAvatarHTML(true)}<div><div class="answer-title">Contact Answer</div><div class="answer-meta">Contact Engine · Multi-model analysis</div></div></div><div class="loading-card"><span class="loading-spinner"></span><div><strong id="analysisStatus" aria-live="polite">Analyzing your follow-up…</strong><p id="analysisDetail">Checking the new question against the conversation context.</p><div class="loading-progress"><span></span></div></div></div>`;
         stack.appendChild(loading);
         followUpTextareaRoom.value = "";
         followUpTextareaRoom.style.height = "76px";
@@ -4148,7 +4156,7 @@ if (
             const loading = document.createElement("div");
             loading.className = "answer-loading message";
             loading.id = "answerLoading";
-            loading.innerHTML = `<div class="answer-header">${answerAvatarHTML()}<div><div class="answer-title">Contact Answer</div><div class="answer-meta">Contact Engine · Answer ${++answerVersion} in progress</div></div></div><div class="loading-card"><span class="loading-spinner"></span><div><strong id="analysisStatus" aria-live="polite">Generating another answer…</strong><p id="analysisDetail">The previous answer will remain available for comparison.</p><div class="loading-progress"><span></span></div></div></div>`;
+            loading.innerHTML = `<div class="answer-header">${answerAvatarHTML(true)}<div><div class="answer-title">Contact Answer</div><div class="answer-meta">Contact Engine · Answer ${++answerVersion} in progress</div></div></div><div class="loading-card"><span class="loading-spinner"></span><div><strong id="analysisStatus" aria-live="polite">Generating another answer…</strong><p id="analysisDetail">The previous answer will remain available for comparison.</p><div class="loading-progress"><span></span></div></div></div>`;
             parent.appendChild(loading);
             const result = answerContentFor(card?.dataset.answerTitle || currentAnswerTitle);
             startAnswerGeneration({ target: parent, title: card?.dataset.answerTitle || currentAnswerTitle, room: Boolean(activeRoom && isRoomMode), depth: depth[0].toUpperCase() + depth.slice(1), duration: depth === "research" ? 7600 : depth === "deep" ? 5600 : 4200 });
