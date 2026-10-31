@@ -1946,7 +1946,7 @@ const roomStore = {
         hideCards: false,
         payer: "owner",
         allowedDepths: ["verified", "deep", "research"],
-        members: demoMembers.map(member => ({ ...member })),
+        members: [...demoMembers, currentUser].map(member => ({ ...member })),
         seedTitle: "Best database architecture for SaaS",
         scenario: "strategy"
     },
@@ -1958,7 +1958,7 @@ const roomStore = {
         hideCards: false,
         payer: "owner",
         allowedDepths: ["verified", "deep", "research"],
-        members: demoMembers.map(member => ({ ...member })),
+        members: [...demoMembers, currentUser].map(member => ({ ...member })),
         seedTitle: "How will AI affect medicine over the next 20 years?",
         scenario: "medicine"
     }
@@ -2810,7 +2810,7 @@ function createRoomFromDraft() {
         autoAI: document.getElementById("roomAutoAI").checked,
         hideCards: document.getElementById("roomHideCards").checked,
         payer: roomSettingsForm.querySelector('input[name="roomCreditPayer"]:checked').value,
-        allowedDepths, members: demoMembers.map(member => ({ ...member })),
+        allowedDepths, members: [...demoMembers, currentUser].map(member => ({ ...member })),
         seedTitle: roomSeedTitle || title, scenario: /medicine|medical|health/i.test(title + " " + roomSeedTitle) ? "medicine" : "strategy"
     };
     roomStore[id] = room;
