@@ -415,7 +415,7 @@
                             SERVICES · PRODUCTS · SUPPLIERS · MORE
                         </span>
                         <span class="discovery-description">
-                            Find what you need, compare your options, and get quotes faster.
+                            Find what you need. Compare your options. Get the best quote.
                         </span>
                     </span>
                 </button>
@@ -1913,6 +1913,17 @@ let typingTimer = null;
 let currentTypingInterval = null;
 let activeActionAnchor = null;
 
+const currentUser = {
+    id: "you",
+    name: "Display name",
+    username: "username",
+    avatar: "img/avatar.png",
+    color: "#00d2ff",
+    textColor: "#ffffff",
+    status: "on",
+    publicCard: true
+};
+
 const demoMembers = [
     { id: "jack", name: "Jack", username: "jack", publicCard: true, color: "#d9eef4" },
     { id: "tim", name: "Tim", username: "tim", publicCard: true, color: "#e7e1f7" },
@@ -2657,7 +2668,7 @@ function renderMemberAvatar(member, index, compact = false) {
     const privateLabel = activeRoom?.hideCards || !member.publicCard;
     return `<div class="member-avatar-wrap${compact ? " compact" : ""}" data-member-wrap="${escapeHTML(member.id)}">
         <button class="member-avatar" style="--member-color:${member.color || "#e8edf0"}" type="button" data-member-id="${escapeHTML(member.id)}" aria-label="${escapeHTML(member.name)}" aria-expanded="false">${avatarContent}</button><span class="member-avatar-status status-${escapeHTML(member.status || "on")}" aria-label="${escapeHTML(member.status || "online")}" title="${escapeHTML(member.status || "Online")}"></span>
-        <div class="member-card-popover"><strong>${escapeHTML(member.name)}</strong><span>${privateLabel ? "Contact Card is not public." : "Contact Card · Member"}</span>${!privateLabel ? `<button type="button" data-action="view-card" data-member-id="${escapeHTML(member.id)}">View Contact Card</button>` : ""}${activeRoom?.owner ? `<button type="button" class="member-remove" data-action="remove-member" data-member-id="${escapeHTML(member.id)}">Remove from Room</button>` : ""}</div>
+        <div class="member-card-popover"><strong>${escapeHTML(member.name)}</strong><span>${privateLabel ? "Contact Card is not public." : "Contact Card · Member"}</span>${!privateLabel ? `<button type="button" data-action="view-card" data-member-id="${escapeHTML(member.id)}">View Contact Card</button>` : ""}${activeRoom?.owner && member.id !== "you" ? `<button type="button" class="member-remove" data-action="remove-member" data-member-id="${escapeHTML(member.id)}">Remove from Room</button>` : ""}</div>
     </div>`;
 }
 
@@ -2694,7 +2705,7 @@ function roomConversationHTML(room) {
         </div>
         <div class="room-chat-message room-chat-message-self" data-author="you">
             <div class="room-chat-content"><div class="room-chat-meta"><strong>You</strong></div><div class="room-chat-bubble">Drug discovery could also shorten early-stage screening, but I’m concerned about clinical validation and whether benefits reach smaller hospitals.</div><div class="room-message-footer"><button class="message-copy-action" type="button" data-copy-kind="room-message" aria-label="Copy message"><img src="img/copy.png" alt="" aria-hidden="true"></button><button class="message-reply-action" type="button" data-action="reply-to-message" aria-label="Reply to message"><img src="img/reply.png" alt="" aria-hidden="true"></button>${timestampMarkup("", 2)}</div></div>
-            <div class="room-self-avatar">N</div>
+            ${renderMemberAvatar(currentUser, -1, true)}
         </div>
         <div class="room-chat-message" data-author="maya">
             ${renderMemberAvatar(demoMembers[2], 2, true)}
@@ -3272,7 +3283,7 @@ function requestRoomAnswer(depth) {
         const you = document.createElement("div");
         you.className = "room-chat-message room-chat-message-self";
         you.dataset.requestDepth = depth;
-        you.innerHTML = `<div class="room-chat-content"><div class="room-chat-meta"><strong>You</strong></div>${roomReplyQuoteMarkup()}<div class="room-chat-bubble">${escapeHTML(prompt)}</div><div class="room-message-footer">${timestampMarkup()}<button class="message-copy-action" type="button" data-copy-kind="room-message" aria-label="Copy message"><img src="img/copy.png" alt="" aria-hidden="true"></button><button class="message-reply-action" type="button" data-action="reply-to-message" aria-label="Reply to message"><img src="img/reply.png" alt="" aria-hidden="true"></button></div></div><div class="room-self-avatar">N</div>`;
+        you.innerHTML = `<div class="room-chat-content"><div class="room-chat-meta"><strong>You</strong></div>${roomReplyQuoteMarkup()}<div class="room-chat-bubble">${escapeHTML(prompt)}</div><div class="room-message-footer">${timestampMarkup()}<button class="message-copy-action" type="button" data-copy-kind="room-message" aria-label="Copy message"><img src="img/copy.png" alt="" aria-hidden="true"></button><button class="message-reply-action" type="button" data-action="reply-to-message" aria-label="Reply to message"><img src="img/reply.png" alt="" aria-hidden="true"></button></div></div>${renderMemberAvatar(currentUser, -1, true)}`;
         stack.appendChild(you);
         ensureRoomMessageControls(you);
         ensureAnswerRequestBadge(you, depth);
@@ -3836,7 +3847,9 @@ document.addEventListener("click", event => {
         }
         if (action === "view-card") {
             event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
-            const member = activeRoom?.members.find(person => person.id === memberAction.dataset.memberId) || demoMembers.find(person => person.id === memberAction.dataset.memberId);
+            const member = memberAction.dataset.memberId === "you"
+    ? currentUser
+    : activeRoom?.members.find(person => person.id === memberAction.dataset.memberId) || demoMembers.find(person => person.id === memberAction.dataset.memberId);
             if (!member) return;
             if (activeRoom.hideCards || !member.publicCard) showToast("Contact Card is not public");
             else window.open(`https://card.contact/${encodeURIComponent(member.username)}`, "_blank", "noopener,noreferrer");
@@ -4039,7 +4052,7 @@ if (
         if (log) {
             const message = document.createElement("div");
             message.className = "room-chat-message room-chat-message-self";
-            message.innerHTML = `<div class="room-chat-content"><div class="room-chat-meta"><strong>You</strong></div>${roomReplyQuoteMarkup()}<div class="room-chat-bubble">${escapeHTML(value)}</div><div class="room-message-footer"><button class="message-copy-action" type="button" data-copy-kind="room-message" aria-label="Copy message"><img src="img/copy.png" alt="" aria-hidden="true"></button><button class="message-reply-action" type="button" data-action="reply-to-message" aria-label="Reply to message"><img src="img/reply.png" alt="" aria-hidden="true"></button>${timestampMarkup()}</div></div><div class="room-self-avatar">N</div>`;
+            message.innerHTML = `<div class="room-chat-content"><div class="room-chat-meta"><strong>You</strong></div>${roomReplyQuoteMarkup()}<div class="room-chat-bubble">${escapeHTML(value)}</div><div class="room-message-footer"><button class="message-copy-action" type="button" data-copy-kind="room-message" aria-label="Copy message"><img src="img/copy.png" alt="" aria-hidden="true"></button><button class="message-reply-action" type="button" data-action="reply-to-message" aria-label="Reply to message"><img src="img/reply.png" alt="" aria-hidden="true"></button>${timestampMarkup()}</div></div>${renderMemberAvatar(currentUser, -1, true)}`;
             log.appendChild(message);
             ensureRoomMessageControls(message);
             ensureMessageBadgeRow(message);
