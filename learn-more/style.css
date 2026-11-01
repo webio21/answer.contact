@@ -36,6 +36,7 @@ body {
 .ca-learn-nav-cta { display: inline-flex; align-items: center; gap: 7px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 9px; color: var(--text) !important; transition: border-color .15s ease, background .15s ease; }
 .ca-learn-nav-cta:hover { border-color: var(--accent); background: var(--accent-soft); }
 .ca-learn-nav-cta span { color: var(--accent-dark); }
+.numbered-heading { font-size: 42px !important; font-weight: 650 !important; }
 .ca-learn-hero { padding-top: 91px; padding-bottom: 77px; text-align: center; }
 .ca-learn-eyebrow { display: inline-flex; align-items: center; gap: 8px; color: var(--text-tertiary); font-size: 12px; font-weight: 650; letter-spacing: 1.2px; }
 .ca-learn-eyebrow > span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
@@ -224,8 +225,8 @@ body {
 
 .ca-learn-mobile-more img {
   display: block;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   object-fit: contain;
 }
 
@@ -278,8 +279,8 @@ body {
 
 .ca-learn-depth-icon {
   display: block;
-  width: 46px;
-  height: 46px;
+  width: 90px;
+  height: 90px;
   margin: 10px 0 0;
   object-fit: contain;
 }
@@ -288,8 +289,88 @@ body {
   margin-top: 9px;
 }
 
+
 @media (max-width: 680px) {
   .ca-learn-depth-grid {
     grid-template-columns: 1fr;
+  }
+
+  .ca-learn-depth-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .ca-learn-depth-grid .ca-learn-trust-card {
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr);
+    column-gap: 14px;
+    align-items: center;
+    min-height: 0;
+  }
+
+  .ca-learn-depth-grid .ca-learn-depth-icon {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    margin: 0;
+    align-self: start;
+  }
+
+  .ca-learn-depth-grid .ca-learn-trust-card h3 {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0 0 4px;
+    text-align: left;
+  }
+
+  .ca-learn-depth-grid .ca-learn-trust-card p {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .ca-learn-depth-grid .ca-learn-status {
+    grid-column: 2;
+    grid-row: 3;
+    justify-self: start;
+    margin-top: 5px;
+  }
+}
+
+/* Learn More: earlier responsive navigation */
+@media (max-width: 760px) {
+  .ca-learn-header {
+    gap: 12px;
+  }
+
+  .ca-learn-nav {
+    gap: 0;
+    margin-left: auto;
+    font-size: 12px;
+  }
+
+  .ca-learn-nav > a:not(.ca-learn-nav-cta) {
+    display: none;
+  }
+
+  .ca-learn-nav-cta {
+    padding: 7px 9px;
+    gap: 5px;
+    white-space: nowrap;
+  }
+
+  .ca-learn-mobile-more {
+    display: inline-flex;
+    flex: 0 0 28px;
+    width: 28px;
+  }
+}
+
+@media (min-width: 681px) {
+  .ca-learn-depth-grid .ca-learn-depth-icon {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .ca-learn-depth-grid .ca-learn-trust-card h3 {
+    text-align: center;
   }
 }
