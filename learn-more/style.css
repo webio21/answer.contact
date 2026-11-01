@@ -42,7 +42,7 @@ body {
 .ca-learn-hero h1 em, .ca-learn-section-heading h2 em, .ca-learn-engine-copy h2 em, .ca-learn-closing-panel h2 em { color: var(--text-secondary); font-style: normal; font-weight: 500; }
 .ca-learn-lead { max-width: 680px; margin: 0 auto; color: var(--text-secondary); font-size: 15px; line-height: 1.8; }
 .ca-learn-hero-actions { display: flex; align-items: center; justify-content: center; gap: 24px; margin-top: 29px; }
-.ca-learn-primary { min-height: 42px; display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 0 17px; border-radius: 9px; background: var(--accent); color: #fff !important; font-size: 14px; font-weight: 600; transition: opacity .15s ease, transform .15s ease; }
+.ca-learn-primary { min-height: 42px; display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 0 17px; border-radius: 16px; background: var(--accent); color: #fff !important; font-size: 14px; font-weight: 600; transition: opacity .15s ease, transform .15s ease; }
 .ca-learn-primary:hover { opacity: .86; transform: translateY(-1px); }
 .ca-learn-primary span { font-size: 16px; }
 .ca-learn-secondary { color: var(--text-secondary) !important; font-size: 14px; font-weight: 550; }
@@ -83,7 +83,7 @@ body {
 .ca-learn-flow-arrow { color: var(--accent-dark); font-size: 14px; text-align: center; }
 .ca-learn-flow-caption { margin: 18px 0 0; color: var(--text-tertiary); font-size: 12px; font-weight: 550; letter-spacing: .1px; text-align: center; }
 .ca-learn-trust { padding-top: 82px; padding-bottom: 85px; }
-.ca-learn-trust-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 11px; }
+.ca-learn-trust-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 11px; margin-top: 12px; }
 .ca-learn-trust-card { min-height: 194px; padding: 17px 16px 15px; border: 1px solid var(--border); border-radius: 11px; background: var(--surface); }
 .ca-learn-trust-number { color: #b0b7bf; font-size: 12px; font-weight: 650; }
 .ca-learn-trust-card h3 { margin: 14px 0 8px; color: var(--text); font-size: 14px; font-weight: 650; letter-spacing: -.15px; }
