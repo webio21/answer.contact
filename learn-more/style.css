@@ -239,7 +239,7 @@ body {
 
 .ca-learn-mobile-menu {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + -8px);
   right: 18px;
   z-index: 1000;
   display: flex;
