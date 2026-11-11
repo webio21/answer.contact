@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071a2b">
+<title>Contact Answer — Expert Research & Human Services | Engineering Requirements</title>
+<style>
+:root{
+  --ink:#102235;--muted:#777777;--subtle:#8b9bad;--line:#e3eaf0;--soft:#f4f8fb;--soft2:#eef5f9;
+  --cyan:#00d2ff;--cyan-dark:#00d2ff;--cyan-soft:#e7faff;--navy:#071a2b;--blue:#rgb(22, 90, 132)--blue-bg:#dff9ff;
+  --amber:#a96a12;--amber-bg:#fff6e6;--red:#b64747;--red-bg:#fff0f0;--white:#fff;
+  --shadow:0 16px 50px rgba(14,39,60,.08);--radius:18px;--radius-sm:12px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:92px}
+body{margin:0;background:#f7fafc;color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;line-height:1.65}
+a{color:var(--cyan-dark);text-decoration:none}a:hover{text-decoration:underline}
+button{font:inherit;cursor:pointer}
+.topbar{height:66px;position:sticky;top:0;z-index:30;background:rgba(7,26,43,.96);backdrop-filter:blur(18px);color:#fff;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;padding:0 max(24px,calc((100vw - 1440px)/2));gap:18px}
+.brand{font-weight:800;letter-spacing:.02em;font-size:17px;white-space:nowrap}.brand span{color:var(--cyan)}
+.topmeta{font-size:12px;color:#b7c8d6;white-space:nowrap}.topspacer{flex:1}.topbadge{border:1px solid rgb(0, 221, 255);color:#79eaff;padding:5px 10px;border-radius:999px;font-size:11px;letter-spacing:.04em}
+.layout{max-width:1440px;margin:0 auto;display:grid;grid-template-columns:258px minmax(0,1fr);gap:28px;padding:28px 24px 80px}
+.sidebar{position:sticky;top:92px;align-self:start;max-height:calc(100vh - 112px);overflow:auto;padding:16px 12px 18px 0;border-right:1px solid var(--line)}
+.side-title{font-size:10px;letter-spacing:.14em;color:#91a2b2;font-weight:800;margin:10px 12px}.sidebar a{display:block;padding:8px 12px;margin:2px 7px;border-radius:9px;color:#252525;font-size:12px;line-height:1.4}.sidebar a:hover,.sidebar a.active{background:#eaf8fc;color:#000000;text-decoration:none}.side-note{margin:20px 10px 0;padding:12px;background:var(--soft2);border-radius:12px;color:#607487;font-size:11px}
+main{min-width:0}.hero{background:linear-gradient(125deg,#071a2b 0%,#0b2a40 62%,#06384b 100%);border-radius:24px;color:#fff;padding:42px 44px;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero:after{content:"";position:absolute;width:430px;height:430px;border:1px solid rgba(0,207,238,.18);border-radius:50%;right:-140px;top:-220px;box-shadow:0 0 0 40px rgba(0,207,238,.035),0 0 0 90px rgba(0,207,238,.025)}
+.eyebrow{font-size:10px;letter-spacing:.18em;color:#7cecff;font-weight:800;text-transform:uppercase}.hero h1{font-size:clamp(28px,4vw,43px);line-height:1.13;letter-spacing:-.035em;margin:12px 0 14px;max-width:800px}.hero p{max-width:850px;color:#c5d5df;font-size:14px;margin:0}.hero-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}.hero-pills span{font-size:11px;border:1px solid rgba(255,255,255,.18);padding:6px 10px;border-radius:999px;color:#d2e4ed}
+.doc-meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:26px;color:#9fb4c3;font-size:11px}.doc-meta b{color:#fff;font-weight:600}
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0 30px}.summary-card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:17px}.summary-card .num{color:#252525;font-size:12px;font-weight:800;letter-spacing:.1em}.summary-card h3{font-size:15px;margin:5px 0}.summary-card p{font-size:12px;color:var(--muted);margin:0}
+.section{margin-top:38px}.section-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:17px}.section-no{width:34px;height:34px;display:grid;place-items:center;flex:none;border-radius:11px;background:var(--cyan-soft);color:#00abcd;font-size:12px;font-weight:800}.section h2{font-size:24px;letter-spacing:-.025em;line-height:1.3;margin:0}.section-intro{margin:5px 0 0;color:var(--muted);font-size:13px;max-width:900px}.section h3{font-size:32px;margin:23px 0 9px;margin-bottom:-8px}.section h4{font-size:13px;margin:15px 0 7px}.section p{font-size:13px;color:#42576a}.section ul,.section ol{padding-left:20px;margin:8px 0}.section li{font-size:13px;color:#42576a;margin:5px 0}
+.callout{border:1px solid #b8edf7;background:#effcff;border-radius:14px;padding:15px 17px;margin:14px 0;color:#29566a;font-size:13px}.callout strong{color:#17364c}.warning{border-color:#f1d7a9;background:var(--amber-bg);color:#71501f}.success{border-color:#bce6d2;background:var(--blue-bg);color:#27674d}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px;background:#fff;margin:12px 0 18px}table{width:100%;border-collapse:collapse;min-width:650px}th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);font-size:12px;vertical-align:top}th{background:#f4f8fb;color:#4d6477;font-weight:750;font-size:11px;white-space:nowrap}td{color:#42576a}tr:last-child td{border-bottom:0}td strong{color:#17364c}
+.codebox{background:#0e2639;color:#d8e7ef;border-radius:14px;padding:16px 18px;font:12px/1.75 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow:auto;white-space:pre-wrap}.tag{display:inline-flex;align-items:center;padding:3px 8px;border-radius:999px;font-size:10px;font-weight:750;background:#e9f8fb;color:#0078a0}.tag.green{background:var(--blue-bg);color:var(--green)}.tag.amber{background:var(--amber-bg);color:var(--amber)}.muted{color:var(--muted)!important}.small{font-size:11px!important}.divider{height:1px;background:var(--line);margin:17px 0}
+/* Interactive prototype */
+.prototype{background:#fff;border:1px solid #dce7ee;border-radius:21px;box-shadow:var(--shadow);overflow:hidden;margin:18px 0 22px}.proto-head{background:#f6fafc;border-bottom:1px solid var(--line);padding:14px 18px;display:flex;align-items:center;gap:10px}.proto-logo{height:27px;width:27px;border-radius:8px;background:var(--navy);color:var(--cyan);display:grid;place-items:center;font-weight:900}.proto-head strong{font-size:12px}.proto-head small{margin-left:auto;color:#8394a3;font-size:10px}.proto-body{padding:22px}.proto-kicker{font-size:10px;letter-spacing:.1em;font-weight:800;color:#8293a3;text-transform:uppercase}.proto-title{font-size:22px;letter-spacing:-.03em;}.proto-sub{font-size:12px;color:var(--muted);margin:0 0 18px}.method-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.method-card{position:relative;text-align:left;border:1.5px solid #dce5eb;border-radius:16px;background:#fff;padding:16px 16px;min-height:120px;color:var(--ink);transition:.18s}.method-card:hover{border-color:#00d2ff;transform:translateY(-1px)}.method-card.selected{border-color:var(--cyan-dark);box-shadow:0 0 0 3px rgba(0,207,238,.10);background:#fbfeff}
+.radio {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+}
+
+.radio::after {
+  content: "✓";
+  color: #fff;
+  background: var(--cyan-dark);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0;
+  transform: scale(.7);
+  transition: all .2s ease;
+}
+
+.method-card.selected .radio::after {
+  opacity: 1;
+  transform: scale(1);
+}
+.method-card .method-label{font-size:14px;font-weight:800;padding-right:22px}.method-card .method-price{font-size:22px;letter-spacing:-.035em;font-weight:800}.method-card .method-price span{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:0}.method-card p{font-size:12px;color:var(--muted);margin:10px 10}.method-card .method-foot{position:absolute;bottom:10px;left:16px;font-size:11px;color:#00d2ff;font-weight:700}.expert-panel{margin-top:16px;background:#f7fbfd;border:1px solid #e0eaf0;border-radius:16px;padding:16px;display:none;position: relative;}.expert-panel.visible{display:block}.expert-panel h4{margin:0 0 10px;font-size:14px}.expert-profile{display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:12px;align-items:center}.expert-avatar{width:58px;height:58px;border-radius:999px;object-fit:cover;background:#e0edf2;user-select:none;-webkit-user-drag:none;pointer-events: none;}.expert-name{font-weight:800;font-size:14px}.expert-sub{font-size:12px;color:var(--muted)}.rating{font-size:14px;color:#FFC107;margin-top:3px}.rating b{color:#111111}.reviews {color:#555;font-size:12px}.expert-fee{text-align:right;vertical-align:top;align-self: flex-start;}.expert-fee small{display:block;font-size:12px;color:var(--muted)}.expert-fee strong{font-size:21px;color:#00d2ff}.why-list{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.why-list span{font-size:12px;background:#fff;border:1px solid #e1e9ee;border-radius:999px;padding:5px 8px;color:#607487}.profile-actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:10px;padding:10px 14px;background:var(--navy);color:#fff;font-size:12px;font-weight:750;display:inline-flex;align-items:center;justify-content:center;gap:7px}.btn:hover{background:#123b55}.btn.primary{background:var(--cyan-dark);color:#fff}.btn.primary:hover{background:#00d2ff}.btn.secondary{background:#fff;color:#111111;border:1px solid #d8e3ea}.btn.ghost{background:transparent;color:#00d2ff;padding-left:0;padding-right:0}.btn:disabled{opacity:.42;cursor:not-allowed}.proto-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:17px;padding-top:14px;border-top:1px solid var(--line)}.proto-actions small{font-size:12px;color:var(--muted)}.quote-list{display:grid;gap:9px;margin-top:12px}.quote-card{border:1px solid var(--line);border-radius:13px;padding:12px;background:#fff;display:grid;grid-template-columns:1fr auto;gap:10px}.quote-card.active{border-color:#00d2ff;background:#fbfeff}.quote-card strong{font-size:12px}.quote-card p{font-size:12px;color:var(--muted);margin:2px 0}.quote-price{font-size:18px;font-weight:800;color:#00d2ff}.quote-state{font-size:12px;color:#8a6a30}.state-label{font-size:10px;padding:3px 7px;border-radius:999px;background:#edf4f8;color:#005b85}.inline-link{color:#00d2ff;font-size:12px;font-weight:750;border:0;background:none;padding:0}.prototype-result{display:none;margin-top:14px;border:1px solid #bde9d2;background:#f2fbf6;border-radius:14px;padding:12px}.prototype-result.show{display:block}.prototype-result strong{font-size:12px;color:#226b4a}.prototype-result p{font-size:12px;margin:4px 0 0;color:#50705f}
+.expert-panel::before {
+  content: "BEST MATCH";
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 8px 16px 8px 16px;
+  background: linear-gradient(110deg, #c965ff, #7259ff);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.1px;
+  border-radius: 0 14px 0 14px;
+}
+
+/* Leave room for the ribbon */
+.expert-panel h4 {
+  padding-right: 105px;
+}
+/* expert card modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(4,17,27,.55);z-index:80;display:none;align-items:center;justify-content:center;padding:18px}.modal-backdrop.open{display:flex}.modal{max-width:560px;width:100%;max-height:90vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:0 24px 90px rgba(0,0,0,.25);padding:22px}.modal-top{display:flex;justify-content:space-between;gap:12px}.modal-close{border:0;background:#edf3f6;width:30px;height:30px;border-radius:50%;font-size:16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-close {
+  line-height: 1;
+  padding-bottom: 3px;
+} .modal h3{margin:0;font-size:20px}.modal p{font-size:12px;color:var(--muted)}.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.modal-stat{background:#f5f9fb;padding:11px;border-radius:11px}.modal-stat b{display:block;font-size:14px}.modal-stat small{font-size:10px;color:var(--muted)}
+/* after-answer upgrades */
+.upgrade-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:13px}.upgrade-card{border:1px solid var(--line);border-radius:15px;padding:16px;background:#fff}.upgrade-card h4{margin:0;font-size:14px}.upgrade-card .price{font-size:21px;font-weight:850;color:#00d2ff;margin:8px 0 3px}.upgrade-card p{font-size:11px;color:var(--muted);margin:0 0 12px}.upgrade-card .btn{width:100%}.answer-preview{background:#f7fafc;border:1px solid var(--line);padding:16px;border-radius:14px}.answer-preview h4{margin:0 0 5px}.answer-preview p{margin:0;font-size:12px}.quote-workflow{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px 0}.quote-step{background:#f3f8fa;border-radius:10px;padding:10px;font-size:10px;color:#516779}.quote-step b{display:block;font-size:11px;color:#1b3e55;margin-bottom:3px}
+.footer{margin-top:46px;background:var(--navy);color:#b9cbd8;border-radius:18px;padding:22px 24px;font-size:11px}.footer strong{color:#fff}.backtop{display:inline-block;margin-top:12px;color:#70e6f6}
+@media(max-width:1050px){.layout{grid-template-columns:210px minmax(0,1fr);gap:20px}.hero{padding:32px}.method-grid{grid-template-columns:1fr}.method-card{min-height:145px}.summary-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.topbar{padding:0 15px;height:58px}.topmeta{display:none}.layout{display:block;padding:16px 14px 55px}.sidebar{position:static;max-height:none;border:0;border-bottom:1px solid var(--line);padding:0 0 10px;margin-bottom:16px;display:flex;gap:4px;overflow:auto;white-space:nowrap}.side-title,.side-note{display:none}.sidebar a{display:inline-block;margin:0;padding:7px 10px;font-size:10px;flex:none}.hero{padding:27px 22px;border-radius:18px}.hero h1{font-size:30px}.hero p{font-size:12px}.summary-grid{grid-template-columns:1fr}.section h2{font-size:20px}.proto-body{padding:16px}.expert-profile{grid-template-columns:48px minmax(0,1fr)}.expert-avatar{width:48px;height:48px}.expert-fee{grid-column:2;text-align:left}.upgrade-grid{grid-template-columns:1fr}.quote-workflow{grid-template-columns:1fr 1fr}.proto-actions{align-items:flex-start;flex-direction:column}.proto-actions .btn{width:100%;color:#fff}.modal-grid{grid-template-columns:1fr 1fr}}
+@media print{body{background:#fff}.topbar,.sidebar,.backtop,.interactive-only{display:none!important}.layout{display:block;padding:0;max-width:none}.hero{box-shadow:none;print-color-adjust:exact}.section{break-inside:avoid}.prototype{box-shadow:none}.modal-backdrop{display:none!important}a{color:inherit}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">Contact™</div>
+  <div class="topmeta">ANSWER / EXPERT SERVICES</div>
+  <div class="topspacer"></div>
+  <div class="topbadge">ENGINEERING REQUIREMENTS</div>
+</header>
+<div class="layout">
+<nav class="sidebar" aria-label="文件目錄">
+  <div class="side-title">DOCUMENT</div>
+  <a href="#overview">01 專案總覽</a>
+  <a href="#architecture">02 產品架構</a>
+  <a href="#research-methods">03 提交時三種方式</a>
+  <a href="#expert-card">04 專家 Card</a>
+  <a href="#quotes">05 報價與換專家</a>
+  <a href="#after-result">06 答案完成後升級</a>
+  <a href="#offers">07 Card / Offers</a>
+  <a href="#orders-deals">08 Orders / Deals</a>
+  <a href="#matching">09 Provider Matching</a>
+  <a href="#ratings">10 評分與品質</a>
+  <a href="#analytics">11 Provider 數據</a>
+  <a href="#engine">12 Engine 整合</a>
+  <a href="#data-model">13 資料模型</a>
+  <a href="#states">14 狀態與流程</a>
+  <a href="#security">15 權限與防跳單</a>
+  <a href="#edge-cases">16 例外處理</a>
+  <a href="#acceptance">17 驗收標準</a>
+  <div class="side-note">本文件中的專家、評分、報價及交易數字均為介面示意，不代表真實供應商或實際報價。</div>
+</nav>
+<main>
+<section class="hero" id="top">
+  <div class="eyebrow">Contact Answer · Product & Engineering Specification</div>
+  <h1>Expert Research<br>& Human Services Integration</h1>
+  <p>將 AI Research、真人專家研究、答案覆核與直接專業服務，整合至 Contact Answer；共用單一 Contact Card、Offers、Provider Network、Orders 與 Deals，只在現有架構基礎上補充，不建立重複的專家市場或交易系統。</p>
+  <div class="hero-pills"><span>AI Research</span><span>AI Research + Expert Review</span><span>Premium Expert Consultation</span><span>Expert Review</span><span>Card + Offers</span><span>Orders + Deals</span></div>
+  <div class="doc-meta"><span><b>產品：</b>Contact Answer</span><span><b>整合：</b>Contact Card / Offers / Provider Network</div>
+</section>
+<div class="summary-grid">
+  <div class="summary-card"><div class="num">SUBMIT</div><h3>提交時 3 種選擇</h3><p>AI Research、AI Research + Expert Review、Premium Expert Consultation。選擇不同，收費及執行路徑不同。</p></div>
+  <div class="summary-card"><div class="num">AFTER RESULT</div><h3>完成後 2 種升級</h3><p>Expert Review、Work Directly with an Expert。讓使用者看過 AI 成果後再決定。</p></div>
+  <div class="summary-card"><div class="num">SHARED COMMERCE</div><h3>單一交易基礎</h3><p>Card 是身份，Offer 是服務商品，Quote 是報價，Order 是履約，Deal 是商業追蹤。</p></div>
+</div>
+
+<section class="section" id="overview">
+  <div class="section-head"><div class="section-no">01</div><div><h2>專案總覽與核心決策</h2><p class="section-intro">不增加獨立 Expert Marketplace，而是在 Answer 的 Research 體驗中整合真人專業能力，並重用 Contact 現有生態模組，統一套用已有CSS設計元素。</p></div></div>
+  <div class="callout success"><strong>最終產品原則：</strong>Research 問題提交後提供三種服務方式；AI 答案完成後提供兩種真人升級方式。專家身份透明、價格事先明確、所有 AI Research + Expert Review 服務透過 Contact Card 之 Offer Template 提供固定價格或標準價格範圍與訂單。所有 Premium Expert Consultation 標準套餐價格範圍的媒合服務雖然也透過 Offer Template 建立報價與訂單以及評分，但需要單獨報價的訂單則統一透過 Custom Offer 建立精準報價與訂單以及評分。即 Answer 共提供 5 種付費答案，Verified(AI)，Deep(AI)，Research(AI)，Research(AI) + Expert，Premium Expert Consultation。專家媒合匹配優先級機制，按照最有利於 Provider Network 供應者生態長期健康發展為前提，包括專業領域匹配度、回答品質、歷史服務表現、用戶評分、回應效率、活躍度及服務者生態平衡等維度，先初步交由 AI 根據產品架構制定優先匹配規則及評估權重，協助構建包含以上內容的初步規則方案，再由業務團隊確認審核，根據每個營運週期的驗證和反饋，再提出必要的規則修訂。</div>
+  <h3>1.1 本次要補充的內容</h3>
+  <ul>
+    <li>通用大模型可以完成大量研究，但對非標準問題、特殊案例、專業實務、抽象概念、價值觀理解及現實情境判斷都會明顯不足。</li>
+    <li>使用者很可能對一般性通用問題之外的答案，需要 AI 與真人從研究開始共同工作，也可能只需要 AI 完成後由真人核查。</li>
+    <li>部分使用者可能完全不需要 AI Research，而是希望直接求助真人專家；無需強迫這類使用者先花費 Answer Credits。</li>
+    <li>Contact Answer 必須讓使用者知道「由誰提供真人服務、服務者是否具備相關能力、服務費多少、如何購買」。</li>
+    <li>專家可能有不同價格、交件時間及服務內容；使用者需要比較及更換多名專家，且舊報價不能無故消失。</li>
+    <li>平台需要將成交、付款、履約、評分、提供者轉換率記錄到既有 Orders、Deals 及 Provider 後台。</li>
+  </ul>
+  <h3>1.2 明確不做的事</h3>
+  <ul>
+    <li>不把真人專家當成 Engine 的一種模型，不改變 Engine 的 AI 模型路由責任。</li>
+    <li>不另建 Contact Expert Agent、Contact Twin 或第二套 Provider Network 產品。</li>
+    <li>不在 Verified、Deep 的預設體驗中加入真人服務；真人驗證答案的升級服務只屬於 Research。</li>
+    <li>不隱藏專家身份，便於使用者查看通過 KYC/KYB 並同時獲得 Expertise Verified 專家之 Card；信任透明優先於短期防跳單交易。</li>
+    <li>不虛構供應商數量、評分、完成紀錄或可用狀態。如果商家暫無交易紀錄時，直接不顯示評分和歷史交易區域，不呈現 0 評分，0 交易等不利轉化的內容。</li>
+  </ul>
+</section>
+
+
+<section class="section" id="architecture">
+  <div class="section-head">
+    <div class="section-no">02</div>
+    <div>
+      <h2>產品架構與模組責任</h2>
+      <p class="section-intro">
+        Contact 以 Answer、Twin、Run 作為三大智慧產品；
+        Contact Card 負責身份與關係資料，Provider Network 提供共享的真人服務供應及匹配基礎設施，
+        Run Companion 則延伸雲端執行能力至使用者的本機裝置。
+      </p>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>模組</th>
+          <th>定位</th>
+          <th>本次責任</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <!-- Contact Answer -->
+        <tr>
+          <td><strong>Contact Answer — Engine API</strong></td>
+          <td>面向開發者的 AI 算力服務</td>
+          <td>
+            提供多模型路由、執行、驗證、合成、API、Credits、
+            使用量與成本統計。
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>Contact Answer — Answers</strong></td>
+          <td>高品質付費答案</td>
+          <td>
+            提供 Verified、Deep、Research；
+            Research 可選真人專家參與及事後真人覆核。
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>Contact Answer — Discovery</strong></td>
+          <td>產品、服務、商家及供應商搜尋比較</td>
+          <td>
+            透過 Provider Network、Contact Card 及 Offer Templates
+            進行搜尋、匹配、比較、詢價及交易；
+            完成符合條件的交易後收取成功服務費。
+          </td>
+        </tr>
+
+        <!-- Contact Twin -->
+        <tr>
+          <td><strong>Contact Twin</strong></td>
+          <td>個人及組織的智慧身份與 AI 分身</td>
+          <td>
+            提供 Twin 身份建立、Twin ID、個人訪談、知識累積、
+            記憶、溝通風格、工作方式、能力、權限及真人交接。
+            每個個人預設一個 Primary Twin；
+            多種工作角色以同一 Twin 的不同能力與情境呈現，
+            不需要重複建立多個 Agent 或 Twin。
+            Twin 可代表真人或組織與外部使用者互動，
+            並透過 Run 執行獲得授權的工作。
+          </td>
+        </tr>
+
+        <!-- Contact Run -->
+        <tr>
+          <td><strong>Contact Run</strong></td>
+          <td>AI 任務執行與自主工作平台</td>
+          <td>
+            提供自然語言任務委託、工作規劃、Agent 調度、
+            一次性任務、持續任務、自動化、排程、事件觸發、
+            工具連接、權限管理、真人審批、執行紀錄及成本管理。
+            Run 是 Twin 的共用執行引擎，也可以直接服務一般使用者。
+            不負責建立或管理使用者的正式智慧身份。
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>Agent Workers</strong></td>
+          <td>Run 內部的任務執行單位</td>
+          <td>
+            根據任務需要調用 Research、Writing、Sales、
+            Marketing、Support、Analysis 等工作能力。
+            由 Run 自動分配、啟動及管理；
+            支援必要時的 Multi-Agent 協作。
+            Agent 是底層技術執行概念，不要求普通用戶獨立建立或配置。
+          </td>
+        </tr>
+
+        <!-- Contact Engine -->
+        <tr>
+          <td><strong>Contact Engine</strong></td>
+          <td>共享 AI 底層基礎設施</td>
+          <td>
+            為 Answer、Twin、Run 提供模型路由、AI 推理、
+            交叉分析、證據檢查、結果合成、模型使用量及成本管理；
+            不處理真人專家媒合、Provider 管理及交易履約。
+          </td>
+        </tr>
+
+        <!-- Identity -->
+        <tr>
+          <td><strong>Contact Card</strong></td>
+          <td>個人／企業／專家的身份與關係頁</td>
+          <td>
+            保存真人或組織身份、聯絡方式、資格、經驗、作品、
+            評分及 Offers；與對應 Twin ID 關聯。
+            Card 是身份及聯絡資料層，Twin 是建立在身份之上的智慧代表層。
+            可由 Inbox、Answer、Twin、Run、Discovery 及 Provider Network 共用。
+          </td>
+        </tr>
+
+        <!-- Provider -->
+        <tr>
+          <td><strong>Provider Network</strong></td>
+          <td>共享的真人專業及商業服務供應網絡</td>
+          <td>
+            管理商品、服務、供應商、自由業者、專業人士及專家的資料、
+            身份資格、服務範圍、可用狀態、Offers、匹配及供應商統計。
+            為 Answer Discovery、Twin 及 Run 提供真人服務供應資料。
+            作為共享網絡及商業基礎設施，不需要另建一套獨立的 Agent 系統。
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>Offer Templates</strong></td>
+          <td>供應者可售服務及產品的標準化項目</td>
+          <td>
+            建立標準 Offer 模板、價格、交付範圍、
+            真人服務內容、可選的 AI 輔助方案及服務條件。
+            支援 Answer Discovery 比較、Twin 介紹及 Run 任務委託。
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>Orders</strong></td>
+          <td>交易與履約紀錄</td>
+          <td>
+            管理報價接受、付款、服務開始、交付、完成、
+            取消、退款及爭議；記錄真人服務或 AI 輔助服務的履約狀態。
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>Deals</strong></td>
+          <td>商業關係／機會追蹤</td>
+          <td>
+            把 Answer Discovery、Twin 及 Run 產生的客戶需求、
+            專家服務機會及訂單連結至 Deal；
+            負責商業關係與跟進，不重複處理付款及履約。
+          </td>
+        </tr>
+
+        <!-- Run Companion -->
+        <tr>
+          <td><strong>Contact Run Companion</strong></td>
+          <td>Run 的本機執行端與裝置連接工具</td>
+          <td>
+            提供簡單的 Windows 安裝程式，讓 Run 在使用者明確授權下
+            存取指定本機檔案、資料夾及桌面應用。
+            負責本機檔案處理、桌面操作、裝置配對及安全權限控制；
+            與 Contact Run 雲端任務協作。
+            本機電腦關機或離線時，依賴該裝置的任務暫停或等待恢復，
+            不影響已部署於雲端的其他任務。
+            不提供每個使用者固定配置的雲端 Windows VM，
+            不作為獨立 Agent Builder 或雲端電腦租賃業務。
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<section class="section" id="research-methods">
+  <div class="section-head"><div class="section-no">03</div><div><h2>Research 問題提交時：三種服務方式</h2><p class="section-intro">三個選項要在 Research 提交時的流程中呈現。預設 AI Research；真人路徑需要在開始收費或啟動工作前完成報價確認。</p></div></div>
+  <div class="table-wrap"><table><thead><tr><th>方式</th><th>用途</th><th>Answer Credits</th><th>真人費用</th><th>執行方式</th></tr></thead><tbody>
+    <tr><td><strong>AI Research</strong><br><span class="tag blue">Default</span></td><td>使用者只需要 AI 研究答案。</td><td>按 Research 深度及實際模型用量收取。</td><td>無</td><td>Contact Engine 執行，輸出研究及來源。</td></tr>
+    <tr><td><strong>AI Research + Expert Review</strong></td><td>希望真人對 AI 研究答案提供覆核，專業判斷及補充。</td><td>正常收取 AI Research Credits。</td><td>優先提供與需求匹配的專家固定價格或標準價格範圍。</td><td>被匹配專家可以直接接受請求（非固定價格，默認將採用標準價格範圍之中位數），除固定價格外，採用標準價格範圍，專家也可以根據具體需求在標準價格範圍內更改價格，但不可超出在先設定的標準價格範圍（對於已匹配的請求，固定價格或標準價格範圍不可更改）。使用者接受後提交，AI 與真人按任務計畫協作。</td></tr>
+    <tr><td><strong>Premium Expert Consultation</strong></td><td>不需要 AI Research，只希望諮詢真人專家</td><td>不收 Answer Credits。</td><td>專家提供服務報價或對應 Offer 固定價格。</td><td>只走 Provider Network Offer Template Quote Order；不啟動 Engine Research。</td></tr>
+  </tbody></table></div>
+  <h3>3.1 互動介面示意：Choose your research method</h3>
+  <p>以下為可互動的前端原型。選擇 AI Research + Expert Review 時顯示具體專家、Card、評分及價格；可查看 Card 或比較其他專家。實際產品應依供應商資料動態載入和動態更新。</p>
+  <div class="prototype" id="methodPrototype">
+    <div class="proto-head"><div class="proto-logo">C</div><strong>Contact Answer</strong><small>Research setup · Interactive demo</small></div>
+    <div class="proto-body">
+      <div class="proto-kicker">Research method</div>
+      <div class="proto-title">Choose your research method</div>
+      <p class="proto-sub">選擇由 AI、AI 與真人，或完全由真人提供服務。</p>
+      <div class="method-grid" role="group" aria-label="Research method">
+        <button class="method-card selected" data-method="ai" type="button" aria-pressed="true">
+          <span class="radio"></span><div class="method-label">AI Research</div>
+          <div class="method-price">20-50 <span>Credits</span></div>
+          <p>多模型交叉研究、分析及證據檢查。</p><div class="method-foot">AI Only · No Human Assistance</div>
+        </button>
+        <button class="method-card" data-method="hybrid" type="button" aria-pressed="false">
+          <span class="radio"></span><div class="method-label">AI Research + Expert Review</div>
+          <div class="method-price">20-50 <span>Credits</span> + <span style="font-size:16px">$15-35</span></div>
+          <p>請真人專家參與覆核，提供專業判斷及補充。</p><div class="method-foot">AI + Human Expertise</div>
+        </button>
+        <button class="method-card" data-method="human" type="button" aria-pressed="false">
+          <span class="radio"></span><div class="method-label">Premium Expert Consultation</div>
+          <div class="method-price">Custom Quote <span style="font-size:16px">$50-300+</span></div>
+          <p>不使用 AI Research，請真人專家提供深入研究。</p><div class="method-foot">No Answer Credits</div>
+        </button>
+      </div>
+      <div class="expert-panel" id="expertPanel">
+        <h4>Your Research Expert <span class="tag blue">Recommended match</span></h4>
+        <div class="expert-profile">
+          <img class="expert-avatar" src="avatar-expert.jpg" alt="示意專家機構頭像" onerror="this.style.display='none'">
+          <div><div class="expert-name" id="expertName">Jane Morgan</div><div class="expert-sub">Attorneys — Isler Dare, PC</div><div class="expert-sub" id="expertRole">Legal Research Specialist</div><div class="expert-sub"><span class="tag blue">Expertise Verified</span></div><div class="rating">★ <b id="expertRating">4.9</b> <span class="reviews" id="expertReviews">(86 completed reviews)</span></div></div>
+          <div class="expert-fee"><small>Expert Research Fee</small><strong id="expertFee">$15-35</strong></div>
+        </div>
+        <div class="why-list"><span>相關法律研究領域</span><span>已驗證專業資格</span><span>相似任務完成紀錄</span></div>
+        <div class="profile-actions"><button class="btn secondary" type="button" id="viewCardBtn">View Card</button><button class="btn secondary" type="button" id="compareBtn">Compare another expert</button></div>
+        <div id="comparePanel" style="display:none">
+          <div class="divider"></div><strong style="font-size:11px">Other eligible expert quotes</strong>
+          <div class="quote-list">
+            <div class="quote-card"><div><strong>Alex Chen</strong><p>Commercial Research Consultant · Identity & Expertise Verified</p><p>相似商業研究案例；預計 4 個工作日</p></div><div style="text-align:right"><div class="quote-price">$125</div><button class="inline-link choose-expert" data-name="Alex Chen" data-role="Commercial Research Consultant" data-rating="4.8" data-reviews="(42 completed reviews)" data-fee="$125">Select</button></div></div>
+            <div class="quote-card"><div><strong>Priya Shah</strong><p>Research & Strategy Specialist · Expertise Verified</p><p>企業策略與市場研究；預計 5 個工作日</p></div><div style="text-align:right"><div class="quote-price">$80-120</div><button class="inline-link choose-expert" data-name="Priya Shah" data-role="Research & Strategy Specialist" data-rating="4.9" data-reviews="(31 completed reviews)" data-fee="$80-120">Select</button></div></div>
+          </div>
+          <p class="small muted">示意候選人及價格。真實系統只顯示符合資格、實際可接單的專家；不可為營造市場規模而虛構供應。</p>
+        </div>
+      </div>
+      <div class="expert-panel" id="humanPanel">
+        <h4>Direct Expert Service</h4>
+        <p class="small muted" style="margin:0 0 10px">不啟動 AI Research，不消耗 Answer Credits。Contact 根據你的需求提供真人專家諮詢，並透過 Custom Quote 取得價格。</p>
+        <div class="expert-profile"><div class="expert-avatar" style="display:grid;place-items:center;background:#dff7fc;color:#00d2ff;font-size:20px;font-weight:800">J</div><div><div class="expert-name">Jane Morgan</div><div class="expert-sub">Legal Research Specialist · Expertise Verified</div><div class="rating">★ <b>4.8</b> <span class="reviews">(56 completed reviews)</span></div></div><div class="expert-fee"><small>Expert Fee</small><strong>Quote</strong></div></div>
+        <div class="profile-actions" style="margin-top:12px"><button class="btn secondary" type="button" id="humanCardBtn">View Card</button><button class="btn secondary" type="button" id="humanCompareBtn">Compare another expert</button></div>
+        <p id="humanCompareNote" class="small muted" style="display:none">其他符合資格的專家及其報價會保留在同一個服務請求中。</p>
+      </div>
+      <div class="proto-actions"><small id="methodFootnote">20 Credits · 不需要真人專家 · 提交後開始 AI Research</small><button class="btn primary" type="button" id="methodAction">Submit Research</button></div>
+      <div class="prototype-result" id="methodResult"><strong id="methodResultTitle">Research submitted</strong><p id="methodResultText">AI Research 已建立示意任務。真實產品需依付款及執行狀態更新。</p></div>
+    </div>
+  </div>
+  <h3>3.2 AI Research + Expert Review 價格必須明確</h3>
+  <ul>
+    <li>畫面不可只顯示「Additional Fee」。必須呈現 Answer Credits + 真人專家確切費用，例如「20 Credits + $15-35」。</li>
+    <li>Answer Credits 由 Contact Answer 根據 Research 深度計算；真人服務費由實際提供服務的專家設定。</li>
+    <li>提交前如已有符合 Offer 模板的確定價格，直接顯示價格；如需客製化報價，先建立免費 Quote Request，不啟動研究、不扣 Credits、不收款。</li>
+    <li>取得報價後，使用者必須看到專家 Card、價格、工作範圍、預計交付時間及報價有效期限，按 Accept & Start 並完成付款後才正式開始。</li>
+    <li>不要在專家尚未報價時展示一個假定價格，也不要將「預估價」呈現為確定報價。</li>
+  </ul>
+  <h3>3.3 Premium Expert Consultation 的產品邊界</h3>
+  <ul>
+    <li>Premium Expert Consultation 允許使用者不購買 AI 答案，直接透過 Answer 的需求入口匹配真人服務。</li>
+    <li>此選項不執行 Contact Engine Research，不收 Answer Credits。</li>
+    <li>服務由專家既有 Offer Template 提供；沒有適用的標準 Offer 時，專家可提交客製化 Quote 取得 Custom Offer。</li>
+    <li>這是共享 Provider Network 的直接專業服務交易，不應另建一個 Answer 專屬真人商城。</li>
+  </ul>
+</section>
+
+<section class="section" id="expert-card">
+  <div class="section-head"><div class="section-no">04</div><div><h2>Your Research Expert：專家 Card 透明呈現</h2><p class="section-intro">使用者應能判斷真人專家是否適合自己的問題。公開身份及專業資訊是信任基礎，不應為防跳單而隱藏。</p></div></div>
+  <div class="prototype">
+    <div class="proto-head"><div class="proto-logo">C</div><strong>Expert match preview</strong><small>Sample Card · Non-production data</small></div>
+    <div class="proto-body">
+      <div class="proto-kicker">Your Research Expert</div>
+      <div class="expert-profile" style="grid-template-columns:74px minmax(0,1fr) auto">
+        <img class="expert-avatar" style="width:74px;height:74px" src="avatar-expert.jpg" alt="Attorneys — Isler Dare, PC 示意圖片" onerror="this.style.display='none'">
+        <div><div class="expert-name" style="font-size:16px">Jane Morgan</div><div class="expert-sub">Attorneys — Isler Dare, PC</div><div class="expert-sub">Legal Research Specialist</div><div style="margin-top:5px"><span class="tag blue">Expertise Verified</span></div><div class="rating">★ <b>4.9</b> <span class="reviews">(86 completed reviews)</span></div></div>
+        <div class="expert-fee"><small>Expert Research Fee</small><strong>$15-35</strong></div>
+      </div>
+      <div class="divider"></div>
+      <h4 style="margin-top:0">Why this expert?</h4>
+      <ul><li>相關法律研究領域。</li><li>具備已驗證的專業資格。</li><li>有相似研究任務的完成紀錄。</li></ul>
+      <div class="profile-actions"><button class="btn primary" type="button" id="openFullCard">View Card</button><button class="btn secondary" type="button" id="openCompareCard">Compare another expert</button></div>
+      <p class="small muted">示意資料及價格，非實際專家報價。正式 Card 應顯示專家／機構真實名稱、依法可公開的資格資訊、作品、服務評分、服務範圍與可用時間。</p>
+    </div>
+  </div>
+  <h3>4.1 Card 應展示的專業資訊</h3>
+  <ul>
+    <li>創建者或服務提供者姓名／企業名稱、頭像／品牌標誌及公開介紹。</li>
+    <li>專業領域、細分能力、服務地區／法域、語言。</li>
+    <li>身份、經驗及資格驗證狀態，三者不可混為一談。</li>
+    <li>代表作品、去識別化案例、服務內容及相關完成紀錄。</li>
+    <li>真實交易後的平均評分、有效評分數、回覆速度及可用時間。</li>
+    <li>可購買的 Offers、價格方式、真人核查選項及交付條件。</li>
+  </ul>
+  <h3>4.2 驗證標籤定義</h3>
+  <div class="table-wrap"><table><thead><tr><th>標籤</th><th>驗證內容</th><th>不能代表什麼</th></tr></thead><tbody>
+    <tr><td><strong>Identity Verified</strong></td><td>已核實用戶身份，但沒有服務者資格，不能作為Answer真人協助的服務提供者</td><td>不代表具備專業服務能力。</td></tr>
+    <tr><td><strong>Expertise Verified</strong></td><td>已核實相關工作經驗、作品或履歷資料。特定領域正式資格、執照或註冊狀態。</td><td>不代表服務品質，不保障絕對正確。</td></tr>
+    <tr><td><strong>Agent Evaluated</strong></td><td>該 Agent 通過特定任務類型的工作能力測試。</td><td>不保障每次都經過真人覆核。</td></tr>
+  </tbody></table></div>
+  <div class="callout warning"><strong>重要：</strong>如果法律研究服務涉及法律意見、法律代理或受監管活動，必須按適用司法管轄區核實資格、執業範圍及責任。一般研究服務不能冒稱律師意見；Expertise Verified 也不能代替法律責任審查。</div>
+</section>
+
+<section class="section" id="quotes">
+  <div class="section-head"><div class="section-no">05</div><div><h2>真人報價、比較及更換專家</h2><p class="section-intro">提交前的 AI Research + Expert Review 和 Premium Expert Consultation 可能需要客製化報價。使用者可以比較其他專家，但原有有效報價必須保留。</p></div></div>
+  <h3>5.1 報價規則</h3>
+  <div class="table-wrap"><table><thead><tr><th>服務場景</th><th>報價方式</th><th>價格何時可見</th></tr></thead><tbody>
+    <tr><td><strong>AI Research + Expert Review（研究前）</strong></td><td>通常由專家按研究要求客製化報價；若 Offer 已有明確固定價可直接使用。</td><td>最終提交及付款前必須顯示確切真人費用。</td></tr>
+    <tr><td><strong>Premium Expert Consultation</strong></td><td>優先使用 Card 的固定 Offer；無適用 Offer 才提交客製化 Quote。</td><td>接受服務及付款前顯示具體價格。</td></tr>
+    <tr><td><strong>Expert Review（研究後）</strong></td><td>標準化覆核規格，由專家預先設定固定價格；超出標準範圍才客製報價。</td><td>點擊購買前顯示具體價格。</td></tr>
+    <tr><td><strong>Work Directly with an Expert（研究後）</strong></td><td>依新需求由專家客製化報價。</td><td>使用者接受報價及付款前顯示具體價格。</td></tr>
+  </tbody></table></div>
+  <h3>5.2 報價生命週期</h3>
+  <div class="quote-workflow"><div class="quote-step"><b>1 · Request</b>使用者提交需求／範圍。</div><div class="quote-step"><b>2 · Quote</b>專家提交價格、條件及期限。</div><div class="quote-step"><b>3 · Accept</b>使用者確認報價並付款。</div><div class="quote-step"><b>4 · Order</b>建立正式服務訂單。</div></div>
+  <ul>
+    <li>提交 Quote Request 本身不代表使用者接受服務，也不應自動扣除 Answer Credits 或真人費用。</li>
+    <li>報價必須包括服務範圍、交付物、價格、貨幣、稅費說明、預計交付時間、修改次數、有效期限、取消／退款條件及真人參與者。</li>
+    <li>報價必須有版本。專家修改價格或範圍時，建立新版本並保留舊版稽核紀錄。</li>
+    <li>報價過期後不能接受；已接受的報價應鎖定為訂單條款。</li>
+  </ul>
+  <h3>5.3 Compare another expert：更換專家</h3>
+  <div class="callout success"><strong>推薦規則：</strong>更換專家不刪除、不覆蓋原有報價。所有有效報價留在同一 Research／Service Request 下，使用者可以在同一個窗口比較並接受其中一份。</div>
+  <div class="prototype">
+    <div class="proto-head"><div class="proto-logo">C</div><strong>Quote comparison</strong><small>Interactive demo</small></div>
+    <div class="proto-body">
+      <div class="proto-title">Expert quotes</div><p class="proto-sub">每位專家提供獨立報價；選擇前可查看 Card。</p>
+      <div class="quote-list" id="quotesDemo">
+        <div class="quote-card active"><div><strong>Jane Morgan <span class="tag blue">Expertise Verified</span></strong><p>Legal Research Specialist · 4.9 ★ · 86 completed reviews</p><p>完整研究參與 · 3 個工作日 · 報價有效至 11/16</p><button class="inline-link" data-open-card>View Card</button></div><div style="text-align:right"><div class="quote-price">$15-35</div><span class="state-label">Quote received</span><br><button class="inline-link accept-quote" type="button">Accept</button></div></div>
+        <div class="quote-card"><div><strong>Alex Chen <span class="tag">Expertise Verified</span></strong><p>Commercial Research Consultant · 4.8 ★ · 42 completed reviews</p><p>研究方向、商業判斷及報告補充 · 4 個工作日</p><button class="inline-link" data-open-card>View Card</button></div><div style="text-align:right"><div class="quote-price">$145</div><span class="state-label">Quote received</span><br><button class="inline-link accept-quote" type="button">Accept</button></div></div>
+        <div class="quote-card"><div><strong>Priya Shah <span class="tag blue">Expertise Verified</span></strong><p>Research & Strategy Specialist · 4.9 ★ · 31 completed reviews</p><p>市場與策略研究 · 5 個工作日</p><button class="inline-link" data-open-card>View Card</button></div><div style="text-align:right"><div class="quote-price">$110</div><span class="state-label">Quote received</span><br><button class="inline-link accept-quote" type="button">Accept</button></div></div>
+      </div>
+      <div class="proto-actions"><small>接受其中一份報價後，其他同一範圍的報價標記為未選擇，不建立重複訂單。</small><button class="btn secondary" type="button" id="requestAnother">Compare another expert</button></div>
+      <div class="prototype-result" id="quoteResult"><strong>Quote selected</strong><p>示意：正式系統應建立付款流程及 Order，其他報價保留在歷史中。</p></div>
+    </div>
+  </div>
+  <h3>5.4 防止報價過多及供應商不足</h3>
+  <ul>
+    <li>預設先展示一位最佳匹配者；使用者主動點擊 Compare another expert 才展開其他合格候選人。</li>
+    <li>不要一次展示大量不相關專家，也不要為了看起來選擇多而虛構供應者或評分。</li>
+    <li>若只有一位符合資格且可用的專家，Compare another expert 無需展現。</li>
+    <li>比較結果應依匹配度排序，不允許專家付費購買排序位置。</li>
+  </ul>
+</section>
+
+<section class="section" id="after-result">
+  <div class="section-head"><div class="section-no">06</div><div><h2>AI Research 完成後：兩種真人升級</h2><p class="section-intro">答案完成後，使用者已經看過 AI 結果，可能希望補充可信度，也可能發現真正需要的是完整真人服務。兩者應分開呈現。</p></div></div>
+  <div class="callout success"><strong>最終決策：</strong>答案完成後提供兩個可選升級：Expert Review，以及 Work Directly with an Expert。這是服務選擇，不是廣告推送；不能妨礙答案本身，也不應反覆打擾使用者。</div>
+  <h3>6.1 互動介面示意：Research result + human upgrade</h3>
+  <div class="prototype">
+    <div class="proto-head"><div class="proto-logo">C</div><strong>Contact Answer</strong><small>Research completed</small></div>
+    <div class="proto-body">
+      <div class="proto-kicker">Research result</div>
+      <div class="answer-preview"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><h4>Research completed</h4><span class="tag blue">AI verification completed</span></div><p>AI 多模型研究、來源檢查及綜合分析已完成。以下示意為報告摘要。使用者仍可選擇是否要求真人專業參與。</p><div class="divider"></div><p><strong>Key findings</strong><br>1. 研究問題涉及特定法律法域及個案條件。<br>2. 部分結論需結合最新官方來源與專業實務。<br>3. 建議針對重要條件進行專家覆核。</p></div>
+      <div style="margin-top:18px"><div class="proto-kicker">Need more confidence or professional help?</div><div class="proto-title" style="font-size:18px">Take your research further.</div><p class="proto-sub">你可以追加真人專業服務，不影響已完成的 AI 答案。</p></div>
+      <div class="upgrade-grid">
+        <div class="upgrade-card"><span class="tag blue">Fixed service price</span><h4>Expert Review</h4><div class="price">From $15</div><p>由合格真人專家檢查研究結論、重要證據、來源及可能遺漏的關鍵因素。購買前顯示具體價格及範圍。</p><button class="btn primary" type="button" id="reviewUpgrade">Request Expert Review</button></div>
+        <div class="upgrade-card"><span class="tag">Custom quote</span><h4>Work Directly with an Expert</h4><div class="price">Custom Quote</div><p>如果你需要的不只是核查，可直接付費諮詢專家深入研究、討論、補充分析或處理後續工作。</p><button class="btn secondary" type="button" id="directUpgrade">Match with an Expert</button></div>
+      </div>
+      <div class="prototype-result" id="upgradeResult"><strong id="upgradeTitle">Request started</strong><p id="upgradeText">此為互動示意；正式流程會匹配專家並展示 Card、價格及報價。</p></div>
+      <p class="small muted" style="margin-top:12px">使用者可略過此區域。不能將答案品質評分、Research 完成或後續對話強制綁定真人服務購買。</p>
+    </div>
+  </div>
+  <h3>6.2 Expert Review 的價格規則</h3>
+  <ul>
+    <li>覆核服務必須先定義標準範圍，例如檢查報告長度、主張數量、來源數量、覆核深度、交付時間及是否包含一次修訂。</li>
+    <li>各專家可為相同標準 Offer 設定自己的固定價格或標準價格範圍。不是全平台強制同價，而是服務規格一致、價格可比較。</li>
+    <li>超出標準範圍、特殊法域、超長報告或需要新增研究時，才轉為客製報價。</li>
+    <li>系統在購買前必須顯示實際選定專家的具體價格範圍，不以「Additional Fee」等模糊文字替代。</li>
+    <li>Expert Review 不應暗示絕對正確；交付記錄需顯示覆核人、覆核日期、覆核範圍及限制。</li>
+  </ul>
+  <h3>6.3 Work Directly with an Expert</h3>
+  <ul>
+    <li>適用於使用者需要完整真人服務，而非僅檢查 AI 已完成的報告。</li>
+    <li>使用者提供後續目標及需求，匹配專家並提交客製化 Quote Request。</li>
+    <li>可以沿用已有 Research 上下文，但只能分享使用者明確授權的資料。</li>
+    <li>此服務不必再次購買 Answer Credits；若專家選擇使用 Answer 或其他 AI 工具，相關費用應事先說明。</li>
+  </ul>
+</section>
+
+<section class="section" id="offers">
+  <div class="section-head"><div class="section-no">07</div><div><h2>Contact Card 與 Offers 整合</h2><p class="section-intro">Card 是供應者身份，Offer 是可購買服務；不要另建 Expert Profile、Expert Offer 或 Provider Store 作為重複資料。</p></div></div>
+  <div class="callout success"><strong>核心資料關係：</strong>一個 Contact Card 可以有多個 Offers；一個 Offer 可對應 AI Agent、真人服務或 AI + 真人混合服務；Answer 和 Run 可以共用同一 Card 及 Offer。</div>
+  <h3>7.1 Card 負責什麼？</h3>
+  <ul>
+    <li>個人／企業名稱及公開聯絡身份。</li>
+    <li>身份驗證、經驗驗證、專業資格驗證。</li>
+    <li>專業領域、服務區域／法域、語言與可用時間。</li>
+    <li>作品、去識別化案例、專業介紹。</li>
+    <li>已完成的服務評分及交易紀錄摘要。</li>
+    <li>所有公開 Offers 的入口。</li>
+  </ul>
+  <h3>7.2 Offer 模板：共用模板，不複製市場</h3>
+  <div class="table-wrap"><table><thead><tr><th>Offer Template</th><th>用途</th><th>定價</th><th>可由哪個入口購買</th></tr></thead><tbody>
+    <tr><td><strong>Expert-assisted Research</strong></td><td>真人從研究前期參與、界定方向、提供判斷及補充。</td><td>通常客製標準報價範圍；可設固定服務包。</td><td>Answer Research / Card</td></tr>
+    <tr><td><strong>Expert Review</strong></td><td>對已完成 AI 報告做約定範圍的真人覆核。</td><td>標準固定價格範圍；超範圍報價。</td><td>Answer 完成後 / Card</td></tr>
+    <tr><td><strong>Direct Expert Service</strong></td><td>不使用 AI，直接由真人提供專業服務。</td><td>標準固定價格範圍或客製報價。</td><td>Answer Premium Expert Consultation / Card</td></tr>
+    <tr><td><strong>Expert Collaboration</strong></td><td>真人與 AI 持續或深度共同完成任務。</td><td>專案報價／時段費。</td><td>Answer / Run / Card</td></tr>
+    <tr><td><strong>Agent Access</strong></td><td>公開 Agent 的使用授權及持續服務。</td><td>月費／用量／任務價。</td><td>Run Marketplace / Card</td></tr>
+  </tbody></table></div>
+  <h3>7.3 Offer 必須包含的欄位</h3>
+  <div class="table-wrap"><table><thead><tr><th>欄位</th><th>要求</th></tr></thead><tbody>
+    <tr><td>Offer ID / Owner Card ID</td><td>唯一識別及所屬 Card。</td></tr>
+    <tr><td>Service category / subcategory</td><td>專業分類及細分分類，用於匹配。</td></tr>
+    <tr><td>Service mode</td><td>AI-assisted human research、review、direct human service、collaboration、agent access 等。</td></tr>
+    <tr><td>Scope and deliverables</td><td>服務內容、交付物、排除項目、修改次數。</td></tr>
+    <tr><td>Pricing model</td><td>Fixed、Price Range、Custom Quote、Per Unit、Subscription；只向前台呈現簡化的固定價／價格範圍／客製報價／訂閱／用量。</td></tr>
+    <tr><td>Price and currency</td><td>金額、貨幣、稅費處理及有效期間。</td></tr>
+    <tr><td>Turnaround / availability</td><td>估計交付時間、可接單容量、服務時間。</td></tr>
+    <tr><td>Verification requirements</td><td>所需身份／資格標籤，不可把資格驗證當作品質保證。</td></tr>
+    <tr><td>Human involvement</td><td>創建者本人或其他合格專家；是否必須本人覆核；真人參與範圍。</td></tr>
+    <tr><td>Cancellation / refund / revision</td><td>標準條件，購買前可見。</td></tr>
+  </tbody></table></div>
+  <h3>7.4 Offer 建立流程</h3>
+  <ol>
+    <li>專家在自己的 Card 建立 Offer，選擇 Contact 提供的服務模板。</li>
+    <li>依模板填寫服務範圍、價格、交付時間、覆核條件及可用容量。</li>
+    <li>如果是標準 Expert Review，建立一個或數個固定範圍與價格的服務包。</li>
+    <li>如果是 Expert-assisted Research 或 Direct Expert Service，允許客製報價。</li>
+    <li>Offer 發布後可被 Answer、Run 及 Card 頁面共用，不複製成三份商品資料。</li>
+  </ol>
+  <div class="callout">Offer 模板是統一欄位和交易規則，不是平台強迫所有專家提供完全相同的服務或價格。創建者保留定價及服務範圍自主權。</div>
+</section>
+
+<section class="section" id="orders-deals">
+  <div class="section-head"><div class="section-no">08</div><div><h2>Orders 與 Deals 整合</h2><p class="section-intro">Orders 是唯一履約與付款事實來源；Deals 是商業機會、客戶關係及交易追蹤層。兩者應互相連結，不可重複計算金額或狀態。</p></div></div>
+  <h3>8.1 Order 建立時機</h3>
+  <ul>
+    <li>Quote Request：只建立需求／報價請求，不建立已付款 Order。</li>
+    <li>使用者接受報價並完成付款／平台規定的付款授權後：建立正式 Order。</li>
+    <li>固定價 Expert Review：使用者確認範圍及價格並完成付款後建立 Order。</li>
+    <li>AI Only Research：依既有 Answer Credits 交易處理，不建立真人服務 Order；可保留 Answer usage record。</li>
+  </ul>
+  <h3>8.2 Order 狀態建議</h3>
+  <div class="table-wrap"><table><thead><tr><th>狀態</th><th>意義</th><th>主要觸發</th></tr></thead><tbody>
+    <tr><td>Requested</td><td>已提出真人服務或報價要求。</td><td>使用者送出 Request。</td></tr>
+    <tr><td>Quoted</td><td>專家已提交有效報價。</td><td>專家提交 Quote。</td></tr>
+    <tr><td>Accepted / Awaiting Payment</td><td>使用者接受報價，等待付款或付款確認。</td><td>使用者按 Accept。</td></tr>
+    <tr><td>Paid / Confirmed</td><td>交易已確認，準備開始。</td><td>付款成功。</td></tr>
+    <tr><td>In Progress</td><td>真人或 AI + 真人服務執行中。</td><td>服務開始。</td></tr>
+    <tr><td>Submitted</td><td>提供者提交成果，等待客戶確認或自動完成規則。</td><td>交付成果。</td></tr>
+    <tr><td>Completed</td><td>服務完成，可進入評分與結算。</td><td>客戶確認或依政策完成。</td></tr>
+    <tr><td>Cancelled / Refunded / Disputed</td><td>取消、退款或爭議。</td><td>依平台交易規則。</td></tr>
+  </tbody></table></div>
+  <h3>8.3 Deals 的角色</h3>
+  <ul>
+    <li>Deal 可記錄服務需求、商業機會、客戶、預算、專家、狀態及下一步。</li>
+    <li>一個 Deal 可連結一個或多個 Quote Request／Quotes，最終連結被接受的 Order。</li>
+    <li>Deals 不得另行處理付款、退款或重複記錄成交金額；金額以 Order／Payment ledger 為準。</li>
+    <li>若現有 Deals 是銷售／交易追蹤工作區，則真人專家服務可建立對應 Deal 或關聯既有 Deal；不需強迫每一個小額服務都建立獨立 Deal，可依現有 Deals 規則配置。</li>
+    <li>從 Answer 交接到 Run 時，可將已授權的研究結果、專家、Quote、Order、下一步任務及 Deal context 傳遞過去。</li>
+  </ul>
+  <h3>8.4 Answer 對話與訂單視圖</h3>
+  <p>Research 對話內應能看到服務請求、專家回覆、報價、接受、付款、交付與完成狀態。使用者不應為了確認真人服務進度而離開 Answer 對話；完整訂單細節可點擊進入 Orders 或 Deals。</p>
+</section>
+
+<section class="section" id="matching">
+  <div class="section-head"><div class="section-no">09</div><div><h2>Provider Network：專家匹配與供應不足策略</h2><p class="section-intro">共享專家資料與匹配服務，不另建 Answer 專屬供應商庫。初期採管理式匹配，逐步開放比較。</p></div></div>
+  <h3>9.1 匹配條件</h3>
+  <ol>
+    <li>研究問題的專業領域及細分領域。</li>
+    <li>服務地區、法律法域、語言及行業經驗。</li>
+    <li>身份／資格驗證是否符合任務要求。</li>
+    <li>相似任務的實際完成經驗及 Agent／服務品質。</li>
+    <li>可用時間、回覆速度、當前接單容量。</li>
+    <li>價格及預算符合程度。</li>
+    <li>已完成服務的評分、退款、爭議及重複付費諮詢。</li>
+  </ol>
+  <h3>9.2 初期展示策略</h3>
+  <ul>
+    <li>預設顯示一位最匹配專家，清楚標示「Recommended match」或「Best fit for this request」。</li>
+    <li>提供 View Card 與 Compare another expert。</li>
+    <li>點擊 Compare another expert 才逐步載入其他符合條件的專家及其有效報價。</li>
+    <li>若只有一位符合資格的供應者，誠實顯示一位，不虛構候選人或市場規模。</li>
+    <li>若沒有合適供應者，提示目前無可確認的匹配，提供 AI Research 作替代選擇，或讓使用者保留／稍後再試。</li>
+    <li>初期每個主要分類可設定招募目標，例如至少 3 位真正符合條件且可接單的專家，再開啟完整比較體驗；這是營運目標，不是前台硬性宣稱。</li>
+  </ul>
+  <h3>9.3 公平排序</h3>
+  <div class="callout warning"><strong>禁止付費排名：</strong>專家不得透過付費購買較高推薦位置、提高答案正確性或影響 AI 研究結論。排序依任務匹配、資格、品質、實際交易表現、可用性及價格透明度計算。</div>
+  <p>新專家不能因為缺乏評分而永遠無法被推薦。需要設計冷啟動路徑：先核實身份／資格、作品與案例，再通過該服務分類的 Agent／專家任務測試；有少量真實交易後再逐步增加表現權重。</p>
+</section>
+
+<section class="section" id="ratings">
+  <div class="section-head"><div class="section-no">10</div><div><h2>評分、滿意度與品質排序</h2><p class="section-intro">必須分開評分 AI 答案與真人服務。只有實際完成真人服務交易的客戶，才能評分該筆專家服務。</p></div></div>
+  <div class="table-wrap"><table><thead><tr><th>評分對象</th><th>評估維度</th><th>是否計入專家分數</th></tr></thead><tbody>
+    <tr><td>AI Research Result</td><td>答案正確性、完整性、來源品質、實用性。</td><td>否；只用於 Answer AI 品質。</td></tr>
+    <tr><td>Expert-assisted Research</td><td>專業判斷、研究貢獻、溝通、交付品質。</td><td>是。</td></tr>
+    <tr><td>Expert Review</td><td>檢查準確度、重要問題發現能力、修正價值。</td><td>是，並保留服務類型。</td></tr>
+    <tr><td>Direct Expert Service / Collaboration</td><td>專業能力、溝通、交付、是否符合約定範圍。</td><td>是，並保留服務類型。</td></tr>
+  </tbody></table></div>
+  <ul>
+    <li>使用者可給 1–5 星及選填文字回饋。</li>
+    <li>只有完成且可驗證的付費服務訂單可以產生 Verified Review；取消、未付款及 AI Only 不可產生真人服務評分。</li>
+    <li>評分必須同時顯示評分值及評分數量，避免新供應者少量評分被誤讀。</li>
+    <li>匹配不可只看五星總分；應結合任務相關性、資格、完成紀錄、評分數量、退款／爭議、回覆速度及可用時間。</li>
+    <li>不得將專家資格驗證描述成成果保證；專家覆核也不代表答案絕對正確。</li>
+  </ul>
+</section>
+
+<section class="section" id="analytics">
+  <div class="section-head"><div class="section-no">11</div><div><h2>Provider 後台轉換率與平台分析</h2><p class="section-intro">提供者需要知道報價是否被接受、交易是否付款、服務是否完成；平台需要知道供應瓶頸及匹配品質。</p></div></div>
+  <div class="prototype">
+    <div class="proto-head"><div class="proto-logo">C</div><strong>Provider analytics</strong><small>Dashboard mockup</small></div>
+    <div class="proto-body">
+      <div class="proto-kicker">Service performance</div><div class="proto-title">Your service funnel</div>
+      <div class="summary-grid" style="margin:12px 0">
+        <div class="summary-card"><div class="num">CARD VIEWS</div><h3>240</h3><p>展示後查看 Card 的次數</p></div>
+        <div class="summary-card"><div class="num">QUOTE REQUESTS</div><h3>36</h3><p>收到有效報價需求</p></div>
+        <div class="summary-card"><div class="num">PAID ORDERS</div><h3>18</h3><p>已付款訂單</p></div>
+      </div>
+      <div class="table-wrap"><table style="min-width:0"><thead><tr><th>Metric</th><th>Example</th><th>Definition</th></tr></thead><tbody>
+        <tr><td>Quote Acceptance</td><td><strong>60%</strong></td><td>接受報價數 ÷ 有效報價數。</td></tr>
+        <tr><td>Paid Conversion</td><td><strong>83%</strong></td><td>實際付款訂單 ÷ 已接受報價。</td></tr>
+        <tr><td>Completion Rate</td><td><strong>94%</strong></td><td>完成訂單 ÷ 已開始訂單。</td></tr>
+      </tbody></table></div>
+      <p class="small muted">數字純屬示意。正式後台需支援時間範圍、Offer 類型、Answer／Run 來源及服務類別篩選。</p>
+    </div>
+  </div>
+  <h3>11.1 必備漏斗指標</h3>
+  <div class="table-wrap"><table><thead><tr><th>指標</th><th>定義</th><th>用途</th></tr></thead><tbody>
+    <tr><td>Impressions</td><td>Card／Offer 被推薦或展示次數。</td><td>曝光及供應需求。</td></tr>
+    <tr><td>Card Views</td><td>使用者開啟 Card 的次數。</td><td>身份及專業資訊吸引力。</td></tr>
+    <tr><td>Quote Requests</td><td>有效真人服務報價請求。</td><td>潛在購買需求。</td></tr>
+    <tr><td>Quotes Submitted</td><td>專家提交有效報價的次數。</td><td>供應者回覆效率。</td></tr>
+    <tr><td>Quote Acceptance Rate</td><td>接受的有效報價 ÷ 已提交有效報價。</td><td>價格、範圍及信任是否合理。</td></tr>
+    <tr><td>Paid Conversion</td><td>付款成功訂單 ÷ 已接受報價。</td><td>付款環節流失。</td></tr>
+    <tr><td>Completion Rate</td><td>完成訂單 ÷ 已開始訂單。</td><td>履約品質。</td></tr>
+    <tr><td>Average Rating</td><td>真實完成服務評分平均值及樣本數。</td><td>品質和匹配。</td></tr>
+    <tr><td>Cancellation / Refund / Dispute</td><td>取消、退款、爭議的數量及比例。</td><td>供應風險及體驗改善。</td></tr>
+    <tr><td>Repeat Purchase</td><td>同一客戶再次購買相同專家／服務的比例。</td><td>長期價值。</td></tr>
+  </tbody></table></div>
+  <h3>11.2 平台管理分析</h3>
+  <ul>
+    <li>按服務分類、地區／法域、Offer 模板、服務模式、供應者及 Answer／Run 來源分析。</li>
+    <li>追蹤從曝光至完成的整體漏斗，識別是供應不足、回覆慢、報價太高、付款失敗或履約問題。</li>
+    <li>統計 Expert-assisted Research、Expert Review、Premium Expert Consultation 及直接協作的收入、退款、完成率和平均成交時間。</li>
+    <li>平台排名優化依實際匹配和交易品質，不因供應商付費提高排名。</li>
+  </ul>
+</section>
+
+<section class="section" id="engine">
+  <div class="section-head"><div class="section-no">12</div><div><h2>Contact Engine 技術整合與邊界</h2><p class="section-intro">真人服務是 Engine 完成 AI 計算前後的工作流程節點，不是模型路由節點，因此不與既有多模型架構衝突。</p></div></div>
+  <div class="codebox">Answer Request
+   │
+   ├── AI Research
+   │      └── Contact Engine
+   │            ├── Model Routing
+   │            ├── Independent Model Execution
+   │            ├── Cross-model Challenge
+   │            ├── Evidence / Contradiction Checks
+   │            └── Synthesis AI Result
+   │
+   ├── AI Research + Expert Review Review
+   │      ├── Provider Matching / Quote / User Acceptance
+   │      ├── Contact Engine: AI Research stages
+   │      ├── Human Expert contribution / review
+   │      └── Combined Research Deliverable
+   │
+   └── Premium Expert Consultation
+          ├── Provider Matching / Offer Template / Quote / Custom Offer
+          ├── Payment Order
+          └── Human Service (No AI Research Credits)</div>
+  <h3>12.1 Engine 責任</h3>
+  <ul>
+    <li>只負責 AI 模型及 AI 工作執行，記錄模型使用量、成本、路由、失敗及輸出版本。</li>
+    <li>真人匹配、報價、付款、專家資格驗證、真人覆核狀態屬 Answer／Provider Network／Orders 的責任。</li>
+    <li>Human Review 可作為 Answer 工作流程中的外部等待狀態；Engine 不需要把真人註冊成模型。</li>
+    <li>AI 答案必須保存版本快照；真人修改／補充應保留獨立版本及修改者記錄，不覆蓋原始 AI 輸出。</li>
+  </ul>
+  <h3>12.2 AI Research + Expert Review 編排</h3>
+  <ul>
+    <li>使用者先選擇 AI Research + Expert Review，系統取得專家報價並確認付款後，才啟動有成本的 AI Research。</li>
+    <li>Engine 執行 AI 研究步驟，將約定範圍的結果交給專家；專家可在覆核後提供判斷，更正、補充、關鍵問題及向使用者追加需驗證的條件。</li>
+    <li>若需要再調用模型，須按既有 Credits 規則記錄、標準價格範圍；先取得使用者批准。</li>
+    <li>最終報告區分 AI 研究內容與專家實際覆核貢獻，並顯示專家身份及參與範圍。</li>
+    <li>使用者獲得覆核結果後，可進行評分，或提出追加提問、補充、修正或後續研究要求，再由專家提供新的 Offer Template 或 Custom Offer。</li>
+  </ul>
+</section>
+
+<section class="section" id="data-model">
+  <div class="section-head"><div class="section-no">13</div><div><h2>資料模型與模組關聯建議</h2><p class="section-intro">優先關聯現有資料表及服務，不要重複保存 Card、Offer、Order、Deal 的主資料。</p></div></div>
+  <div class="codebox">ContactCard
+  └── ProviderProfile (qualification, expertise, availability)
+       └── Offers[]
+            ├── ExpertAssistedResearchOffer
+            ├── ExpertReviewOffer
+            ├── DirectExpertServiceOffer
+            ├── ExpertCollaborationOffer
+            └── AgentAccessOffer (shared with Run)
+
+AnswerResearchSession
+  ├── ResearchMethod: AI_ONLY | AI_EXPERT | EXPERT_ONLY
+  ├── AnswerCreditUsage (AI only)
+  ├── ProviderMatch[]
+  ├── QuoteRequest[]
+  │    └── Quote[] (versioned, expiring, comparable)
+  ├── Order (only after accepted + payment confirmation)
+  ├── AIResultVersion[]
+  ├── ExpertContribution[]
+  ├── ExpertReview[]
+  └── DealReference (optional / linked)
+
+Order
+  ├── OfferReference
+  ├── AcceptedQuoteReference
+  ├── PaymentReference
+  ├── Deliverables[]
+  ├── FulfillmentEvents[]
+  └── ReviewReference</div>
+  <h3>13.1 建議核心實體</h3>
+  <div class="table-wrap"><table><thead><tr><th>實體</th><th>關鍵欄位／用途</th></tr></thead><tbody>
+    <tr><td>ProviderProfile</td><td>card_id、expertise_categories、jurisdictions、languages、verification_status、availability、capacity。</td></tr>
+    <tr><td>Offer</td><td>owner_card_id、template_type、service_scope、pricing_model、price、currency、turnaround、human_involvement、terms、status。</td></tr>
+    <tr><td>ResearchSession</td><td>user_id、question、depth、method、credit_estimate、status、answer_result_id。</td></tr>
+    <tr><td>ProviderMatch</td><td>session_id、provider_id、match_reason、rank_score_version、shown_at、selected_at、decline_reason（若提供）。</td></tr>
+    <tr><td>QuoteRequest</td><td>session_id／service_request_id、offer_id、scope、budget（optional）、requested_at、status。</td></tr>
+    <tr><td>Quote</td><td>provider_id、quote_request_id、version、amount、currency、scope、deliverables、deadline、valid_until、status、terms_snapshot。</td></tr>
+    <tr><td>Order</td><td>buyer_id、provider_id、offer_id、accepted_quote_id、payment_id、amount_snapshot、status、fulfillment_timestamps。</td></tr>
+    <tr><td>ExpertContribution</td><td>research_session_id、provider_id、contribution_type、content_reference、created_at、consent_scope。</td></tr>
+    <tr><td>ExpertReview</td><td>result_version_id、reviewer_provider_id、review_scope、review_notes、reviewed_at、status、deliverable_reference。</td></tr>
+    <tr><td>ServiceReview</td><td>order_id、reviewer_user_id、provider_id、service_type、rating、dimensions、comment、verified_purchase。</td></tr>
+    <tr><td>DealReference</td><td>deal_id、order_id、source_answer_session_id、stage；付款金額仍以 Order／Payment 為準。</td></tr>
+  </tbody></table></div>
+  <h3>13.2 必須保留來源歸因</h3>
+  <p>每筆 Provider 交易需記錄來源，例如 Answer Research、Answer Premium Expert Consultation、Post-Research Review、Direct Custom Offer 或 Run Marketplace，以供佣金、分析與供應者轉換率統計。來源不可只存在前端，不可在訂單轉換後遺失。</p>
+</section>
+
+<section class="section" id="states">
+  <div class="section-head"><div class="section-no">14</div><div><h2>主要狀態與流程規則</h2><p class="section-intro">前端顯示狀態需由後端狀態機控制，避免同一個 Quote／Order 在不同畫面顯示矛盾。</p></div></div>
+  <h3>14.1 Research Method 狀態</h3>
+  <div class="table-wrap"><table><thead><tr><th>方法</th><th>狀態路徑</th></tr></thead><tbody>
+    <tr><td>AI Research</td><td>Draft Submitted Engine Running Completed / Failed。</td></tr>
+    <tr><td>AI Research + Expert Review</td><td>Draft Expert Matching Quote Requested Quote Received Accepted Payment Confirmed AI / Human In Progress Submitted Completed。</td></tr>
+    <tr><td>Premium Expert Consultation</td><td>Draft Expert Matching Quote Requested / Offer Selected Quote Received Accepted Payment Confirmed Human In Progress Submitted Completed。</td></tr>
+  </tbody></table></div>
+  <h3>14.2 研究完成後的升級狀態</h3>
+  <ul>
+    <li>Expert Review：Result Available Review Offer Matched Exact Price Presented Accepted / Paid In Review Reviewed Result Delivered Completed。</li>
+    <li>Work Directly with an Expert：Result Available New Service Request Expert Matching Quote Accept / Pay Order In Progress Completed。</li>
+    <li>使用者可略過升級；Answer 結果本身仍正常可用。</li>
+  </ul>
+  <h3>14.3 報價保留及接受規則</h3>
+  <ul>
+    <li>同一個 Request 可以有多個 Provider Quote；每個 Quote 獨立保存、具有效期限及版本。</li>
+    <li>使用者接受一份報價後，只能建立一筆對應範圍的有效 Order；其他報價標記為 Not Selected／Closed，但仍保留歷史。</li>
+    <li>不可因使用者點擊 Compare another expert 就撤銷上一位專家的報價。</li>
+    <li>如果使用者已接受一份並付款，想改用其他專家，走取消／退款／重新下單政策，而不是靜默切換供應商。</li>
+  </ul>
+</section>
+
+<section class="section" id="security">
+  <div class="section-head"><div class="section-no">15</div><div><h2>權限、資料保護及交易防跳單</h2><p class="section-intro">Card 可以公開透明；客戶研究資料與私人文件必須隔離。防止規避交易不能以隱藏身份作為手段。</p></div></div>
+  <h3>15.1 專家資料及客戶資料隔離</h3>
+  <ul>
+    <li>專家公開的經驗、作品、方法及案例必須由專家授權；不得把未授權的客戶資料納入公開 Twin／Offer。</li>
+    <li>客戶送交 Expert Review 或 AI Research + Expert Review 的文件，預設只提供給完成該訂單所需的指定專家。</li>
+    <li>專家不會因為是 Agent 創建者，就自動取得所有使用者與 Agent 的私人任務內容。</li>
+    <li>轉交真人前，顯示資料分享範圍及用途；使用者明確同意後才授權。</li>
+    <li>採最小權限、租戶隔離、存取日誌、資料保存期限及撤銷存取能力。</li>
+    <li>真人覆核交付後，依訂單及資料政策撤銷不再需要的存取權。</li>
+  </ul>
+  <h3>15.2 交易防跳單原則</h3>
+  <ul>
+    <li>允許查看 Card、專業資格、作品、服務評分及公開 Offers，不以隱藏資料來防止私下交易。</li>
+    <li>由 Contact 媒合並產生的特定服務需求，報價、付款、交付、評分及爭議處理應留在平台。</li>
+    <li>以付款保障、服務紀錄、退款／爭議處理、Answer 結果整合、Run 後續執行及聲譽累積作為留在平台的價值。</li>
+    <li>制定範圍明確且合理的非規避條款，針對平台媒合的具體商業交易，不概括限制雙方一般人際聯絡或無關業務。</li>
+    <li>不得透過不透明的自動扣費或禁止一切外部溝通來保護平台佣金。</li>
+  </ul>
+  <h3>15.3 使用者批准與真人核查是兩種權限</h3>
+  <ul>
+    <li>Expert Review 表示真人依約定範圍核查成果，不代表 Agent 可以直接寄信、付款、簽約、發布或刪除資料。</li>
+    <li>高影響外部行動仍需獨立的 User Approval／Permission。</li>
+    <li>專家覆核標示必須明確揭示覆核者、日期、範圍及限制，不宣稱絕對正確。</li>
+  </ul>
+</section>
+
+<section class="section" id="edge-cases">
+  <div class="section-head"><div class="section-no">16</div><div><h2>特殊情況與失敗處理</h2><p class="section-intro">避免真人服務供應少、報價未回覆、專家不可用或使用者改變主意時，造成不可恢復的任務狀態。</p></div></div>
+  <div class="table-wrap"><table><thead><tr><th>情況</th><th>預期行為</th></tr></thead><tbody>
+    <tr><td>沒有符合資格的專家</td><td>問題不提供任何升級選項提示；不虛構候選人。</td></tr>
+    <tr><td>只有一位專家</td><td>展示一位並清楚說明其符合條件；不強行顯示 Compare 選項的假候選人。</td></tr>
+    <tr><td>專家沒有回覆報價</td><td>依 Request 時限標記逾時；可推薦下一位，不收費、不啟動付費 Research。</td></tr>
+    <tr><td>專家拒絕服務</td><td>保留拒絕原因（可選）；推薦其他合格專家或 AI Research。</td></tr>
+    <tr><td>使用者不接受報價</td><td>報價保持 Declined／Expired；可比較其他專家或改選 AI Only。</td></tr>
+    <tr><td>報價到期</td><td>無法接受；可請原專家更新報價或選擇其他專家。</td></tr>
+    <tr><td>報價範圍變更</td><td>建立新 Quote 版本，舊版保留；使用者重新確認。</td></tr>
+    <tr><td>真人專家中途不可用</td><td>暫停服務，通知使用者，可選替代專家、退款或依條款取消。</td></tr>
+    <tr><td>Expert Review 發現重大問題</td><td>在原 Review 範圍內交付發現及修正；超出範圍需使用者同意新報價。</td></tr>
+    <tr><td>使用者要求直接真人服務</td><td>走 Premium Expert Consultation／Direct Expert Service，不扣 Answer Credits。</td></tr>
+    <tr><td>真人核查已完成但使用者不滿意</td><td>依 Offer 事先列明的修訂、退款和爭議政策處理；不可自行改寫評分。</td></tr>
+  </tbody></table></div>
+</section>
+
+<section class="section" id="acceptance">
+  <div class="section-head"><div class="section-no">17</div><div><h2>工程內容與建議開發順序</h2><p class="section-intro">優先重用現有 Card、Offer、Order、Deal、付款及 Provider Network 模組；先完成最短可交易閉環，再擴大匹配及分析。</p></div></div>
+  <h3>17.1 內容核對清單</h3>
+  <ul>
+    <li>Research 問題提交時可選 AI Research、AI Research + Expert Review、Premium Expert Consultation 三種方式。</li>
+    <li>AI Research 預設選中，顯示 Credits；Premium Expert Consultation 不扣 Credits。</li>
+    <li>AI Research + Expert Review 在開始前顯示明確真人報價；無報價時只建立 Quote Request，不啟動 AI 研究、不收費。</li>
+    <li>Premium Expert Consultation 可由 Offer Template 固定購買或取得 Custom Offer 客製報價，不啟動 Engine Research。</li>
+    <li>專家卡片展示姓名、領域、資格／身份驗證、評分／評分數、匹配原因、價格及 View Card。</li>
+    <li>Compare another expert 可新增候選及保留原有有效報價。</li>
+    <li>接受一份報價後建立唯一有效 Order，並處理付款。</li>
+    <li>AI Research 完成後出現 Expert Review 和 Work Directly with an Expert 兩個可略過的升級選項。</li>
+    <li>Expert Review 顯示確切固定服務價格；超出標準範圍才客製報價。</li>
+    <li>Work Directly with an Expert 提交客製 Quote Request，不強制使用 Answer Credits。</li>
+    <li>所有真人服務訂單可關聯 Card、Offer、Quote、Order、Deal 及 Research Session。</li>
+    <li>服務完成後可以評分；AI 答案評分與真人服務評分分開。</li>
+    <li>Provider 後台具備完整轉換漏斗；平台可按服務類別和來源分析。</li>
+    <li>專家及客戶資料隔離、授權、撤銷與存取日誌可運作。</li>
+    <li>沒有專家時提供誠實的空狀態，不展示虛構候選人。</li>
+  </ul>
+  <h3>17.2 建議開發優先級</h3>
+  <div class="table-wrap"><table><thead><tr><th>階段</th><th>範圍</th><th>完成標準</th></tr></thead><tbody>
+    <tr><td><span class="tag blue">P0</span></td><td>Research 三種入口；AI Research + Expert Review／Premium Expert Consultation Quote Request；Card 專家資訊；報價接受；Order／付款；完成後兩種升級入口。</td><td>能從 Answer 完成一筆真人服務付款及交付閉環。</td></tr>
+    <tr><td><span class="tag">P1</span></td><td>Compare another expert、舊報價保留、Expert Review 標準 Offer、服務評分、Deals 關聯、Provider 漏斗數據。</td><td>能比較專家、完成交易後評分及追蹤轉換。</td></tr>
+    <tr><td><span class="tag">P2</span></td><td>更進階匹配、供應商品質評估、專家容量、跨 Answer／Run Offer、供應商分析及價格優化。</td><td>供應增加時仍能公平、可衡量地匹配及擴張。</td></tr>
+  </tbody></table></div>
+  <h3>17.3 建議先做的端到端測試</h3>
+  <ol>
+    <li><strong>AI Only：</strong>使用者選 AI Research 扣正確 Credits Engine 完成 顯示 AI 結果 可選兩種真人升級。</li>
+    <li><strong>AI Research + Expert Review：</strong>使用者選 AI Research + Expert Review 匹配專家 收到確切報價 比較／接受 付款 AI 與專家合作 交付 Order 完成 評分。</li>
+    <li><strong>Premium Expert Consultation：</strong>使用者選 Premium Expert Consultation 不扣 Answer Credits Offer Template ／ Quote ／ Custom Offer 付款 真人服務 交付 Order 完成 評分。</li>
+    <li><strong>Post-Research Expert Review：</strong>AI Research 完成 顯示 Review Offer 及具體價格 使用者付款 真人覆核 顯示覆核者和範圍。</li>
+    <li><strong>Post-Research Direct Expert：</strong>AI Research 完成 使用者選直接真人服務 取得客製報價 接受／付款 真人服務完成。</li>
+    <li><strong>Quote switching：</strong>第一位專家報價 比較第二位 第一份報價仍有效 接受其中一份 只建立一筆有效 Order。</li>
+    <li><strong>Provider unavailable：</strong>無匹配專家 只有 AI Research 默認一個選項。不提供 AI Research + Expert Review 或 Premium Expert Consultation 無對應匹配專家的選項。</li>
+  </ol>
+</section>
+
+<section class="section" id="final-decisions">
+  <div class="section-head"><div class="section-no">18</div><div><h2>最終產品決策摘要</h2><p class="section-intro">以下作為工程實作時的優先依據；若現有程式與此處重複，優先整合，不另建平行系統。</p></div></div>
+  <div class="table-wrap"><table><thead><tr><th>議題</th><th>最終決策</th></tr></thead><tbody>
+    <tr><td>Research 前選擇</td><td>三項：AI Research、AI Research + Expert Review、Premium Expert Consultation。</td></tr>
+    <tr><td>AI 答案完成後</td><td>兩項追加升級：Expert Review、Work Directly with an Expert。</td></tr>
+    <tr><td>真人報價</td><td>研究前 AI Research + Expert Review (Human-backed) 通常客製報價；Expert Review 以標準固定價為主；直接真人服務客製報價。</td></tr>
+    <tr><td>價格透明</td><td>不能只顯示 Additional Fee；付款前顯示確切真人Real human assistance費用、Answer Credits、服務範圍及時間。</td></tr>
+    <tr><td>專家資訊</td><td>顯示具體專家 Card、資格、專業、評分及匹配原因。</td></tr>
+    <tr><td>更換專家</td><td>可 Compare another expert；有效舊報價保留；接受一份後才關閉其他報價。</td></tr>
+    <tr><td>Card / Offers</td><td>身份在 Card；商品在 Custom Offers；不另建專家檔案或專家 Offer 系統。</td></tr>
+    <tr><td>Provider Network</td><td>共用匹配、驗證及分析基礎設施；初期 managed matching。沒有匹配到符合需求的服務者時，提供答案後無需提供真人協助的升級服務提示。</td></tr>
+    <tr><td>Orders / Deals</td><td>付款與履約由 Order 管理；Deal 關聯商業機會，不重複成為付款事實來源。</td></tr>
+    <tr><td>評分</td><td>僅完成的真人服務可評分專家；AI 答案評分獨立。</td></tr>
+    <tr><td>排序</td><td>依匹配與真實服務品質，不允許付費排名。</td></tr>
+    <tr><td>Engine</td><td>保持純 AI 算力及模型路由；真人作為工作流程外部節點。</td></tr>
+    <tr><td>防跳單</td><td>不隱藏 Card；透過平台付款保障、交付紀錄、爭議處理及合理非規避政策留住交易。</td></tr>
+  </tbody></table></div>
+  <div class="callout success"><strong>最終定位：</strong>Contact Answer 提供可靠 AI 答案、研究與 Discovery；在 Research 需要時，使用者可選擇 AI Research + Expert Review、完成後 Expert Review，或完全由真人提供服務。所有專家身份和服務商品由 Contact Card 與 Offers 管理，Provider Network 負責匹配，Orders 負責交易履約，Deals 負責商業追蹤。這是一套共享的專業服務交易基礎設施，而不是多個互相重複的產品。</div>
+</section>
+
+<footer class="footer"><strong>Contact™ — Engineering handoff document</strong><br>本文件描述建議的產品行為及整合規格。實作前請先檢查現有 Card、Offers、Orders、Deals、付款、Provider Network 及 Answer 資料模型，優先擴充既有模組並保持單一資料來源。所有示意 UI、專家資料、價格及數據僅供原型展示。<br><a class="backtop" href="#top">↑ Back to top</a></footer>
+</main>
+</div>
+
+<div class="modal-backdrop" id="cardModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <div class="modal-top"><div><div class="proto-kicker">Contact Card · Example</div><h3 id="modalTitle">Jane Morgan</h3></div><button class="modal-close" id="closeModal" aria-label="Close">×</button></div>
+    <p>Attorneys — Isler Dare, PC · Legal Research Specialist · Expertise Verified</p>
+    <div class="modal-grid"><div class="modal-stat"><b>4.9 ★</b><small>86 completed reviews</small></div><div class="modal-stat"><b>Legal Research</b><small>Verified expertise category</small></div><div class="modal-stat"><b>$15-35</b><small>Example expert research fee</small></div><div class="modal-stat"><b>3 business days</b><small>Example turnaround</small></div></div>
+    <h4>Professional profile</h4><p>示意：公開 Card 應提供與當前研究問題相關的專業背景、資格驗證、作品／案例、服務範圍、語言及 Offers。只展示經本人授權且可公開的資訊。</p>
+    <h4>Relevant Offers</h4><ul><li>Expert-assisted Research — custom quote</li><li>Expert Review — fixed scope / listed price</li><li>Direct Legal Research Service — custom quote</li></ul>
+    <div class="divider"></div><button class="btn primary" style="width:100%" id="closeCardOk">Preview Next Expert</button>
+  </div>
+</div>
+<script>
+(function(){
+  const methodCards=[...document.querySelectorAll('.method-card')];
+  const expertPanel=document.getElementById('expertPanel');
+  const humanPanel=document.getElementById('humanPanel');
+  const methodFootnote=document.getElementById('methodFootnote');
+  const methodAction=document.getElementById('methodAction');
+  const methodResult=document.getElementById('methodResult');
+  let selected='ai';
+  function setMethod(method){
+    selected=method; methodResult.classList.remove('show');
+    methodCards.forEach(c=>{const on=c.dataset.method===method;c.classList.toggle('selected',on);c.setAttribute('aria-pressed',String(on));});
+    expertPanel.classList.toggle('visible',method==='hybrid');
+    humanPanel.classList.toggle('visible',method==='human');
+    if(method==='ai'){methodFootnote.textContent='20 Credits · 不需要真人專家 · 提交後開始 AI Research';methodAction.textContent='Submit Research';}
+    if(method==='hybrid'){methodFootnote.textContent='20 Credits + $15-35 Expert Fee（示意）· 接受專家報價並付款後開始';methodAction.textContent='Accept Quote & Start';}
+    if(method==='human'){methodFootnote.textContent='不使用 AI · 不扣 Answer Credits · 先取得真人服務報價';methodAction.textContent='Request Expert Quote';}
+  }
+  methodCards.forEach(c=>c.addEventListener('click',()=>setMethod(c.dataset.method)));
+  methodAction.addEventListener('click',()=>{
+    methodResult.classList.add('show');
+    if(selected==='ai'){document.getElementById('methodResultTitle').textContent='AI Research submitted (demo)';document.getElementById('methodResultText').textContent='正式系統：建立 Research Session 並按既有規則扣除 Credits，接著由 Contact Engine 執行。';}
+    if(selected==='hybrid'){document.getElementById('methodResultTitle').textContent='Expert quote accepted (demo)';document.getElementById('methodResultText').textContent='正式系統：先確認專家範圍、20 Credits 與 $15-35 真人費用，付款成功後建立 Order，再啟動 AI Research + Expert Review 研究。';}
+    if(selected==='human'){document.getElementById('methodResultTitle').textContent='Expert quote requested (demo)';document.getElementById('methodResultText').textContent='正式系統：不扣 Answer Credits、不啟動 Engine Research；建立 Quote Request，待專家報價後由使用者接受及付款。';}
+  });
+  const comparePanel=document.getElementById('comparePanel');
+  document.getElementById('compareBtn').addEventListener('click',()=>comparePanel.style.display=comparePanel.style.display==='none'?'block':'none');
+  document.querySelectorAll('.choose-expert').forEach(b=>b.addEventListener('click',()=>{
+    document.getElementById('expertName').textContent=b.dataset.name;document.getElementById('expertRole').textContent=b.dataset.role;document.getElementById('expertRating').textContent=b.dataset.rating;document.getElementById('expertReviews').textContent=b.dataset.reviews;document.getElementById('expertFee').textContent=b.dataset.fee;
+    document.querySelectorAll('.choose-expert').forEach(x=>x.textContent='Select');b.textContent='Selected';comparePanel.style.display='none';
+    const price=b.dataset.fee; document.querySelector('.method-card[data-method="hybrid"] .method-price').innerHTML='20-50 <span>Credits</span> + <span class="expert-price-inline">'+price+'</span>';
+    methodFootnote.textContent='20 Credits + '+price+' Expert Fee · 專家已選擇，確認報價後才開始';
+  }));
+  document.getElementById('humanCompareBtn').addEventListener('click',()=>{document.getElementById('humanCompareNote').style.display='block';});
+  const modal=document.getElementById('cardModal');
+  function openModal(){modal.classList.add('open');}function closeModal(){modal.classList.remove('open');}
+  ['viewCardBtn','humanCardBtn','openFullCard'].forEach(id=>document.getElementById(id).addEventListener('click',openModal));
+  ['closeModal','closeCardOk'].forEach(id=>document.getElementById(id).addEventListener('click',closeModal));
+  modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
+  document.getElementById('openCompareCard').addEventListener('click',()=>{document.getElementById('quotesDemo').scrollIntoView({behavior:'smooth',block:'center'});});
+  document.querySelectorAll('[data-open-card]').forEach(b=>b.addEventListener('click',openModal));
+  document.querySelectorAll('.accept-quote').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('.quote-card').forEach(c=>c.classList.remove('active'));
+    const card=b.closest('.quote-card');card.classList.add('active');
+    document.getElementById('quoteResult').classList.add('show');
+  }));
+  document.getElementById('requestAnother').addEventListener('click',()=>alert('正式系統：向 Provider Network 請求另一位符合條件的專家；原有有效報價保留。'));
+  document.getElementById('reviewUpgrade').addEventListener('click',()=>{document.getElementById('upgradeResult').classList.add('show');document.getElementById('upgradeTitle').textContent='Expert Review offer selected (demo)';document.getElementById('upgradeText').textContent='正式系統：依報告範圍匹配標準 Review Offer，展示 Card、具體價格及交付時間；使用者確認與付款後建立 Order。';});
+  document.getElementById('directUpgrade').addEventListener('click',()=>{document.getElementById('upgradeResult').classList.add('show');document.getElementById('upgradeTitle').textContent='Direct expert request started (demo)';document.getElementById('upgradeText').textContent='正式系統：建立新的客製化服務 Quote Request，可沿用已授權的 Research context；不自動扣 Answer Credits。';});
+  setMethod('ai');
+})();
+</script>
+</body>
+</html>
