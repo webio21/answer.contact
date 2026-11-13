@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#08151d">
+<meta name="description" content="Contact Ecosystem — 產品架構、生態角色與完整價值循環。">
+<title>CONTACT — Ecosystem Architecture</title>
+<style>
+:root {
+  --ink: #101b22;
+  --muted: #64737b;
+  --paper: #f3f6f6;
+  --white: #ffffff;
+  --line: #dce5e8;
+  --cyan: #00d2ff;
+  --cyan-2: #00b8dc;
+  --navy: #08151d;
+  --navy-2: #10232d;
+  --soft-cyan: #e8faff;
+  --serif: Georgia, "Times New Roman", "Noto Serif TC", serif;
+  --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --shadow: 0 14px 38px rgba(16, 35, 45, .065);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+a { color: inherit; text-decoration: none; }
+.page { width: min(100%, 1480px); margin: 0 auto; overflow: hidden; background: var(--paper); }
+.topbar { min-height: 78px; padding: 0 clamp(22px, 5.5vw, 78px); display: flex; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid rgba(255,255,255,.1); background: var(--navy); color: #d5e2e7; }
+.brand { display: flex; align-items: center; gap: 11px; font-size: 17px; font-weight: 800; letter-spacing: -.075em; color: #fff; }
+.brand-mark { width: 10px; height: 10px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 18px rgba(0,210,255,.65); }
+.top-label { font-size: 9px; letter-spacing: .22em; text-transform: uppercase; color: #8ea4ad; }
+.hero { position: relative; overflow: hidden; padding: clamp(58px, 8vw, 112px) clamp(22px, 8vw, 116px) 76px; background: radial-gradient(circle at 86% 12%, rgba(0,210,255,.13), transparent 28%), linear-gradient(130deg, #08151d 0%, #10232d 56%, #091922 100%); color: #fff; }
+.hero:before,.hero:after { content: ""; position: absolute; border: 1px solid rgba(0,210,255,.17); border-radius: 50%; pointer-events: none; }
+.hero:before { width: 520px; height: 520px; right: -190px; top: -275px; }
+.hero:after { width: 370px; height: 370px; right: -112px; top: -200px; border-color: rgba(255,255,255,.1); }
+.eyebrow { margin: 0 0 22px; color: var(--cyan); font-size: 10px; font-weight: 750; letter-spacing: .25em; text-transform: uppercase; }
+h1 { position: relative; z-index: 1; max-width: 900px; margin: 0; font-size: clamp(42px, 7.5vw, 98px); line-height: .98; letter-spacing: -.075em; font-weight: 650; }
+h1 span { color: var(--cyan); }
+.hero-copy { position: relative; z-index: 1; max-width: 740px; margin: 25px 0 0; color: #c0d0d6; font-family: var(--serif); font-size: clamp(18px, 2vw, 25px); line-height: 1.55; }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 38px; position: relative; z-index: 1; }
+.meta-chip { padding: 8px 12px; border: 1px solid rgba(255,255,255,.16); border-radius: 999px; color: #b9cbd1; font-size: 10px; letter-spacing: .06em; }
+.meta-chip b { color: #fff; font-weight: 700; margin-right: 5px; }
+main { padding: 0 clamp(18px, 5vw, 72px) 82px; }
+.section { padding-top: 76px; }
+.section-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 25px; }
+.section-kicker { margin: 0 0 8px; color: var(--cyan-2); font-size: 9px; font-weight: 800; letter-spacing: .22em; text-transform: uppercase; }
+h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-height: 1.12; letter-spacing: -.055em; }
+.section-note { max-width: 430px; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.75; text-align: right; }
+.layer { border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.82); box-shadow: var(--shadow); overflow: hidden; }
+.layer + .layer { margin-top: 14px; }
+.layer-top { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 18px 22px 0; }
+.layer-name { display: flex; align-items: center; gap: 11px; }
+.layer-number { display: inline-grid; place-items: center; width: 27px; height: 27px; border-radius: 9px; background: var(--soft-cyan); color: #008eaa; font-size: 10px; font-weight: 800; }
+.layer-name h3 { margin: 0; font-size: 14px; font-weight: 750; letter-spacing: -.02em; }
+.layer-role { color: #829198; font-size: 9px; letter-spacing: .13em; text-transform: uppercase; }
+.cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 11px; padding: 16px 18px 18px; }
+.cards.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.cards.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.cards.one { grid-template-columns: minmax(0, 1fr); }
+.product { min-width: 0; padding: 17px 17px 16px; border: 1px solid #e3eaed; border-radius: 14px; background: #fff; transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+.product:hover { transform: translateY(-3px); border-color: rgba(0,184,220,.55); box-shadow: 0 12px 25px rgba(0,85,105,.08); }
+.product-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 13px; }
+.product-code { color: #90a0a7; font-size: 9px; font-weight: 800; letter-spacing: .13em; }
+.pill { display: inline-flex; align-items: center; min-height: 21px; padding: 3px 8px; border-radius: 999px; background: #f0f4f5; color: #6d7a80; font-size: 9px; white-space: nowrap; }
+.product h4 { margin: 0; font-size: 18px; line-height: 1.2; letter-spacing: -.04em; }
+.product h4 span { display: block; margin-top: 4px; color: #839197; font-size: 11px; font-weight: 500; letter-spacing: 0; }
+.product p { margin: 12px 0 0; color: #64737b; font-size: 12px; line-height: 1.7; }
+.foundation .product:first-child { border-color: rgba(0,184,220,.55); background: linear-gradient(145deg, #f2fcff, #fff 72%); }
+.engine-wrap { padding: 18px; }
+.engine-core { position: relative; overflow: hidden; padding: 25px 28px; border-radius: 15px; color: #fff; background: radial-gradient(circle at 90% 20%, rgba(0,210,255,.18), transparent 28%), linear-gradient(115deg, #0c202a, #102d39); }
+.engine-core:after { content: ""; position: absolute; width: 200px; height: 200px; right: -70px; top: -105px; border: 1px solid rgba(0,210,255,.25); border-radius: 50%; box-shadow: 0 0 0 22px rgba(0,210,255,.025), 0 0 0 45px rgba(0,210,255,.02); }
+.engine-flex { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: center; gap: 22px; }
+.engine-title { display: flex; align-items: center; gap: 14px; }
+.engine-icon { width: 43px; height: 43px; display: grid; place-items: center; border-radius: 13px; color: var(--cyan); border: 1px solid rgba(0,210,255,.3); background: rgba(0,210,255,.08); font-size: 19px; }
+.engine-title h4 { margin: 0; font-size: 22px; letter-spacing: -.04em; }
+.engine-title h4 span { display: block; margin-top: 3px; color: #9bb2bb; font-size: 11px; font-weight: 500; letter-spacing: 0; }
+.engine-desc { max-width: 520px; margin: 0; color: #bdd0d7; font-size: 12px; line-height: 1.75; }
+.engine-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; position: relative; z-index: 1; }
+.engine-tags span { padding: 6px 9px; border: 1px solid rgba(255,255,255,.15); border-radius: 7px; color: #c6d9df; font-size: 9px; }
+.engine-connect { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 0 0; color: #7f9097; font-size: 10px; letter-spacing: .08em; }
+.engine-connect:before,.engine-connect:after { content: ""; width: 52px; height: 1px; background: #d5e0e3; }
+.ai-products { padding-top: 0; }
+.ai-products .product { border-top: 2px solid var(--cyan-2); }
+.ai-products .product:nth-child(2) { border-top-color: #6687db; }
+.ai-products .product:nth-child(3) { border-top-color: #19a88c; }
+.value-flow { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; align-items: stretch; margin-top: 22px; }
+.flow-step { position: relative; padding: 15px 11px 14px; border: 1px solid var(--line); border-radius: 12px; background: #fff; text-align: center; }
+.flow-step:not(:last-child):after { content: "›"; position: absolute; right: -9px; top: 50%; z-index: 2; transform: translate(50%,-50%); width: 17px; height: 17px; display: grid; place-items: center; border-radius: 50%; background: var(--cyan); color: #07303b; font-size: 16px; font-weight: 800; line-height: 1; }
+.flow-step strong { display: block; font-size: 11px; letter-spacing: -.02em; }
+.flow-step span { display: block; margin-top: 6px; color: #7b898f; font-size: 9px; line-height: 1.45; }
+.flow-caption { margin: 13px 0 0; color: #849198; font-size: 10px; line-height: 1.65; text-align: center; }
+.distinction-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+.distinction { padding: 20px; border: 1px solid var(--line); border-radius: 15px; background: #fff; }
+.distinction .mini-label { color: var(--cyan-2); font-size: 9px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+.distinction h3 { margin: 11px 0 8px; font-size: 17px; letter-spacing: -.035em; }
+.distinction p { margin: 0; color: #65747b; font-size: 12px; line-height: 1.75; }
+.orders-note { display: flex; align-items: flex-start; gap: 12px; margin-top: 15px; padding: 16px 18px; border-left: 3px solid var(--cyan-2); border-radius: 0 10px 10px 0; background: #eaf9fc; color: #53656d; font-size: 12px; line-height: 1.7; }
+.orders-note strong { color: #19313b; }
+.final-line { margin-top: 74px; padding: 36px clamp(20px, 5vw, 58px); border-radius: 20px; background: var(--navy); color: #fff; text-align: center; }
+.final-line p { max-width: 800px; margin: 0 auto; font-family: var(--serif); font-size: clamp(21px, 3vw, 33px); line-height: 1.45; letter-spacing: -.025em; }
+.final-line p span { color: var(--cyan); }
+.footer { display: flex; justify-content: space-between; gap: 20px; padding: 25px clamp(22px, 5.5vw, 78px); background: var(--navy); color: #879da6; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; }
+.footer strong { color: #fff; }
+@media (max-width: 1050px) { .cards { grid-template-columns: repeat(2, minmax(0,1fr)); } .value-flow { grid-template-columns: repeat(4, minmax(0,1fr)); } .flow-step:nth-child(4):after { display: none; } }
+@media (max-width: 700px) { .topbar { min-height: 66px; } .top-label { font-size: 8px; letter-spacing: .12em; text-align: right; } .hero { padding-bottom: 58px; } main { padding-left: 15px; padding-right: 15px; } .section { padding-top: 57px; } .section-head { display: block; } .section-note { margin-top: 12px; text-align: left; } .layer-top { align-items: flex-start; flex-direction: column; gap: 7px; padding: 16px 15px 0; } .cards,.cards.three,.cards.two { grid-template-columns: 1fr; padding: 13px; } .product { padding: 16px; } .engine-wrap { padding: 13px; } .engine-flex { align-items: flex-start; flex-direction: column; } .engine-core { padding: 20px; } .value-flow { grid-template-columns: repeat(2, minmax(0,1fr)); } .flow-step:nth-child(2n):after { display: none; } .distinction-grid { grid-template-columns: 1fr; } .footer { flex-direction: column; gap: 9px; } }
+@media print { body,.page { background: #fff; } .hero,.engine-core,.final-line,.footer { print-color-adjust: exact; -webkit-print-color-adjust: exact; } .product,.layer,.distinction { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark"></span>CONTACT</div>
+    <div class="top-label">CONNECTED INTELLIGENCE ECOSYSTEM</div>
+  </header>
+
+  <section class="hero">
+    <p class="eyebrow">The Contact Ecosystem</p>
+    <h1>One ecosystem.<br><span>A complete value loop.</span></h1>
+    <p class="hero-copy">從身份、智慧與溝通出發，連結工作、專業服務與商業交易，讓每一項產品共同形成持續運作的生態系統。</p>
+    <div class="hero-meta">
+      <div class="meta-chip"><b>14</b> Connected Products</div>
+      <div class="meta-chip"><b>1</b> Shared Intelligence Foundation</div>
+      <div class="meta-chip"><b>∞</b> Connected Experiences</div>
+    </div>
+  </section>
+
+  <main>
+    <section class="section" id="architecture">
+      <div class="section-head">
+        <div><p class="section-kicker">Ecosystem Architecture</p><h2>從基礎設施到智慧服務</h2></div>
+        <p class="section-note">每個產品有清楚的獨立定位，同時透過共同入口、資料與服務關係形成連結。</p>
+      </div>
+
+      <div class="layer foundation">
+        <div class="layer-top"><div class="layer-name"><h3>入口與日常基礎設施</h3></div><span class="layer-role">Access · Communication · Data · Time</span></div>
+        <div class="cards">
+          <article class="product"><div class="product-top"><span class="product-code">APP</span><span class="pill">生態入口</span></div><h4>App <span>應用程式</span></h4><p>提供 Contact 生態的統一應用入口，以瀏覽器為核心，整合 Run、Twin 本機裝置執行與連接工具，提高使用體驗、產品黏著度及日常使用頻率。</p></article>
+          <article class="product"><div class="product-top"><span class="product-code">MAIL</span><span class="pill">通訊基礎設施</span></div><h4>Livemail <span>專業郵箱</span></h4><p>提供專業 Email 身份與郵件通訊服務，累積日常溝通脈絡，並以付費郵箱訂閱補充收入。</p></article>
+          <article class="product"><div class="product-top"><span class="product-code">DRIVE</span><span class="pill">資料基礎設施</span></div><h4>Drive <span>雲端硬碟</span></h4><p>提供文件與檔案儲存管理，成為個人及企業知識資產空間，並以雲端儲存訂閱補充收入。</p></article>
+          <article class="product"><div class="product-top"><span class="product-code">TIME</span><span class="pill">時間管理</span></div><h4>Calendar <span>行事曆</span></h4><p>整合個人與企業行程、事件及工作安排，提供時間管理與排程協調。</p></article>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div class="layer-top"><div class="layer-name"><h3>共享 AI 智慧基礎設施</h3></div><span class="layer-role">Shared Intelligence Infrastructure</span></div>
+        <div class="engine-wrap">
+          <div class="engine-core">
+            <div class="engine-flex">
+              <div class="engine-title"><div class="engine-icon">✳</div><h4>Engine <span>智慧引擎 · AI Core</span></h4></div>
+              <p class="engine-desc">提供共享的 AI 模型路由、推理、跨模型分析、驗證與綜合能力，支撐 Answer、Run、Twin 等產品的智慧運算，並統一管理模型調用、運算成本與 Credits。</p>
+            </div>
+            <div class="engine-tags"><span>Model Routing</span><span>Inference</span><span>Cross-model Analysis</span><span>Verification</span><span>Synthesis</span><span>Credits &amp; Cost</span></div>
+          </div>
+          <div class="engine-connect">ENGINE POWERS THE INTELLIGENCE LAYER</div>
+          <div class="cards three ai-products">
+            <article class="product"><div class="product-top"><span class="product-code">ANSWER</span><span class="pill">智慧決策</span></div><h4>Answer <span>付費問答</span></h4><p>透過多模型分析、交叉驗證與證據檢查提供高品質答案；Discovery 協助搜尋、比較產品與服務及取得報價。</p></article>
+            <article class="product"><div class="product-top"><span class="product-code">RUN</span><span class="pill">任務執行</span></div><h4>Run <span>任務代理</span></h4><p>讓使用者以自然語言委派一次性或持續性工作，由 AI 選擇 Agent、Skills 與工具執行，並管理排程、監控及結果。</p></article>
+            <article class="product"><div class="product-top"><span class="product-code">TWIN</span><span class="pill">個體智慧</span></div><h4>Twin <span>智慧分身</span></h4><p>建立個人或組織的智慧映照與數位代表，支援 Primary Twin、Scenario Twin 與 Twin Fusion，並管理 Twin ID、記憶、知識、能力、場景範圍、權限及真人交接。</p></article>
+          </div>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div class="layer-top"><div class="layer-name"><h3>身份、專業供給與商業關係</h3></div><span class="layer-role">Identity · Supply · Business</span></div>
+        <div class="cards three">
+          <article class="product"><div class="product-top"><span class="product-code">CARD</span><span class="pill">身份與聯絡</span></div><h4>Card <span>聯絡名片</span></h4><p>呈現個人、專業人士及組織的數位身份驗證、聯絡資料、資歷、作品與服務、付款方式、歷史交易與榮譽、商務溝通、LiveChat、報價及 Offer Templates。</p></article>
+          <article class="product"><div class="product-top"><span class="product-code">PROVIDER</span><span class="pill">服務供給</span></div><h4>Provider <span>供應商</span></h4><p>連結需求者與專業人士、供應商及服務提供者，提供搜尋、配對、比較、報價與聯絡，並以成功交易或服務完成變現。</p></article>
+          <article class="product"><div class="product-top"><span class="product-code">DEALS</span><span class="pill">商機與成交</span></div><h4>Deal <span>成果交付</span></h4><p>管理商機、跟進與成交進度，將需求與媒合機會轉化為商業合作。</p></article>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div class="layer-top"><div class="layer-name"><h3>工作管理與即時協作</h3></div><span class="layer-role">Work · Coordination · Communication</span></div>
+        <div class="cards two">
+          <article class="product"><div class="product-top"><span class="product-code">PROJECTS</span><span class="pill">工作協作</span></div><h4>Projects <span>專案管理</span></h4><p>整合任務、進度、文件、溝通與交付成果，管理個人、團隊及客戶專案，讓工作從委派、協作到完成都有清晰空間。</p></article>
+          <article class="product"><div class="product-top"><span class="product-code">MEETINGS</span><span class="pill">即時溝通</span></div><h4>Meet <span>線上會議</span></h4><p>提供真人與真人、真人與 Twin 之間的即時溝通及會議協作，支援商務洽談、專業諮詢、團隊討論與遠端合作。</p></article>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div class="layer-top"><div class="layer-name"><h3>社交互動與用戶參與</h3></div><span class="layer-role">Engagement · Discovery · Retention</span></div>
+        <div class="cards one">
+          <article class="product"><div class="product-top"><span class="product-code">GAMES</span><span class="pill">休閒娛樂</span></div><h4>Games <span>破冰小遊戲</span></h4><p>透過輕量、有趣的互動降低陌生人交流門檻，促進社群參與、關係建立與後續聯絡及商務轉化機會。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="value-loop">
+      <div class="section-head">
+        <div><p class="section-kicker">The Value Loop</p><h2>從接觸到價值持續循環</h2></div>
+        <p class="section-note">這不是單向漏斗，而是不同產品在使用者旅程中的互相銜接。</p>
+      </div>
+      <div class="value-flow">
+        <div class="flow-step"><strong>進入</strong><span>App<br>Livemail · Drive</span></div>
+        <div class="flow-step"><strong>理解與決策</strong><span>Engine · Answer<br>Twin</span></div>
+        <div class="flow-step"><strong>身份與連結</strong><span>Card<br>Twin · Meetings</span></div>
+        <div class="flow-step"><strong>發現供給</strong><span>Answer Discovery<br>Provider</span></div>
+        <div class="flow-step"><strong>委派與協作</strong><span>Run · Projects<br>Calendar</span></div>
+        <div class="flow-step"><strong>成交與完成</strong><span>Deals<br>Orders*</span></div>
+        <div class="flow-step"><strong>互動與回訪</strong><span>Games<br>Daily Use</span></div>
+      </div>
+      <p class="flow-caption">* Orders 可作為獨立訂單履約模組，承接付款、交付、取消、退款及爭議處理；Deals 著重商機與成交管理。</p>
+    </section>
+
+    <section class="section" id="principles">
+      <div class="section-head">
+        <div><p class="section-kicker">Clear Product Boundaries</p><h2>三組核心分工，不互相取代</h2></div>
+        <p class="section-note">明確的責任邊界，讓產品可以獨立發展，也能在需要時協同運作。</p>
+      </div>
+      <div class="distinction-grid">
+        <article class="distinction"><div class="mini-label">INTELLIGENCE</div><h3>Engine · Answer · Run · Twin</h3><p>Engine 提供底層智慧運算；Answer 負責回答、驗證與發現；Run 負責任務執行；Twin 負責理解、映照與代表個體。</p></article>
+        <article class="distinction"><div class="mini-label">IDENTITY &amp; SUPPLY</div><h3>Card · Twin · Provider</h3><p>Card 表達「這是誰、如何聯絡」；Twin 表達「這個人如何理解與回應」；Provider 表達「提供什麼服務」。</p></article>
+        <article class="distinction"><div class="mini-label">BUSINESS FLOW</div><h3>Deals · Orders</h3><p>Deals 管理商機、報價、商談與成交；Orders 管理成交後的訂單、付款、交付、取消、退款與爭議。</p></article>
+      </div>
+      <div class="orders-note"><strong>架構提示</strong><span>Discovery 與 Provider 負責發現及媒合；Deals 推進商業機會與成交；Orders（建議獨立模組）承接交易後履約。排名與答案品質不應由供應商付費決定。</span></div>
+    </section>
+
+    <div class="final-line"><p>Contact 不只是多個產品的集合，<br><span>而是一套讓身份、智慧、工作與商業關係彼此連結的生態系統。</span></p></div>
+  </main>
+
+  <footer class="footer"><div><strong>CONTACT</strong> &nbsp; A New Form of Connection</div><div>CONTACT ECOSYSTEM · PRODUCT ARCHITECTURE</div></footer>
+</div>
+</body>
+</html>
