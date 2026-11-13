@@ -28,8 +28,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(
 a { color: inherit; text-decoration: none; }
 .page { width: min(100%, 1480px); margin: 0 auto; overflow: hidden; background: var(--paper); }
 .topbar { min-height: 78px; padding: 0 clamp(22px, 5.5vw, 78px); display: flex; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid rgba(255,255,255,.1); background: var(--navy); color: #d5e2e7; }
-.brand { display: flex; align-items: center; gap: 11px; font-size: 17px; font-weight: 800; letter-spacing: -.075em; color: #fff; }
-.brand-mark { width: 10px; height: 10px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 18px rgba(0,210,255,.65); }
+.main-logo { width: 200px; height: 65px; object-fit: contain; object-position: left center; display: block; }
 .top-label { font-size: 9px; letter-spacing: .22em; text-transform: uppercase; color: #8ea4ad; }
 .hero { position: relative; overflow: hidden; padding: clamp(58px, 8vw, 112px) clamp(22px, 8vw, 116px) 76px; background: radial-gradient(circle at 86% 12%, rgba(0,210,255,.13), transparent 28%), linear-gradient(130deg, #08151d 0%, #10232d 56%, #091922 100%); color: #fff; }
 .hero:before,.hero:after { content: ""; position: absolute; border: 1px solid rgba(0,210,255,.17); border-radius: 50%; pointer-events: none; }
@@ -59,7 +58,7 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
 .cards.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .cards.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .cards.one { grid-template-columns: minmax(0, 1fr); }
-.product { min-width: 0; padding: 17px 17px 16px; border: 1px solid #e3eaed; border-radius: 14px; background: #fff; transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+.product { min-width: 0; padding: 12px 12px 12px; border: 1px solid #e3eaed; border-radius: 14px; background: #fff; transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
 .product:hover { transform: translateY(-3px); border-color: rgba(0,184,220,.55); box-shadow: 0 12px 25px rgba(0,85,105,.08); }
 .product-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 13px; }
 .product-code { color: #90a0a7; font-size: 9px; font-weight: 800; letter-spacing: .13em; }
@@ -91,27 +90,27 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
 .flow-step strong { display: block; font-size: 11px; letter-spacing: -.02em; }
 .flow-step span { display: block; margin-top: 6px; color: #7b898f; font-size: 9px; line-height: 1.45; }
 .flow-caption { margin: 13px 0 0; color: #849198; font-size: 10px; line-height: 1.65; text-align: center; }
-.distinction-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+.distinction-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; }
 .distinction { padding: 20px; border: 1px solid var(--line); border-radius: 15px; background: #fff; }
 .distinction .mini-label { color: var(--cyan-2); font-size: 9px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
 .distinction h3 { margin: 11px 0 8px; font-size: 17px; letter-spacing: -.035em; }
 .distinction p { margin: 0; color: #65747b; font-size: 12px; line-height: 1.75; }
-.orders-note { display: flex; align-items: flex-start; gap: 12px; margin-top: 15px; padding: 16px 18px; border-left: 3px solid var(--cyan-2); border-radius: 0 10px 10px 0; background: #eaf9fc; color: #53656d; font-size: 12px; line-height: 1.7; }
+.orders-note { display: flex; align-items: flex-start; gap: 12px; margin-top: 15px; padding: 16px 18px; border-radius: 0 10px 10px 0; background: #eaf9fc; color: #53656d; font-size: 12px; line-height: 1.7; }
 .orders-note strong { color: #19313b; }
 .final-line { margin-top: 74px; padding: 36px clamp(20px, 5vw, 58px); border-radius: 20px; background: var(--navy); color: #fff; text-align: center; }
 .final-line p { max-width: 800px; margin: 0 auto; font-family: var(--serif); font-size: clamp(21px, 3vw, 33px); line-height: 1.45; letter-spacing: -.025em; }
 .final-line p span { color: var(--cyan); }
 .footer { display: flex; justify-content: space-between; gap: 20px; padding: 25px clamp(22px, 5.5vw, 78px); background: var(--navy); color: #879da6; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; }
 .footer strong { color: #fff; }
-@media (max-width: 1050px) { .cards { grid-template-columns: repeat(2, minmax(0,1fr)); } .value-flow { grid-template-columns: repeat(4, minmax(0,1fr)); } .flow-step:nth-child(4):after { display: none; } }
-@media (max-width: 700px) { .topbar { min-height: 66px; } .top-label { font-size: 8px; letter-spacing: .12em; text-align: right; } .hero { padding-bottom: 58px; } main { padding-left: 15px; padding-right: 15px; } .section { padding-top: 57px; } .section-head { display: block; } .section-note { margin-top: 12px; text-align: left; } .layer-top { align-items: flex-start; flex-direction: column; gap: 7px; padding: 16px 15px 0; } .cards,.cards.three,.cards.two { grid-template-columns: 1fr; padding: 13px; } .product { padding: 16px; } .engine-wrap { padding: 13px; } .engine-flex { align-items: flex-start; flex-direction: column; } .engine-core { padding: 20px; } .value-flow { grid-template-columns: repeat(2, minmax(0,1fr)); } .flow-step:nth-child(2n):after { display: none; } .distinction-grid { grid-template-columns: 1fr; } .footer { flex-direction: column; gap: 9px; } }
+@media (max-width: 1050px) { .cards { grid-template-columns: repeat(2, minmax(0,1fr)); } .value-flow { grid-template-columns: repeat(4, minmax(0,1fr)); } .flow-step:nth-child(4):after { display: none; } .distinction-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width: 700px) { .topbar { min-height: 66px; } .main-logo { width: 154px; height: 50px; } .top-label { font-size: 8px; letter-spacing: .12em; text-align: right; } .hero { padding-bottom: 58px; } main { padding-left: 15px; padding-right: 15px; } .section { padding-top: 57px; } .section-head { display: block; } .section-note { margin-top: 12px; text-align: left; } .layer-top { align-items: flex-start; flex-direction: column; gap: 7px; padding: 16px 15px 0; } .cards,.cards.three,.cards.two { grid-template-columns: 1fr; padding: 13px; } .product { padding: 16px; } .engine-wrap { padding: 13px; } .engine-flex { align-items: flex-start; flex-direction: column; } .engine-core { padding: 20px; } .value-flow { grid-template-columns: repeat(2, minmax(0,1fr)); } .flow-step:nth-child(2n):after { display: none; } .distinction-grid { grid-template-columns: 1fr; } .footer { flex-direction: column; gap: 9px; } }
 @media print { body,.page { background: #fff; } .hero,.engine-core,.final-line,.footer { print-color-adjust: exact; -webkit-print-color-adjust: exact; } .product,.layer,.distinction { break-inside: avoid; } }
 </style>
 </head>
 <body>
 <div class="page">
   <header class="topbar">
-    <div class="brand"><span class="brand-mark"></span>CONTACT</div>
+    <img class="main-logo" src="contact_logo_en.png" width="200" height="65" alt="Contact logo">
     <div class="top-label">CONNECTED INTELLIGENCE ECOSYSTEM</div>
   </header>
 
@@ -120,7 +119,7 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
     <h1>One ecosystem.<br><span>A complete value loop.</span></h1>
     <p class="hero-copy">從身份、智慧與溝通出發，連結工作、專業服務與商業交易，讓每一項產品共同形成持續運作的生態系統。</p>
     <div class="hero-meta">
-      <div class="meta-chip"><b>14</b> Connected Products</div>
+      <div class="meta-chip"><b>15</b> Connected Products</div>
       <div class="meta-chip"><b>1</b> Shared Intelligence Foundation</div>
       <div class="meta-chip"><b>∞</b> Connected Experiences</div>
     </div>
@@ -130,14 +129,14 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
     <section class="section" id="architecture">
       <div class="section-head">
         <div><p class="section-kicker">Ecosystem Architecture</p><h2>從基礎設施到智慧服務</h2></div>
-        <p class="section-note">每個產品有清楚的獨立定位，同時透過共同入口、資料與服務關係形成連結。</p>
+        <p class="section-note">每個產品清楚獨立定位，同時透過共同入口、資料與服務關係形成連結。</p>
       </div>
 
       <div class="layer foundation">
-        <div class="layer-top"><div class="layer-name"><h3>入口與日常基礎設施</h3></div><span class="layer-role">Access · Communication · Data · Time</span></div>
+        <div class="layer-top"><div class="layer-name"><h3>入口與日常基礎設施</h3></div><span class="layer-role">Access · Email · Files · Time</span></div>
         <div class="cards">
-          <article class="product"><div class="product-top"><span class="product-code">APP</span><span class="pill">生態入口</span></div><h4>App <span>應用程式</span></h4><p>提供 Contact 生態的統一應用入口，以瀏覽器為核心，整合 Run、Twin 本機裝置執行與連接工具，提高使用體驗、產品黏著度及日常使用頻率。</p></article>
-          <article class="product"><div class="product-top"><span class="product-code">MAIL</span><span class="pill">通訊基礎設施</span></div><h4>Livemail <span>專業郵箱</span></h4><p>提供專業 Email 身份與郵件通訊服務，累積日常溝通脈絡，並以付費郵箱訂閱補充收入。</p></article>
+          <article class="product"><div class="product-top"><span class="product-code">APP</span><span class="pill">生態入口</span></div><h4>App <span>應用程式</span></h4><p>提供 Contact 生態的統一應用入口，以 Contact Browser 為核心，連接各項產品、服務與工作空間；Inbox 則承接日常訊息與聯絡，形成高頻使用入口。</p></article>
+          <article class="product"><div class="product-top"><span class="product-code">MAIL</span><span class="pill">通訊基礎設施</span></div><h4>Livemail <span>專業郵箱</span></h4><p>提供專業 Email 身份、郵箱帳戶與郵件收發服務；郵件可整合至 Inbox 統一管理，並以付費郵箱訂閱補充收入。</p></article>
           <article class="product"><div class="product-top"><span class="product-code">DRIVE</span><span class="pill">資料基礎設施</span></div><h4>Drive <span>雲端硬碟</span></h4><p>提供文件與檔案儲存管理，成為個人及企業知識資產空間，並以雲端儲存訂閱補充收入。</p></article>
           <article class="product"><div class="product-top"><span class="product-code">TIME</span><span class="pill">時間管理</span></div><h4>Calendar <span>行事曆</span></h4><p>整合個人與企業行程、事件及工作安排，提供時間管理與排程協調。</p></article>
         </div>
@@ -157,7 +156,7 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
           <div class="cards three ai-products">
             <article class="product"><div class="product-top"><span class="product-code">ANSWER</span><span class="pill">智慧決策</span></div><h4>Answer <span>付費問答</span></h4><p>透過多模型分析、交叉驗證與證據檢查提供高品質答案；Discovery 協助搜尋、比較產品與服務及取得報價。</p></article>
             <article class="product"><div class="product-top"><span class="product-code">RUN</span><span class="pill">任務執行</span></div><h4>Run <span>任務代理</span></h4><p>讓使用者以自然語言委派一次性或持續性工作，由 AI 選擇 Agent、Skills 與工具執行，並管理排程、監控及結果。</p></article>
-            <article class="product"><div class="product-top"><span class="product-code">TWIN</span><span class="pill">個體智慧</span></div><h4>Twin <span>智慧分身</span></h4><p>建立個人或組織的智慧映照與數位代表，支援 Primary Twin、Scenario Twin 與 Twin Fusion，並管理 Twin ID、記憶、知識、能力、場景範圍、權限及真人交接。</p></article>
+            <article class="product"><div class="product-top"><span class="product-code">TWIN</span><span class="pill">個體智慧</span></div><h4>Twin <span>智慧分身</span></h4><p>建立個人或組織的智慧映照與數位代表，支援 Primary Twin、Scenario-Specific Twin 與 Twin Fusion，並管理 Twin ID、記憶、知識、能力、場景範圍、權限及真人交接。</p></article>
           </div>
         </div>
       </div>
@@ -167,15 +166,16 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
         <div class="cards three">
           <article class="product"><div class="product-top"><span class="product-code">CARD</span><span class="pill">身份與聯絡</span></div><h4>Card <span>聯絡名片</span></h4><p>呈現個人、專業人士及組織的數位身份驗證、聯絡資料、資歷、作品與服務、付款方式、歷史交易與榮譽、商務溝通、LiveChat、報價及 Offer Templates。</p></article>
           <article class="product"><div class="product-top"><span class="product-code">PROVIDER</span><span class="pill">服務供給</span></div><h4>Provider <span>供應商</span></h4><p>連結需求者與專業人士、供應商及服務提供者，提供搜尋、配對、比較、報價與聯絡，並以成功交易或服務完成變現。</p></article>
-          <article class="product"><div class="product-top"><span class="product-code">DEALS</span><span class="pill">商機與成交</span></div><h4>Deal <span>成果交付</span></h4><p>管理商機、跟進與成交進度，將需求與媒合機會轉化為商業合作。</p></article>
+          <article class="product"><div class="product-top"><span class="product-code">DEALS</span><span class="pill">商機與成交</span></div><h4>Deals <span>商機與成交</span></h4><p>管理商業機會、客戶關係、報價、商務溝通、議價、跟進與成交進度，將需求與媒合機會轉化為商業合作。</p></article>
         </div>
       </div>
 
       <div class="layer">
-        <div class="layer-top"><div class="layer-name"><h3>工作管理與即時協作</h3></div><span class="layer-role">Work · Coordination · Communication</span></div>
-        <div class="cards two">
-          <article class="product"><div class="product-top"><span class="product-code">PROJECTS</span><span class="pill">工作協作</span></div><h4>Projects <span>專案管理</span></h4><p>整合任務、進度、文件、溝通與交付成果，管理個人、團隊及客戶專案，讓工作從委派、協作到完成都有清晰空間。</p></article>
+        <div class="layer-top"><div class="layer-name"><h3>通訊入口與工作協作</h3></div><span class="layer-role">Inbox · Meetings · Projects</span></div>
+        <div class="cards three">
+          <article class="product"><div class="product-top"><span class="product-code">INBOX</span><span class="pill">統一通訊入口</span></div><h4>Inbox <span>Unified Inbox</span></h4><p>整合 Contact LiveChat、Gmail、Outlook 等來源，集中接收與管理聯絡訊息。AI Draft 根據對話脈絡協助起草回覆；Inbox Focus 協助聚焦重要訊息與待處理事項，讓 Inbox 成為日常溝通與工作的主要入口。</p></article>
           <article class="product"><div class="product-top"><span class="product-code">MEETINGS</span><span class="pill">即時溝通</span></div><h4>Meet <span>線上會議</span></h4><p>提供真人與真人、真人與 Twin 之間的即時溝通及會議協作，支援商務洽談、專業諮詢、團隊討論與遠端合作。</p></article>
+          <article class="product"><div class="product-top"><span class="product-code">PROJECTS</span><span class="pill">工作協作</span></div><h4>Projects <span>專案管理</span></h4><p>整合任務、進度、文件、溝通與交付成果，管理個人、團隊及客戶專案，讓工作從委派、協作到完成都有清晰空間。</p></article>
         </div>
       </div>
 
@@ -193,11 +193,11 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
         <p class="section-note">這不是單向漏斗，而是不同產品在使用者旅程中的互相銜接。</p>
       </div>
       <div class="value-flow">
-        <div class="flow-step"><strong>進入</strong><span>App<br>Livemail · Drive</span></div>
+        <div class="flow-step"><strong>進入與通訊</strong><span>App · Inbox<br>Livemail</span></div>
         <div class="flow-step"><strong>理解與決策</strong><span>Engine · Answer<br>Twin</span></div>
-        <div class="flow-step"><strong>身份與連結</strong><span>Card<br>Twin · Meetings</span></div>
+        <div class="flow-step"><strong>身份與連結</strong><span>Card<br>Twin</span></div>
         <div class="flow-step"><strong>發現供給</strong><span>Answer Discovery<br>Provider</span></div>
-        <div class="flow-step"><strong>委派與協作</strong><span>Run · Projects<br>Calendar</span></div>
+        <div class="flow-step"><strong>委派與協作</strong><span>Run · Meet<br>Projects · Calendar</span></div>
         <div class="flow-step"><strong>成交與完成</strong><span>Deals<br>Orders*</span></div>
         <div class="flow-step"><strong>互動與回訪</strong><span>Games<br>Daily Use</span></div>
       </div>
@@ -206,18 +206,19 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
 
     <section class="section" id="principles">
       <div class="section-head">
-        <div><p class="section-kicker">Clear Product Boundaries</p><h2>三組核心分工，不互相取代</h2></div>
+        <div><p class="section-kicker">Clear Product Boundaries</p><h2>核心產品分工，不互相取代</h2></div>
         <p class="section-note">明確的責任邊界，讓產品可以獨立發展，也能在需要時協同運作。</p>
       </div>
       <div class="distinction-grid">
         <article class="distinction"><div class="mini-label">INTELLIGENCE</div><h3>Engine · Answer · Run · Twin</h3><p>Engine 提供底層智慧運算；Answer 負責回答、驗證與發現；Run 負責任務執行；Twin 負責理解、映照與代表個體。</p></article>
+        <article class="distinction"><div class="mini-label">COMMUNICATION</div><h3>Inbox · Livemail · Livechat</h3><p>Inbox 是整合多種訊息來源的統一收件與處理空間；Livemail 提供專業郵箱帳戶及郵件收發服務，兩者相互連接但定位不同。Livechat 接受網頁端的訊息。</p></article>
         <article class="distinction"><div class="mini-label">IDENTITY &amp; SUPPLY</div><h3>Card · Twin · Provider</h3><p>Card 表達「這是誰、如何聯絡」；Twin 表達「這個人如何理解與回應」；Provider 表達「提供什麼服務」。</p></article>
-        <article class="distinction"><div class="mini-label">BUSINESS FLOW</div><h3>Deals · Orders</h3><p>Deals 管理商機、報價、商談與成交；Orders 管理成交後的訂單、付款、交付、取消、退款與爭議。</p></article>
+        <article class="distinction"><div class="mini-label">BUSINESS FLOW</div><h3>Offers · Orders · Deals</h3><p>Offers 創建訂單模板和客製化報價；Orders 管理訂單、付款、交付、取消、退款與爭議；Deals 管理商機、成果交付。</p></article>
       </div>
       <div class="orders-note"><strong>架構提示</strong><span>Discovery 與 Provider 負責發現及媒合；Deals 推進商業機會與成交；Orders（建議獨立模組）承接交易後履約。排名與答案品質不應由供應商付費決定。</span></div>
     </section>
 
-    <div class="final-line"><p>Contact 不只是多個產品的集合，<br><span>而是一套讓身份、智慧、工作與商業關係彼此連結的生態系統。</span></p></div>
+    <div class="final-line"><p>Contact 不只是多個產品的集合，<br><span>它是一套讓身份、智慧、工作與人脈關係彼此連結的完整商業閉環。</span></p></div>
   </main>
 
   <footer class="footer"><div><strong>CONTACT</strong> &nbsp; A New Form of Connection</div><div>CONTACT ECOSYSTEM · PRODUCT ARCHITECTURE</div></footer>
