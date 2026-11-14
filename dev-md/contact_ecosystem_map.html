@@ -84,7 +84,7 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
 .ai-products .product { border-top: 2px solid var(--cyan-2); }
 .ai-products .product:nth-child(2) { border-top-color: #6687db; }
 .ai-products .product:nth-child(3) { border-top-color: #19a88c; }
-.value-flow { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; align-items: stretch; margin-top: 22px; }
+.value-flow { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; align-items: stretch; margin-top: 22px; }
 .flow-step { position: relative; padding: 15px 11px 14px; border: 1px solid var(--line); border-radius: 12px; background: #fff; text-align: center; }
 .flow-step:not(:last-child):after { content: "›"; position: absolute; right: -5px; top: 50%; z-index: 2; transform: translate(50%,-50%); width: 20px; height: 18px; display: grid; place-items: center; border-radius: 50%; background: var(--cyan); color: #07303b; font-size: 12px; font-weight: 800; padding-bottom: 2px; }
 .flow-step strong { display: block; font-size: 11px; letter-spacing: -.02em; }
@@ -258,13 +258,50 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
 }
 
 .hero-visual img {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  opacity: .88;
   mix-blend-mode: screen;
-  filter: drop-shadow(0 0 15px rgba(0,210,255,.24));
+  will-change: opacity, transform, filter;
+}
+
+/* The two identity visuals gently crossfade in a continuous loop. */
+.hero-visual .ecosystem-art {
+  opacity: .9;
+  animation: ecosystemCrossfade 14s ease-in-out infinite;
+  filter: drop-shadow(0 0 15px rgba(0,210,255,.25));
+}
+
+.hero-visual .brain-art {
+  opacity: 0;
+  animation: brainCrossfade 14s ease-in-out infinite;
+  filter: drop-shadow(0 0 19px rgba(0,210,255,.32));
+}
+
+@keyframes ecosystemCrossfade {
+  0%, 35% { opacity: .9; transform: scale(1); }
+  48%, 85% { opacity: 0; transform: scale(1.035); }
+  100% { opacity: .9; transform: scale(1); }
+}
+
+@keyframes brainCrossfade {
+  0%, 35% { opacity: 0; transform: scale(1.035); }
+  48%, 85% { opacity: .92; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.035); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-visual .ecosystem-art,
+  .hero-visual .brain-art {
+    animation: none;
+    will-change: auto;
+  }
+
+  .hero-visual .ecosystem-art { opacity: .9; transform: none; }
+  .hero-visual .brain-art { opacity: 0; transform: none; }
 }
 
 .hero-content {
@@ -334,12 +371,20 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
 
 <section class="hero">
   <div class="hero-layout">
-    <div class="hero-visual">
-      <img src="img/brain.png"
+    <div class="hero-visual" aria-label="Contact ecosystem and intelligence network">
+      <img class="ecosystem-art" src="img/ecosystem.png"
            width="340"
            height="340"
-           alt="Contact intelligence network"
-           loading="eager">
+           alt="Contact ecosystem network"
+           loading="eager"
+           decoding="async">
+      <img class="brain-art" src="img/brain.png"
+           width="340"
+           height="340"
+           alt=""
+           aria-hidden="true"
+           loading="eager"
+           decoding="async">
     </div>
     <div class="hero-content">
       <p class="eyebrow">The Contact Ecosystem</p>
