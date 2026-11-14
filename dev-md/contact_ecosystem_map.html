@@ -603,6 +603,55 @@ h2 {
   }
 }
 
+
+
+/* Fixed Contact brand bar + cinematic Earth/Moon hero background */
+:root {
+  --contact-topbar-height: 78px;
+}
+
+.page {
+  padding-top: var(--contact-topbar-height);
+}
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(100%, 1480px);
+  z-index: 1000;
+  background: rgba(2, 6, 9, .96);
+  border-bottom: 1px solid rgba(0, 210, 255, .14);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .28);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
+.hero {
+  background-color: #020609;
+  background-image:
+    radial-gradient(ellipse at 22% 48%, rgba(0, 190, 225, .075), transparent 34%),
+    linear-gradient(90deg, rgba(2, 6, 9, .18) 0%, rgba(2, 6, 9, .37) 48%, rgba(2, 6, 9, .56) 100%),
+    linear-gradient(180deg, rgba(2, 6, 9, .24) 0%, rgba(2, 6, 9, .04) 45%, rgba(2, 6, 9, .48) 100%),
+    url("img/space.png");
+  background-size: cover;
+  background-position: center 52%;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 700px) {
+  :root {
+    --contact-topbar-height: 66px;
+  }
+  .hero {
+    background-position: 57% center;
+    background-image:
+      linear-gradient(180deg, rgba(2, 6, 9, .38) 0%, rgba(2, 6, 9, .16) 48%, rgba(2, 6, 9, .60) 100%),
+      url("img/space.png");
+  }
+}
+
 </style>
 </head>
 <body>
