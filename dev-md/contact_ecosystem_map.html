@@ -42,7 +42,8 @@ a { color: inherit; text-decoration: none; }
 .eyebrow { margin: 0 0 22px; color: var(--cyan); font-size: 10px; font-weight: 750; letter-spacing: .25em; text-transform: uppercase; }
 h1 { position: relative; z-index: 1; max-width: 900px; margin: 0; font-size: clamp(42px, 7.5vw, 98px); line-height: .98; letter-spacing: -.075em; font-weight: 650; }
 h1 span { color: var(--cyan); }
-.hero-copy { position: relative; z-index: 1; max-width: 740px; margin: 25px 0 0; color: #c0d0d6; font-family: var(--serif); font-size: clamp(18px, 2vw, 25px); line-height: 1.55; }
+.hero-copy { position: relative; z-index: 1; max-width: 740px; margin: 25px 0 0; color: #c0d0d6; font-family: var(--serif); font-size: clamp(18px, 2vw, 25px); line-height: 1.55; text-shadow:
+    0 2px 8px rgba(0, 0, 0, .75), 0 0 18px rgba(0, 0, 0, .35); }
 .hero-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 38px; position: relative; z-index: 1; }
 .meta-chip { padding: 8px 12px; border: 1px solid rgba(255,255,255,.16); border-radius: 999px; color: #b9cbd1; font-size: 10px; letter-spacing: .06em; }
 .meta-chip b { color: #fff; font-weight: 700; margin-right: 5px; }
@@ -250,6 +251,7 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
   max-width: 280px;
   aspect-ratio: 1;
   justify-self: center;
+  animation: contactVisualIntro .9s ease-out both;
 }
 
 .hero-visual::before {
@@ -279,7 +281,7 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
 .hero-visual img {
   transform-origin: 50% 50%;
   backface-visibility: hidden;
-  animation-duration: 36s;
+  animation-duration: 12s;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
 }
@@ -330,39 +332,75 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
 }
 
 /* Fast opening sequence: three short stages, then the final ecosystem form. */
+@keyframes contactVisualIntro {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes contactStageOne {
-  0%, 3.5% { opacity: 1; transform: scale(1); }
-  5.5% { opacity: 0; transform: scale(1.035); }
-  94% { opacity: 0; transform: scale(1.035); }
+  0%, 4.91% { opacity: 1; transform: scale(1); }
+  8.18%, 95.09% { opacity: 0; transform: scale(1.035); }
   100% { opacity: 1; transform: scale(1); }
 }
 
-/* Stage 2 follows stage 1 on the same synchronized clock. */
 @keyframes contactStageTwo {
-  0%, 3.5% { opacity: 0; transform: scale(1.035); }
-  5.5%, 9% { opacity: .96; transform: scale(1); }
-  11%, 100% { opacity: 0; transform: scale(1.035); }
+  0%, 4.91% { opacity: 0; transform: scale(1.035); }
+  8.18%, 13.09% { opacity: .96; transform: scale(1); }
+  16.36%, 100% { opacity: 0; transform: scale(1.035); }
 }
 
-/* Stage 3 follows stage 2 on the same synchronized clock. */
 @keyframes contactStageThree {
-  0%, 9% { opacity: 0; transform: scale(1.035); }
-  11%, 14.5% { opacity: .96; transform: scale(1); }
-  17%, 100% { opacity: 0; transform: scale(1.035); }
+  0%, 13.09% { opacity: 0; transform: scale(1.035); }
+  16.36%, 22.91% { opacity: .96; transform: scale(1); }
+  29.45%, 100% { opacity: 0; transform: scale(1.035); }
 }
 
-/* Final ecosystem image follows stage 3, then gently dissolves into brain. */
 @keyframes contactEcosystem {
-  0%, 14.5% { opacity: 0; transform: scale(1.035); }
-  17%, 34% { opacity: .92; transform: scale(1); }
-  40%, 100% { opacity: 0; transform: scale(1.035); }
+  0%, 22.91% { opacity: 0; transform: scale(1.035); }
+  29.45%, 44.03% { opacity: .92; transform: scale(1); }
+  53.85%, 100% { opacity: 0; transform: scale(1.035); }
 }
 
-/* Brain remains visible before the loop returns softly to stage 1. */
 @keyframes contactBrain {
-  0%, 34% { opacity: 0; transform: scale(1.035); }
-  40%, 94% { opacity: .92; transform: scale(1); }
-  100% { opacity: 0; transform: scale(1.035); }
+  0%, 44.03% {
+    opacity: 0;
+    transform: scale(1.035);
+  }
+
+  53.85% {
+    opacity: .92;
+    transform: scale(1);
+  }
+
+  /* Subtle breathing */
+  63.34% {
+    opacity: .92;
+    transform: scale(1.004);
+  }
+
+  72.83% {
+    opacity: .92;
+    transform: scale(1.008);
+  }
+
+  82.32% {
+    opacity: .92;
+    transform: scale(1.004);
+  }
+
+  91.82% {
+    opacity: .92;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.035);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
