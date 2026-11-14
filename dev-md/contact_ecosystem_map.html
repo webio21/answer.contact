@@ -410,20 +410,6 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
     transform: none;
   }
 
-/* Mobile: smoother breathing with lighter rendering */
-@media (max-width: 1220px) {
-
-  .hero-visual img {
-    will-change: opacity, transform;
-  }
-
-  .hero-visual .brain-art {
-    animation-name: contactBrainMobile;
-    filter: saturate(1.12) brightness(1.03)
-            drop-shadow(0 0 8px rgba(0, 210, 255, .18));
-  }
-}
-
 @keyframes contactBrainMobile {
   0%, 44.03% {
     opacity: 0;
@@ -819,7 +805,7 @@ h2 {
 @media (max-width: 700px) {
   .hero {
     padding-top: 92px;
-    padding-bottom: 60px;
+    padding-bottom: 68px;
   }
 }
 
