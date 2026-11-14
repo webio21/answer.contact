@@ -216,6 +216,110 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
     line-height: 1.5;
   }
 }
+
+/* Hero visual: transparent network artwork blended into the dark background */
+.hero {
+  padding: clamp(54px, 6vw, 88px) clamp(22px, 3vw, 44px) 70px;
+  background:
+    radial-gradient(ellipse at 23% 50%, rgba(0,210,255,.105), transparent 34%),
+    radial-gradient(circle at 88% 12%, rgba(0,210,255,.13), transparent 28%),
+    linear-gradient(130deg, #06131b 0%, #10232d 56%, #07151e 100%);
+}
+
+.hero-layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(210px, min(21vw, 280px)) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(14px, 1.5vw, 22px);
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+.hero-visual {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 1;
+  justify-self: center;
+}
+
+.hero-visual::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 17%;
+  border-radius: 50%;
+  background: rgba(0,210,255,.18);
+  filter: blur(42px);
+}
+
+.hero-visual img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: .88;
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 0 15px rgba(0,210,255,.24));
+}
+
+.hero-content {
+  min-width: 0;
+}
+
+.hero-content h1 {
+  max-width: none;
+}
+
+/* Keep the second headline line intact on wide screens without changing its size. */
+.hero-content h1 span {
+  white-space: nowrap;
+}
+
+/* Narrower screens: give the artwork its own centered row above the text. */
+@media (max-width: 1220px) {
+  .hero {
+    padding: clamp(48px, 6vw, 72px) clamp(22px, 5vw, 64px) 62px;
+  }
+
+  .hero-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    max-width: 980px;
+  }
+
+  .hero-visual {
+    max-width: 220px;
+  }
+
+  .hero-content h1 span {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero {
+    padding: 42px 22px 58px;
+  }
+
+  .hero-layout {
+    gap: 8px;
+  }
+
+  .hero-visual {
+    max-width: 190px;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-visual {
+    max-width: 164px;
+  }
+}
 </style>
 </head>
 <body>
@@ -228,16 +332,30 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
     <div class="top-label">CONNECTED INTELLIGENCE ECOSYSTEM</div>
   </header>
 
-  <section class="hero">
-    <p class="eyebrow">The Contact Ecosystem</p>
-    <h1>One ecosystem.<br><span>A complete value loop.</span></h1>
-    <p class="hero-copy">從身份、智慧與溝通出發，連結工作、專業服務與商業交易，讓每一項產品共同形成持續運作的生態系統。</p>
-    <div class="hero-meta">
-      <div class="meta-chip"><b>15</b> Connected Products</div>
-      <div class="meta-chip"><b>1</b> Shared Intelligence Foundation</div>
-      <div class="meta-chip"><b>∞</b> Connected Experiences</div>
+<section class="hero">
+  <div class="hero-layout">
+    <div class="hero-visual">
+      <img src="img/brain.png"
+           width="340"
+           height="340"
+           alt="Contact intelligence network"
+           loading="eager">
     </div>
-  </section>
+    <div class="hero-content">
+      <p class="eyebrow">The Contact Ecosystem</p>
+      <h1>One ecosystem.<br>
+      <span>A complete value loop.</span></h1>
+      <p class="hero-copy">
+        從身份、智慧與溝通出發，連結工作、專業服務與商業交易，讓每一項產品共同形成持續運作的生態系統。
+      </p>
+      <div class="hero-meta">
+        <div class="meta-chip"><b>15</b> Connected Products</div>
+        <div class="meta-chip"><b>1</b> Shared Intelligence Foundation</div>
+        <div class="meta-chip"><b>∞</b> Connected Experiences</div>
+      </div>
+    </div>
+  </div>
+</section>
 
   <main>
     <section class="section" id="architecture">
