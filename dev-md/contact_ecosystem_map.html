@@ -6,6 +6,11 @@
 <meta name="theme-color" content="#05090d">
 <meta name="description" content="Contact Ecosystem - 產品架構、生態角色與完整價值循環。">
 <title>CONTACT - Ecosystem Architecture</title>
+<link rel="preload" as="image" href="img/ecosystem1.png" fetchpriority="high">
+<link rel="preload" as="image" href="img/ecosystem2.png">
+<link rel="preload" as="image" href="img/ecosystem3.png">
+<link rel="preload" as="image" href="img/ecosystem.png">
+<link rel="preload" as="image" href="img/brain.png">
 <style>
 :root {
   --ink: #101b22;
@@ -268,11 +273,48 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
   will-change: opacity, transform, filter;
 }
 
-/* The two identity visuals gently crossfade in a continuous loop. */
+/* Fixed, synchronized visual sequence:
+   ecosystem1 -> ecosystem2 -> ecosystem3 -> ecosystem -> brain -> ecosystem1.
+   Every layer uses the same 36-second clock, so the order cannot drift. */
+.hero-visual img {
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
+  animation-duration: 36s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.hero-visual .ecosystem-stage-one {
+  opacity: 1;
+  animation-name: contactStageOne;
+  filter: hue-rotate(28deg) saturate(1.22) brightness(1.04) drop-shadow(0 0 15px rgba(0,195,255,.25));
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+.hero-visual .ecosystem-stage-two {
+  opacity: 0;
+  animation-name: contactStageTwo;
+  filter: hue-rotate(92deg) saturate(1.2) brightness(1.04) drop-shadow(0 0 16px rgba(0,190,255,.24));
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+.hero-visual .ecosystem-stage-three {
+  opacity: 0;
+  animation-name: contactStageThree;
+  filter: hue-rotate(158deg) saturate(1.18) brightness(1.04) drop-shadow(0 0 16px rgba(0,210,255,.24));
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
 .hero-visual .ecosystem-art {
-  opacity: .9;
-  animation: ecosystemCrossfade 14s ease-in-out infinite;
-  filter: drop-shadow(0 0 15px rgba(0,210,255,.25));
+  opacity: 0;
+  animation-name: contactEcosystem;
+  filter: saturate(1.1) brightness(1.03) drop-shadow(0 0 15px rgba(0,210,255,.24));
   user-select: none;
   -webkit-user-drag: none;
   pointer-events: none;
@@ -280,34 +322,62 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
 
 .hero-visual .brain-art {
   opacity: 0;
-  animation: brainCrossfade 14s ease-in-out infinite;
-  filter: drop-shadow(0 0 19px rgba(0,210,255,.32));
+  animation-name: contactBrain;
+  filter: saturate(1.12) brightness(1.03) drop-shadow(0 0 17px rgba(0,210,255,.26));
   user-select: none;
   -webkit-user-drag: none;
   pointer-events: none;
 }
 
-@keyframes ecosystemCrossfade {
-  0%, 35% { opacity: .9; transform: scale(1); }
-  48%, 85% { opacity: 0; transform: scale(1.035); }
-  100% { opacity: .9; transform: scale(1); }
+/* Fast opening sequence: three short stages, then the final ecosystem form. */
+@keyframes contactStageOne {
+  0%, 3.5% { opacity: 1; transform: scale(1); }
+  5.5% { opacity: 0; transform: scale(1.035); }
+  94% { opacity: 0; transform: scale(1.035); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
-@keyframes brainCrossfade {
-  0%, 35% { opacity: 0; transform: scale(1.035); }
-  48%, 85% { opacity: .92; transform: scale(1); }
+/* Stage 2 follows stage 1 on the same synchronized clock. */
+@keyframes contactStageTwo {
+  0%, 3.5% { opacity: 0; transform: scale(1.035); }
+  5.5%, 9% { opacity: .96; transform: scale(1); }
+  11%, 100% { opacity: 0; transform: scale(1.035); }
+}
+
+/* Stage 3 follows stage 2 on the same synchronized clock. */
+@keyframes contactStageThree {
+  0%, 9% { opacity: 0; transform: scale(1.035); }
+  11%, 14.5% { opacity: .96; transform: scale(1); }
+  17%, 100% { opacity: 0; transform: scale(1.035); }
+}
+
+/* Final ecosystem image follows stage 3, then gently dissolves into brain. */
+@keyframes contactEcosystem {
+  0%, 14.5% { opacity: 0; transform: scale(1.035); }
+  17%, 34% { opacity: .92; transform: scale(1); }
+  40%, 100% { opacity: 0; transform: scale(1.035); }
+}
+
+/* Brain remains visible before the loop returns softly to stage 1. */
+@keyframes contactBrain {
+  0%, 34% { opacity: 0; transform: scale(1.035); }
+  40%, 94% { opacity: .92; transform: scale(1); }
   100% { opacity: 0; transform: scale(1.035); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-visual .ecosystem-art,
-  .hero-visual .brain-art {
-    animation: none;
+  .hero-visual img {
+    animation: none !important;
     will-change: auto;
+    transform: none;
   }
 
-  .hero-visual .ecosystem-art { opacity: .9; transform: none; }
-  .hero-visual .brain-art { opacity: 0; transform: none; }
+  /* Keep a stable, recognizable final identity when motion is disabled. */
+  .hero-visual .ecosystem-art { opacity: .92; }
+  .hero-visual .brain-art,
+  .hero-visual .ecosystem-stage-one,
+  .hero-visual .ecosystem-stage-two,
+  .hero-visual .ecosystem-stage-three { opacity: 0; }
 }
 
 .hero-content {
@@ -652,6 +722,41 @@ h2 {
   }
 }
 
+
+/* Hero height: add exactly 100px of vertical background space at every breakpoint. */
+.hero {
+  padding-top: calc(clamp(54px, 6vw, 88px) + 50px);
+  padding-bottom: 120px;
+}
+
+@media (max-width: 1220px) {
+  .hero {
+    padding-top: calc(clamp(48px, 6vw, 72px) + 50px);
+    padding-bottom: 112px;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero {
+    padding-top: 92px;
+    padding-bottom: 108px;
+  }
+}
+
+/* Respect reduced-motion settings while keeping the correct first frame. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-visual img {
+    animation: none !important;
+    transform: none !important;
+    will-change: auto;
+  }
+  .hero-visual .ecosystem-stage-one { opacity: 1 !important; }
+  .hero-visual .ecosystem-stage-two,
+  .hero-visual .ecosystem-stage-three,
+  .hero-visual .ecosystem-art,
+  .hero-visual .brain-art { opacity: 0 !important; }
+}
+
 </style>
 </head>
 <body>
@@ -667,19 +772,21 @@ h2 {
 <section class="hero">
   <div class="hero-layout">
     <div class="hero-visual" aria-label="Contact ecosystem and intelligence network">
+      <img class="ecosystem-stage-one" src="img/ecosystem1.png"
+           width="340" height="340" alt="" aria-hidden="true"
+           loading="eager" fetchpriority="high" decoding="sync">
+      <img class="ecosystem-stage-two" src="img/ecosystem2.png"
+           width="340" height="340" alt="" aria-hidden="true"
+           loading="eager" decoding="async">
+      <img class="ecosystem-stage-three" src="img/ecosystem3.png"
+           width="340" height="340" alt="" aria-hidden="true"
+           loading="eager" decoding="async">
       <img class="ecosystem-art" src="img/ecosystem.png"
-           width="340"
-           height="340"
-           alt="Contact ecosystem network"
-           loading="eager"
-           decoding="async">
+           width="340" height="340" alt="Contact ecosystem network"
+           loading="eager" decoding="async">
       <img class="brain-art" src="img/brain.png"
-           width="340"
-           height="340"
-           alt=""
-           aria-hidden="true"
-           loading="eager"
-           decoding="async">
+           width="340" height="340" alt=""
+           aria-hidden="true" loading="eager" decoding="async">
     </div>
     <div class="hero-content">
       <p class="eyebrow">The Contact Ecosystem</p>
