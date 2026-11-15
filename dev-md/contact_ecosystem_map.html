@@ -88,9 +88,9 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
 .engine-connect { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 0 0; color: #7f9097; font-size: 10px; letter-spacing: .08em; }
 .engine-connect:before,.engine-connect:after { content: ""; width: 52px; height: 1px; background: #d5e0e3; }
 .ai-products { padding-top: 0; }
-.ai-products .product { border-top: 2px solid var(--cyan-2); }
-.ai-products .product:nth-child(2) { border-top-color: #6687db; }
-.ai-products .product:nth-child(3) { border-top-color: #19a88c; }
+.ai-products .product { border-top: 2px solid var(--cyan); }
+.ai-products .product:nth-child(2) { border-top-color: #ff5555; }
+.ai-products .product:nth-child(3) { border-top-color: #ffee55; }
 .value-flow { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; align-items: stretch; margin-top: 22px; }
 .flow-step { position: relative; padding: 15px 11px 14px; border: 1px solid var(--line); border-radius: 12px; background: #fff; text-align: center; }
 .flow-step:not(:last-child):after { content: "›"; position: absolute; right: -5px; top: 50%; z-index: 2; transform: translate(50%,-50%); width: 20px; height: 18px; display: grid; place-items: center; border-radius: 50%; background: var(--cyan); color: #07303b; font-size: 12px; font-weight: 800; padding-bottom: 2px; }
@@ -988,13 +988,13 @@ h2 {
   z-index: 1000;
   background: rgba(2, 6, 9, .96);
   border-bottom: 1px solid rgba(0, 210, 255, .14);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, .28);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, .90);
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
 }
 
 .hero {
-  background-color: #020609;
+  background-color: #000000;
   background-image:
     radial-gradient(ellipse at 22% 48%, rgba(0, 190, 225, .075), transparent 34%),
     linear-gradient(90deg, rgba(2, 6, 9, .18) 0%, rgba(2, 6, 9, .37) 48%, rgba(2, 6, 9, .56) 100%),
@@ -1070,8 +1070,8 @@ h2 {
 <div class="page">
   <header class="topbar">
     <div class="brand-lockup">
-      <img class="brand-icon" src="logo.png" width="46" height="46" alt="Contact">
-      <img class="main-logo" src="contact_logo_en.png" width="200" height="65" alt="Contact">
+      <img class="brand-icon" src="img/logo.png" width="46" height="46" alt="Contact">
+      <img class="main-logo" src="img/contact_logo_en.png" width="200" height="65" alt="Contact">
     </div>
     <div class="top-label">CONNECTED INTELLIGENCE ECOSYSTEM</div>
   </header>
