@@ -402,9 +402,10 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
 .hero-visual .ecosystem-stage-two,
 .hero-visual .ecosystem-stage-three,
 .hero-visual .ecosystem-art {
-  z-index: 2;
+  z-index: 5;
   mix-blend-mode: normal;
 }
+
 .hero-visual .brain-art { z-index: 2; }
 .hero-visual .ecosystem-energy-fx {
   z-index: 3;
@@ -595,39 +596,73 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
 }
 
 @keyframes contactEcosystem {
-  0%, 36.50% { opacity: 0; transform: scale(1.035); }
-  37.29%, 50.25% { opacity: .92; transform: scale(1); }
-  58.98%, 100% { opacity: 0; transform: scale(1.035); }
-}
-
-@keyframes contactBrain {
-  0%, 50.25% {
+  0%, 36.50% {
     opacity: 0;
     transform: scale(1.035);
   }
 
-  58.98% {
+  /* Fade in */
+  37.29% {
     opacity: .92;
     transform: scale(1);
   }
 
-  /* Subtle breathing remains synchronized to the longer loop. */
-  67.86% {
+  /* Expand */
+  43.00% {
+    opacity: .92;
+    transform: scale(1.015);
+  }
+
+  47.00% {
+    opacity: .92;
+    transform: scale(1.025);
+  }
+
+  /* Slowly contract */
+  52.00% {
+    opacity: .92;
+    transform: scale(1.012);
+  }
+
+  55.50% {
+    opacity: .92;
+    transform: scale(1);
+  }
+
+  /* Fade out */
+  58.98%, 100% {
+    opacity: 0;
+    transform: scale(1.035);
+  }
+}
+
+@keyframes contactBrain {
+  0%, 57.66% {
+    opacity: 0;
+    transform: scale(1.035);
+  }
+
+  66.39% {
+    opacity: .92;
+    transform: scale(1);
+  }
+
+  74.50% {
     opacity: .92;
     transform: scale(1.004);
   }
 
-  76.29% {
+  82.20% {
     opacity: .92;
     transform: scale(1.008);
   }
 
-  84.73% {
+  89.60% {
     opacity: .92;
     transform: scale(1.004);
   }
 
-  92.73% {
+  95.60% {
     opacity: .92;
     transform: scale(1);
   }
@@ -1338,27 +1373,81 @@ h2 {
       drawRadialCloud(ctx, x, y, radius, hue + i * 39, .27, 1.25, .78);
     }
 
-    // Fine rotating light ribbons.
-    for (let i = 0; i < 3; i++) {
-      ctx.save();
-      ctx.rotate(i * .82 + time * (.22 + i * .045));
-      const rx = (145 - i * 13) * base;
-      const ry = (87 + i * 18) * base;
-      const gradient = ctx.createLinearGradient(-rx, -ry, rx, ry);
-      gradient.addColorStop(0, `hsla(${hue + 5}, 100%, 70%, 0)`);
-      gradient.addColorStop(.28, `hsla(${hue + 75}, 100%, 72%, .48)`);
-      gradient.addColorStop(.58, `hsla(${hue + 175}, 100%, 74%, .72)`);
-      gradient.addColorStop(.82, `hsla(${hue + 280}, 100%, 73%, .42)`);
-      gradient.addColorStop(1, `hsla(${hue + 350}, 100%, 70%, 0)`);
-      ctx.strokeStyle = gradient;
-      ctx.lineWidth = (i === 0 ? 3.4 : 1.8) * base;
-      ctx.shadowColor = `hsla(${hue + i * 90}, 100%, 70%, .55)`;
-      ctx.shadowBlur = 13 * base;
-      ctx.beginPath();
-      ctx.ellipse(0, 0, rx, ry, Math.sin(time * .45 + i) * .13, -.72, 2.02);
-      ctx.stroke();
-      ctx.restore();
-    }
+// Fine rotating tapered light ribbons.
+for (let i = 0; i < 3; i++) {
+  ctx.save();
+  ctx.rotate(i * .82 + time * (.22 + i * .045));
+
+  const rx = (145 - i * 13) * base;
+  const ry = (87 + i * 18) * base;
+  const ellipseAngle = Math.sin(time * .45 + i) * .13;
+
+  const maxWidth = (i === 0 ? 1.05 : .62) * base;
+  const steps = 72;
+  const startAngle = -.72;
+  const endAngle = 2.02;
+
+  const gradient = ctx.createLinearGradient(-rx, -ry, rx, ry);
+  gradient.addColorStop(0, `hsla(${hue + 5}, 100%, 70%, 0)`);
+  gradient.addColorStop(.28, `hsla(${hue + 75}, 100%, 72%, .48)`);
+  gradient.addColorStop(.58, `hsla(${hue + 175}, 100%, 74%, .72)`);
+  gradient.addColorStop(.82, `hsla(${hue + 280}, 100%, 73%, .42)`);
+  gradient.addColorStop(1, `hsla(${hue + 350}, 100%, 70%, 0)`);
+
+  ctx.fillStyle = gradient;
+  ctx.shadowColor = `hsla(${hue + i * 90}, 100%, 70%, .55)`;
+  ctx.shadowBlur = 7 * base;
+
+  const edgeA = [];
+  const edgeB = [];
+
+  const cosR = Math.cos(ellipseAngle);
+  const sinR = Math.sin(ellipseAngle);
+
+  for (let j = 0; j <= steps; j++) {
+    const t = j / steps;
+    const angle = startAngle + (endAngle - startAngle) * t;
+
+    const x0 = rx * Math.cos(angle);
+    const y0 = ry * Math.sin(angle);
+
+    const dx0 = -rx * Math.sin(angle);
+    const dy0 = ry * Math.cos(angle);
+
+    const x = x0 * cosR - y0 * sinR;
+    const y = x0 * sinR + y0 * cosR;
+
+    const dx = dx0 * cosR - dy0 * sinR;
+    const dy = dx0 * sinR + dy0 * cosR;
+
+    const length = Math.hypot(dx, dy) || 1;
+    const nx = -dy / length;
+    const ny = dx / length;
+
+    const taper = Math.pow(Math.sin(Math.PI * t), 1.05);
+    const width = maxWidth * taper;
+
+    edgeA.push([x + nx * width, y + ny * width]);
+    edgeB.push([x - nx * width, y - ny * width]);
+  }
+
+  ctx.beginPath();
+
+  ctx.moveTo(edgeA[0][0], edgeA[0][1]);
+
+  for (let j = 1; j < edgeA.length; j++) {
+    ctx.lineTo(edgeA[j][0], edgeA[j][1]);
+  }
+
+  for (let j = edgeB.length - 1; j >= 0; j--) {
+    ctx.lineTo(edgeB[j][0], edgeB[j][1]);
+  }
+
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.restore();
+}
 
     // Small sparks drift around the cloud perimeter.
     for (let i = 0; i < 34; i++) {
