@@ -603,29 +603,29 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
 
   /* Fade in */
   37.29% {
-    opacity: .92;
+    opacity: 1;
     transform: scale(1);
   }
 
   /* Expand */
   43.00% {
-    opacity: .92;
+    opacity: 1;
     transform: scale(1.015);
   }
 
   47.00% {
-    opacity: .92;
+    opacity: 1;
     transform: scale(1.025);
   }
 
   /* Slowly contract */
   52.00% {
-    opacity: .92;
+    opacity: 1;
     transform: scale(1.012);
   }
 
   55.50% {
-    opacity: .92;
+    opacity: 1;
     transform: scale(1);
   }
 
@@ -639,31 +639,31 @@ h2 { margin: 0; font-size: clamp(25px, 3.3vw, 39px); font-weight: 650; line-heig
 @keyframes contactBrain {
   0%, 57.66% {
     opacity: 0;
-    transform: scale(1.035);
+    transform: scale(1);
   }
 
   66.39% {
-    opacity: .92;
+    opacity: 1;
     transform: scale(1);
   }
 
   74.50% {
-    opacity: .92;
+    opacity: 1;
     transform: scale(1.004);
   }
 
   82.20% {
-    opacity: .92;
+    opacity: 1;
     transform: scale(1.008);
   }
 
   89.60% {
-    opacity: .92;
+    opacity: 1;
     transform: scale(1.004);
   }
 
   95.60% {
-    opacity: .92;
+    opacity: 1;
     transform: scale(1);
   }
 
@@ -1535,7 +1535,7 @@ for (let i = 0; i < 3; i++) {
 
     const fadeIn = smooth((percent - 44.03) / (53.85 - 44.03));
     const fadeOut = 1 - smooth((percent - 91.82) / (100 - 91.82));
-    const alpha = .92 * fadeIn * fadeOut;
+    const alpha = 1 * fadeIn * fadeOut;
     if (alpha <= .004) return;
 
     const imageW = brainImage.naturalWidth;
@@ -1593,7 +1593,7 @@ for (let i = 0; i < 3; i++) {
       const r = Math.max(1.3, 2.1 * radiusScale / fit);
 
       const glow = ctx.createRadialGradient(x, y, 0, x, y, r * 3.5);
-      glow.addColorStop(0, `hsla(${hue + i * 11}, 100%, 94%, ${.92 * pulse})`);
+      glow.addColorStop(0, `hsla(${hue + i * 11}, 100%, 94%, ${1 * pulse})`);
       glow.addColorStop(.32, `hsla(${hue + i * 11}, 100%, 72%, ${.55 * pulse})`);
       glow.addColorStop(1, `hsla(${hue + i * 11}, 100%, 60%, 0)`);
       ctx.fillStyle = glow;
